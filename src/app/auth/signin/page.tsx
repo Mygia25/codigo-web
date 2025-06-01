@@ -4,10 +4,12 @@
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { CircleDollarSign, ExternalLink } from "lucide-react";
 import Link from 'next/link';
 import Logo from '@/components/Logo';
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {useRouter} from "next/navigation";
 
 // Simple Google Icon SVG
@@ -25,12 +27,25 @@ const GoogleIcon = () => (
 export default function SignInPage() {
   const { login, isAuthenticated, isLoading } = useAuth();
   const router = useRouter();
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
   useEffect(() => {
     if (!isLoading && isAuthenticated) {
       router.replace('/dashboard');
     }
   }, [isAuthenticated, isLoading, router]);
+
+  const handleUsernamePasswordLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Here you would typically handle the username/password login logic
+    // For now, we can just log the credentials and simulate a login
+    console.log("Username/Password Login Attempt:", { username, password });
+    // Example: if (username === "test" && password === "test") login();
+    // Since we don't have a real backend for this, we'll just call the Google login for now
+    // or show a message. For this example, let's prevent actual login to avoid confusion.
+    alert("Inicio de sesión con usuario/contraseña no implementado en este prototipo.");
+  };
 
 
   if (isLoading || isAuthenticated) {
@@ -54,10 +69,52 @@ export default function SignInPage() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
+          <form onSubmit={handleUsernamePasswordLogin} className="space-y-4">
+            <div>
+              <Label htmlFor="username">Usuario</Label>
+              <Input 
+                id="username" 
+                type="text" 
+                placeholder="Tu nombre de usuario" 
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className="mt-1"
+                required
+              />
+            </div>
+            <div>
+              <Label htmlFor="password">Contraseña</Label>
+              <Input 
+                id="password" 
+                type="password" 
+                placeholder="Tu contraseña" 
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="mt-1"
+                required
+              />
+            </div>
+            <Button type="submit" className="w-full text-lg py-6">
+              Iniciar Sesión
+            </Button>
+          </form>
+
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-card px-2 text-muted-foreground">
+                O
+              </span>
+            </div>
+          </div>
+
           <Button onClick={login} variant="outline" className="w-full text-lg py-6 border-2 border-foreground/50 hover:border-primary">
             <GoogleIcon />
             Iniciar Sesión con Google
           </Button>
+          
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
               <span className="w-full border-t" />
