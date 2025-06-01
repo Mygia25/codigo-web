@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Progress } from "@/components/ui/progress";
 import { CheckCircle2, Zap, Target, Lightbulb, Award, BarChart3 } from "lucide-react";
 import { useAuth } from '@/hooks/useAuth';
+import Link from 'next/link';
 
 interface ProgressItem {
   id: string;
@@ -52,17 +53,21 @@ export default function DashboardPage() {
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {progressData.map((item) => (
-          <Card key={item.id} className={`shadow-md hover:shadow-xl transition-shadow duration-300 ${item.completed ? 'opacity-70 border-primary/30' : ''}`}>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-lg font-medium font-headline">{item.title}</CardTitle>
-              <item.icon className={`h-6 w-6 ${item.completed ? 'text-green-500' : 'text-primary'}`} />
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground mb-2">{item.description}</p>
-              <Progress value={item.progress} className="h-2" />
-              <p className="text-xs text-muted-foreground mt-1 text-right">{item.progress}% completado</p>
-            </CardContent>
-          </Card>
+          <Link href={`/cursos/${item.id}`} key={item.id} legacyBehavior>
+            <a className="block">
+              <Card className={`shadow-md hover:shadow-xl transition-shadow duration-300 h-full flex flex-col ${item.completed ? 'opacity-70 border-primary/30' : 'hover:border-primary/50'}`}>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-lg font-medium font-headline">{item.title}</CardTitle>
+                  <item.icon className={`h-6 w-6 ${item.completed ? 'text-green-500' : 'text-primary'}`} />
+                </CardHeader>
+                <CardContent className="flex-grow">
+                  <p className="text-sm text-muted-foreground mb-2">{item.description}</p>
+                  <Progress value={item.progress} className="h-2" />
+                  <p className="text-xs text-muted-foreground mt-1 text-right">{item.progress}% completado</p>
+                </CardContent>
+              </Card>
+            </a>
+          </Link>
         ))}
       </div>
     </div>
