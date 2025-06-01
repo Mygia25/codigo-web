@@ -51,7 +51,7 @@ export default function AgenteIAPage() {
       });
 
       if (!response.ok) {
-        const errorData = await response.text(); // Get text for more details on HTTP errors
+        const errorData = await response.text(); 
         throw new Error(`HTTP error! status: ${response.status}, details: ${errorData}`);
       }
 
@@ -60,15 +60,25 @@ export default function AgenteIAPage() {
 
       try {
         const result = JSON.parse(responseBodyText);
-        aiResponseText = result.Valeria || "No se pudo obtener una respuesta clara de Valeria. (Respuesta no estructurada)";
+        if (result && typeof result.Valeria === 'string') {
+          aiResponseText = result.Valeria; // Correctly assigns "" if Valeria is ""
+        } else {
+          console.error("Respuesta JSON válida, pero el campo 'Valeria' falta o no es una cadena de texto. Respuesta recibida:", result);
+          aiResponseText = "Valeria respondió, pero el formato del campo 'Valeria' no es el esperado.";
+          toast({
+            variant: "destructive",
+            title: "Error de Formato de Respuesta",
+            description: "El campo 'Valeria' en la respuesta no es una cadena de texto o está ausente.",
+          });
+        }
       } catch (jsonParseError) {
-        console.error("Error parsing JSON response:", jsonParseError);
-        console.error("Raw response body:", responseBodyText);
+        console.error("Error al interpretar la respuesta JSON de Valeria:", jsonParseError);
+        console.error("Cuerpo de la respuesta sin procesar:", responseBodyText);
         aiResponseText = "Hubo un problema al interpretar la respuesta de Valeria. Por favor, revisa la consola para más detalles.";
         toast({
           variant: "destructive",
-          title: "Error de Respuesta",
-          description: "La respuesta de Valeria no tuvo el formato esperado.",
+          title: "Error de Interpretación",
+          description: "La respuesta de Valeria no tuvo un formato JSON válido.",
         });
       }
       
@@ -81,15 +91,15 @@ export default function AgenteIAPage() {
       };
       setMessages(prev => [...prev, aiMessage]);
     } catch (error) {
-      console.error("Error calling webhook or processing response:", error);
+      console.error("Error llamando al webhook o procesando la respuesta:", error);
       toast({
         variant: "destructive",
-        title: "Error de Conexión",
-        description: `No se pudo obtener respuesta de Valeria. ${error instanceof Error ? error.message : 'Inténtalo de nuevo.'}`,
+        title: "Error de Conexión con Valeria",
+        description: `No se pudo obtener respuesta. ${error instanceof Error ? error.message : 'Inténtalo de nuevo.'}`,
       });
        const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
-        text: "Lo siento, tuve un problema al procesar tu solicitud con Valeria. Por favor, inténtalo de nuevo.",
+        text: "Lo siento, tuve un problema al comunicarme con Valeria. Por favor, inténtalo de nuevo.",
         sender: 'ai',
         timestamp: new Date(),
       };
@@ -109,7 +119,7 @@ export default function AgenteIAPage() {
   }, [messages]);
 
   return (
-    <div className="flex flex-col h-[calc(100vh-theme(spacing.16)-theme(spacing.8))]"> {/* Adjusted height based on new header/paddings */}
+    <div className="flex flex-col h-[calc(100vh-theme(spacing.16)-theme(spacing.8))]">
       <PageTitle 
         title="Agente CÓDIGO IA"
         description="Tu asistente personal para guiarte a través del método CÓDIGO."
