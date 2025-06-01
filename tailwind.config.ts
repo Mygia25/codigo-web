@@ -10,9 +10,9 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        body: ['Inter', 'sans-serif'],
-        headline: ['Inter', 'sans-serif'],
-        code: ['monospace'],
+        body: ['"Anonymous Pro"', 'monospace'],
+        headline: ['"Anonymous Pro"', 'monospace'],
+        code: ['"Anonymous Pro"', 'monospace'],
       },
       colors: {
         background: 'hsl(var(--background))',
