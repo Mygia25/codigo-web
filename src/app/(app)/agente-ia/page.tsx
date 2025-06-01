@@ -57,7 +57,7 @@ export default function AgenteIAPage() {
 
       const result = await response.json();
       
-      const aiResponseText = result.reply || result.text || result.message || result.guidance || "No se pudo obtener una respuesta clara del agente.";
+      const aiResponseText = result.Valeria || "No se pudo obtener una respuesta clara de Valeria.";
 
       const aiMessage: Message = {
         id: (Date.now() + 1).toString(),
