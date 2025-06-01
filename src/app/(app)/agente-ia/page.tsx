@@ -9,7 +9,6 @@ import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Send, Bot, User } from "lucide-react";
-import { provideIACodigoGuidance, type IACodigoGuidanceInput } from '@/ai/flows/ia-codigo-guide';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { useToast } from "@/hooks/use-toast";
 
@@ -27,9 +26,6 @@ export default function AgenteIAPage() {
   const { toast } = useToast();
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
-  // Mock user progress for now, this could come from a context or backend
-  const userProgress = "El usuario ha completado el Módulo 1: Consciencia y está comenzando el Módulo 2: Orden.";
-
   const handleSendMessage = async () => {
     if (input.trim() === '' || isLoading) return;
 
@@ -40,33 +36,45 @@ export default function AgenteIAPage() {
       timestamp: new Date(),
     };
     setMessages(prev => [...prev, userMessage]);
+    const currentInput = input;
     setInput('');
     setIsLoading(true);
 
     try {
-      const aiInput: IACodigoGuidanceInput = {
-        userInput: input,
-        userProgress: userProgress,
-      };
-      const result = await provideIACodigoGuidance(aiInput);
+      const response = await fetch('https://n8n.dlyrabrand.com/webhook-test/8917eab2-93b0-4fd8-bc55-559832e1feb5', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ text: currentInput }), 
+      });
+
+      if (!response.ok) {
+        const errorData = await response.text();
+        throw new Error(`HTTP error! status: ${response.status}, details: ${errorData}`);
+      }
+
+      const result = await response.json();
+      
+      const aiResponseText = result.reply || result.text || result.message || result.guidance || "No se pudo obtener una respuesta clara del agente.";
+
       const aiMessage: Message = {
         id: (Date.now() + 1).toString(),
-        text: result.guidance,
+        text: aiResponseText,
         sender: 'ai',
         timestamp: new Date(),
       };
       setMessages(prev => [...prev, aiMessage]);
     } catch (error) {
-      console.error("Error calling AI agent:", error);
+      console.error("Error calling webhook:", error);
       toast({
         variant: "destructive",
-        title: "Error de IA",
-        description: "No se pudo obtener respuesta del agente. Inténtalo de nuevo.",
+        title: "Error de Conexión",
+        description: "No se pudo obtener respuesta de Valeria. Inténtalo de nuevo.",
       });
-      // Optionally add the error message back to chat for user context
        const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
-        text: "Lo siento, tuve un problema al procesar tu solicitud. Por favor, inténtalo de nuevo.",
+        text: "Lo siento, tuve un problema al procesar tu solicitud con Valeria. Por favor, inténtalo de nuevo.",
         sender: 'ai',
         timestamp: new Date(),
       };
@@ -86,14 +94,14 @@ export default function AgenteIAPage() {
   }, [messages]);
 
   return (
-    <div className="flex flex-col h-[calc(100vh-theme(spacing.28))]"> {/* Adjust height based on header/paddings */}
+    <div className="flex flex-col h-[calc(100vh-theme(spacing.16)-theme(spacing.8))]"> {/* Adjusted height based on new header/paddings */}
       <PageTitle 
         title="Agente CÓDIGO IA"
         description="Tu asistente personal para guiarte a través del método CÓDIGO."
       />
       <Card className="flex-1 flex flex-col shadow-lg overflow-hidden">
         <CardHeader className="border-b">
-          <p className="text-sm text-muted-foreground">Conectado con <span className="font-semibold text-primary">CÓDIGO IA</span></p>
+          <p className="text-sm text-muted-foreground">Hablando con <span className="font-semibold text-primary">Valeria</span></p>
         </CardHeader>
         <ScrollArea className="flex-1 p-4 sm:p-6" ref={scrollAreaRef}>
           <div className="space-y-6">
@@ -128,7 +136,7 @@ export default function AgenteIAPage() {
                     <AvatarFallback><Bot className="text-primary" /></AvatarFallback>
                   </Avatar>
                 <div className="max-w-[70%] rounded-xl px-4 py-3 text-sm shadow-md bg-card text-card-foreground border">
-                  <LoadingSpinner size="sm" text="Pensando..." />
+                  <LoadingSpinner size="sm" text="Valeria está pensando..." />
                 </div>
               </div>
             )}
@@ -141,7 +149,7 @@ export default function AgenteIAPage() {
           >
             <Input
               type="text"
-              placeholder="Escribe tu mensaje o pregunta..."
+              placeholder="Escribe tu mensaje a Valeria..."
               value={input}
               onChange={(e) => setInput(e.target.value)}
               disabled={isLoading}
