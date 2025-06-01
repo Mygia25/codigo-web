@@ -2,7 +2,7 @@
 "use client";
 
 import PageTitle from '@/components/PageTitle';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Globe, Users, MessageSquare, Video, ShoppingCart, Zap, Settings, ExternalLink, PlusCircle } from "lucide-react";
 import React from 'react';
