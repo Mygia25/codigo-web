@@ -32,7 +32,7 @@ const AppLayoutClient: React.FC<AppLayoutClientProps> = ({ children }) => {
       <div className={cn("flex flex-col flex-1 transition-all duration-300 ease-in-out", 
                           isCollapsed ? "md:ml-16" : "md:ml-64")}>
         <AppHeader />
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-auto">
+        <main className="flex-1 py-4 pr-4 pl-2 sm:py-6 sm:pr-6 sm:pl-3 lg:py-8 lg:pr-8 lg:pl-4 overflow-auto">
           {children}
         </main>
       </div>

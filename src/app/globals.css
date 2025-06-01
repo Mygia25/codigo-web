@@ -8,7 +8,7 @@ body {
 
 @layer base {
   :root {
-    --background: 36 56% 90%; /* Light Beige */
+    --background: 0 0% 100%; /* White */
     --foreground: 20 15% 25%; /* Darker brown/gray for text on beige */
     --card: 36 56% 93%; /* Slightly lighter beige for cards */
     --card-foreground: 20 15% 25%;
