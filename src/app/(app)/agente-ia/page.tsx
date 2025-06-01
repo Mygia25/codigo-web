@@ -1,3 +1,4 @@
+
 // src/app/(app)/agente-ia/page.tsx
 "use client";
 
