@@ -26,7 +26,7 @@ export default {
           foreground: 'hsl(var(--popover-foreground))',
         },
         primary: {
-          DEFAULT: 'hsl(var(--primary))',
+          DEFAULT: 'hsl(var(--primary))', /* #c2a167 */
           foreground: 'hsl(var(--primary-foreground))',
         },
         secondary: {
@@ -38,7 +38,7 @@ export default {
           foreground: 'hsl(var(--muted-foreground))',
         },
         accent: {
-          DEFAULT: 'hsl(var(--accent))',
+          DEFAULT: 'hsl(var(--accent))', /* #1644a3 */
           foreground: 'hsl(var(--accent-foreground))',
         },
         destructive: {
@@ -65,6 +65,9 @@ export default {
           border: 'hsl(var(--sidebar-border))',
           ring: 'hsl(var(--sidebar-ring))',
         },
+        'landing-bg': 'hsl(var(--landing-bg))', /* #f2e9d7 */
+        'landing-fg': 'hsl(var(--landing-fg))', /* #0f1111 */
+        /* For landing-primary and landing-accent, we can use 'primary' and 'accent' directly as they match */
       },
       borderRadius: {
         lg: 'var(--radius)',
