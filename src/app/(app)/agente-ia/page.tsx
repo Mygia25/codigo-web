@@ -51,13 +51,27 @@ export default function AgenteIAPage() {
       });
 
       if (!response.ok) {
-        const errorData = await response.text();
+        const errorData = await response.text(); // Get text for more details on HTTP errors
         throw new Error(`HTTP error! status: ${response.status}, details: ${errorData}`);
       }
 
-      const result = await response.json();
+      const responseBodyText = await response.text();
+      let aiResponseText: string;
+
+      try {
+        const result = JSON.parse(responseBodyText);
+        aiResponseText = result.Valeria || "No se pudo obtener una respuesta clara de Valeria. (Respuesta no estructurada)";
+      } catch (jsonParseError) {
+        console.error("Error parsing JSON response:", jsonParseError);
+        console.error("Raw response body:", responseBodyText);
+        aiResponseText = "Hubo un problema al interpretar la respuesta de Valeria. Por favor, revisa la consola para más detalles.";
+        toast({
+          variant: "destructive",
+          title: "Error de Respuesta",
+          description: "La respuesta de Valeria no tuvo el formato esperado.",
+        });
+      }
       
-      const aiResponseText = result.Valeria || "No se pudo obtener una respuesta clara de Valeria.";
 
       const aiMessage: Message = {
         id: (Date.now() + 1).toString(),
@@ -67,11 +81,11 @@ export default function AgenteIAPage() {
       };
       setMessages(prev => [...prev, aiMessage]);
     } catch (error) {
-      console.error("Error calling webhook:", error);
+      console.error("Error calling webhook or processing response:", error);
       toast({
         variant: "destructive",
         title: "Error de Conexión",
-        description: "No se pudo obtener respuesta de Valeria. Inténtalo de nuevo.",
+        description: `No se pudo obtener respuesta de Valeria. ${error instanceof Error ? error.message : 'Inténtalo de nuevo.'}`,
       });
        const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
