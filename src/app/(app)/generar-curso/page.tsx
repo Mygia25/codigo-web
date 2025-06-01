@@ -9,12 +9,13 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { generatePersonalizedCourse, type PersonalizedCourseInput, type PersonalizedCourseOutput } from '@/ai/flows/personalized-course-generation';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { useToast } from "@/hooks/use-toast";
-import { Sparkles, FileSignature, Brain, BookHeart, Target, Save, List, ChevronDown, ChevronRight } from "lucide-react";
+import { Sparkles, FileSignature, Brain, BookHeart, Target, Save, List, ChevronDown, ChevronRight, UploadCloud, Languages } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import type { UserCourseData, CourseModule as UserCourseModule, CourseLesson as UserCourseLesson } from '@/types/course'; // Asegúrate que CourseModule y CourseLesson se exporten
+import type { UserCourseData, CourseModule as UserCourseModule, CourseLesson as UserCourseLesson } from '@/types/course';
 import { useRouter } from 'next/navigation';
 
 export default function GenerarCursoPage() {
@@ -22,8 +23,8 @@ export default function GenerarCursoPage() {
   const [knowledge, setKnowledge] = useState('');
   const [passions, setPassions] = useState('');
   const [niche, setNiche] = useState('');
+  const [language, setLanguage] = useState('Español'); // Default language
   
-  // Usaremos el tipo PersonalizedCourseOutput que ahora incluye la estructura de módulos.
   const [generatedCourse, setGeneratedCourse] = useState<PersonalizedCourseOutput | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
@@ -31,11 +32,11 @@ export default function GenerarCursoPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!skills || !knowledge || !passions || !niche) {
+    if (!skills || !knowledge || !passions || !niche || !language) {
       toast({
         variant: "destructive",
         title: "Campos incompletos",
-        description: "Por favor, completa todos los campos para generar tu curso.",
+        description: "Por favor, completa todos los campos, incluido el idioma, para generar tu curso.",
       });
       return;
     }
@@ -44,7 +45,7 @@ export default function GenerarCursoPage() {
     setGeneratedCourse(null);
 
     try {
-      const input: PersonalizedCourseInput = { skills, knowledge, passions, niche };
+      const input: PersonalizedCourseInput = { skills, knowledge, passions, niche, language };
       const result = await generatePersonalizedCourse(input);
       setGeneratedCourse(result);
     } catch (error) {
@@ -73,14 +74,12 @@ export default function GenerarCursoPage() {
       id: Date.now().toString(),
       title: generatedCourse.courseTitle,
       description: generatedCourse.courseDescription,
-      // Mapear módulos y lecciones generados a la estructura UserCourseData
-      // La IA ya añade IDs a modules y lessons en el flow
       modules: generatedCourse.modules.map(mod => ({
-        id: (mod as any).id || `mod-${Date.now()}-${Math.random()}`, // Fallback si la IA no proveyó ID
+        id: (mod as any).id || `mod-${Date.now()}-${Math.random()}`,
         moduleTitle: mod.moduleTitle,
         moduleDescription: mod.moduleDescription,
         lessons: mod.lessons.map(les => ({
-          id: (les as any).id || `les-${Date.now()}-${Math.random()}`, // Fallback
+          id: (les as any).id || `les-${Date.now()}-${Math.random()}`,
           lessonTitle: les.lessonTitle,
           topics: les.topics,
         })),
@@ -89,7 +88,18 @@ export default function GenerarCursoPage() {
       knowledge,
       passions,
       niche,
+      language,
       createdAt: new Date().toISOString(),
+      // Initialize checklist for new courses - can be expanded in edit page
+      checklist: [
+        { id: 'chk-define-obj', text: "Definir objetivos de aprendizaje claros para el curso", completed: false, link: "/cursos/1" },
+        { id: 'chk-structure-modules', text: "Estructurar los módulos y lecciones principales", completed: false },
+        { id: 'chk-create-content', text: "Crear contenido detallado para cada lección", completed: false },
+        { id: 'chk-design-materials', text: "Diseñar materiales descargables (guías, plantillas)", completed: false },
+        { id: 'chk-record-videos', text: "Grabar videos del curso", completed: false },
+        { id: 'chk-setup-platform', text: "Configurar plataforma de venta/distribución", completed: false, link: "/ecosistema"},
+        { id: 'chk-pilot-test', text: "Realizar prueba piloto con algunos alumnos", completed: false },
+      ]
     };
 
     try {
@@ -154,6 +164,23 @@ export default function GenerarCursoPage() {
               </Label>
               <Input id="niche" placeholder="Ej: Madres emprendedoras, profesionales de la salud, artistas digitales..." value={niche} onChange={(e) => setNiche(e.target.value)} className="text-base" required />
             </div>
+             <div className="space-y-2 md:col-span-2">
+              <Label htmlFor="language" className="text-base flex items-center">
+                <Languages className="h-5 w-5 mr-2 text-primary" />
+                Idioma del Curso
+              </Label>
+              <Select value={language} onValueChange={setLanguage}>
+                <SelectTrigger className="w-full text-base">
+                  <SelectValue placeholder="Selecciona un idioma" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Español">Español</SelectItem>
+                  <SelectItem value="English">English</SelectItem>
+                  <SelectItem value="Português">Português</SelectItem>
+                  <SelectItem value="Français">Français</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </CardContent>
           <CardFooter className="flex flex-col sm:flex-row gap-4 items-center">
             <Button type="submit" disabled={isLoading} className="w-full sm:w-auto bg-accent hover:bg-accent/90 text-accent-foreground text-lg py-3 px-6">
@@ -167,6 +194,24 @@ export default function GenerarCursoPage() {
           </CardFooter>
         </form>
       </Card>
+      
+      {/* Placeholder for content upload */}
+      <Card className="shadow-md mt-8">
+        <CardHeader>
+            <CardTitle className="font-headline text-xl flex items-center">
+                <UploadCloud className="h-6 w-6 mr-2 text-primary"/>
+                Sube tu Contenido Existente (Próximamente)
+            </CardTitle>
+        </CardHeader>
+        <CardContent>
+            <div className="border-2 border-dashed border-muted-foreground/30 rounded-lg p-8 text-center">
+                <UploadCloud className="h-12 w-12 text-muted-foreground/50 mx-auto mb-3"/>
+                <p className="text-muted-foreground">Aquí podrás subir tus videos, documentos, y otros materiales para integrarlos a tu curso.</p>
+                <Button variant="outline" className="mt-4" disabled>Seleccionar Archivos (No funcional)</Button>
+            </div>
+        </CardContent>
+      </Card>
+
 
       {isLoading && !generatedCourse && (
         <Card className="shadow-md mt-8">
@@ -236,3 +281,4 @@ export default function GenerarCursoPage() {
     </div>
   );
 }
+

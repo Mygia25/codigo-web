@@ -17,6 +17,7 @@ const PersonalizedCourseInputSchema = z.object({
   knowledge: z.string().describe('The user’s existing knowledge.'),
   passions: z.string().describe('The user’s passions and interests.'),
   niche: z.string().describe('The specific niche for the course.'),
+  language: z.string().describe('The target language for the course content (e.g., "Español", "English").'),
 });
 export type PersonalizedCourseInput = z.infer<typeof PersonalizedCourseInputSchema>;
 
@@ -44,17 +45,18 @@ const prompt = ai.definePrompt({
   name: 'personalizedCoursePrompt',
   input: {schema: PersonalizedCourseInputSchema},
   output: {schema: PersonalizedCourseOutputSchema},
-  prompt: `You are an expert course creator. A user will provide their skills, knowledge, passions, and niche, and you will generate a personalized course tailored to them.
+  prompt: `You are an expert course creator. A user will provide their skills, knowledge, passions, niche, and desired language, and you will generate a personalized course tailored to them in the specified language.
 
 Skills: {{{skills}}}
 Knowledge: {{{knowledge}}}
 Passions: {{{passions}}}
 Niche: {{{niche}}}
+Language: {{{language}}}
 
 Based on this information, create a personalized course. The course should include:
-1.  'courseTitle': A compelling title for the course.
-2.  'courseDescription': A brief, engaging description of what the course offers.
-3.  'modules': A detailed content outline structured as an array of module objects.
+1.  'courseTitle': A compelling title for the course in the specified '{{language}}'.
+2.  'courseDescription': A brief, engaging description of what the course offers in '{{language}}'.
+3.  'modules': A detailed content outline structured as an array of module objects. All text content within modules, lessons, and topics must be in '{{language}}'.
     *   Each module object must have:
         *   'moduleTitle': A clear title for the module.
         *   'moduleDescription': A brief summary of the module's content and objectives.
@@ -63,7 +65,7 @@ Based on this information, create a personalized course. The course should inclu
                 *   'lessonTitle': A specific title for the lesson.
                 *   'topics': An array of strings, where each string is a concise topic name (e.g., "Understanding X", "Implementing Y", "Advanced techniques for Z"). Aim for 2 to 5 topics per lesson.
 
-Return the result strictly in the specified JSON format. Ensure the 'modules' key contains the structured array as described.
+Return the result strictly in the specified JSON format. Ensure the 'modules' key contains the structured array as described and all textual content is in the language specified: '{{language}}'.
 Example of a lesson's topics array: ["Introduction to Topic A", "Core Concepts of Topic A", "Practical Application of Topic A"]
 `,
 });
@@ -94,3 +96,4 @@ const personalizedCourseFlow = ai.defineFlow(
     return outputWithIds;
   }
 );
+

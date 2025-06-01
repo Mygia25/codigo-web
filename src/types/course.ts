@@ -10,10 +10,17 @@ export interface CourseLesson {
 }
 
 export interface CourseModule {
-  id: string;
+  id:string;
   moduleTitle: string;
   moduleDescription: string;
   lessons: CourseLesson[];
+}
+
+export interface ChecklistItem {
+  id: string;
+  text: string;
+  completed: boolean;
+  link?: string; // Optional link to a relevant section in the dashboard/course
 }
 
 export interface UserCourseData {
@@ -24,6 +31,9 @@ export interface UserCourseData {
   knowledge: string;
   passions: string;
   niche: string;
+  language: string; // Added language field
   modules: CourseModule[];
+  checklist?: ChecklistItem[]; // Added checklist
   createdAt: string;
 }
+
