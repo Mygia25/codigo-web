@@ -8,26 +8,43 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { LogOut, Edit3, Save } from 'lucide-react';
-import { useState } from 'react';
+import { LogOut, Edit3, Save, Image as ImageIcon } from 'lucide-react';
+import { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 
 export default function PerfilPage() {
-  const { user, logout } = useAuth();
+  const { user, logout, updateUser } = useAuth();
   const { toast } = useToast();
+  
   const [isEditing, setIsEditing] = useState(false);
-  const [displayName, setDisplayName] = useState(user?.name || '');
-  const [email, setEmail] = useState(user?.email || ''); // Email typically not editable
+  const [displayName, setDisplayName] = useState('');
+  const [email, setEmail] = useState('');
+  const [photoURL, setPhotoURL] = useState('');
+
+  useEffect(() => {
+    if (user) {
+      setDisplayName(user.name || '');
+      setEmail(user.email || '');
+      setPhotoURL(user.photoURL || 'https://placehold.co/100x100.png');
+    }
+  }, [user]);
 
   const handleSave = () => {
-    // In a real app, this would call an API to update user info
-    console.log("Guardando perfil:", { displayName, email });
+    if (!user) return;
+
+    const updatedUserData = {
+      name: displayName,
+      email: email, // Email is typically not changed by user, but included if it were
+      photoURL: photoURL,
+    };
+    
+    updateUser(updatedUserData); // Update context and localStorage
+
     toast({
       title: "Perfil Actualizado",
-      description: "Tus cambios han sido guardados (simulación).",
+      description: "Tus cambios han sido guardados.",
     });
     setIsEditing(false);
-    // Potentially update user context if API returns new data
   };
 
   return (
@@ -40,10 +57,10 @@ export default function PerfilPage() {
       <Card className="shadow-lg">
         <CardHeader className="items-center text-center">
           <Avatar className="h-24 w-24 mb-4 border-4 border-primary">
-            <AvatarImage src={user?.photoURL || `https://placehold.co/100x100.png`} alt={user?.name} data-ai-hint="profile avatar large"/>
-            <AvatarFallback className="text-4xl">{user?.name ? user.name.charAt(0).toUpperCase() : 'U'}</AvatarFallback>
+            <AvatarImage src={photoURL} alt={displayName} data-ai-hint="profile avatar large"/>
+            <AvatarFallback className="text-4xl">{displayName ? displayName.charAt(0).toUpperCase() : 'U'}</AvatarFallback>
           </Avatar>
-          <CardTitle className="font-headline text-2xl">{user?.name || 'Usuario'}</CardTitle>
+          <CardTitle className="font-headline text-2xl">{isEditing ? displayName : user?.name || 'Usuario'}</CardTitle>
           <CardDescription>{user?.email || 'usuario@ejemplo.com'}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
@@ -67,6 +84,22 @@ export default function PerfilPage() {
               className="text-base mt-1 bg-muted/50" 
             />
           </div>
+          {isEditing && (
+            <div>
+              <Label htmlFor="photoURL" className="text-base flex items-center">
+                <ImageIcon className="mr-2 h-4 w-4 text-primary"/>
+                URL de la Foto de Perfil
+              </Label>
+              <Input 
+                id="photoURL" 
+                type="url"
+                value={photoURL} 
+                onChange={(e) => setPhotoURL(e.target.value)} 
+                placeholder="https://ejemplo.com/tu-imagen.png"
+                className="text-base mt-1"
+              />
+            </div>
+          )}
           
           <div className="flex flex-col sm:flex-row gap-3 pt-4">
             {isEditing ? (
