@@ -6,13 +6,15 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { CircleDollarSign, ExternalLink } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { CircleDollarSign, ExternalLink, UserPlus } from "lucide-react";
 import Link from 'next/link';
 import Logo from '@/components/Logo';
-import {useEffect, useState} from "react";
-import {useRouter} from "next/navigation";
+import {useEffect, useState, FormEvent} from "react";
+import {useRouter, useSearchParams} from "next/navigation";
+import { useToast } from "@/hooks/use-toast";
+import LoadingSpinner from '@/components/LoadingSpinner';
 
-// Simple Google Icon SVG
 const GoogleIcon = () => (
   <svg viewBox="0 0 24 24" className="h-5 w-5 mr-2 fill-current">
     <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -23,35 +25,66 @@ const GoogleIcon = () => (
   </svg>
 );
 
-
 export default function SignInPage() {
-  const { login, isAuthenticated, isLoading } = useAuth();
+  const { loginWithPassword, loginWithGoogle, signupWithPassword, isAuthenticated, isLoading: authIsLoading } = useAuth();
   const router = useRouter();
-  const [username, setUsername] = useState('');
+  const searchParams = useSearchParams();
+  const { toast } = useToast();
+
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [name, setName] = useState(''); // For signup
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    if (!isLoading && isAuthenticated) {
-      router.replace('/dashboard');
+    if (!authIsLoading && isAuthenticated) {
+      const redirectUrl = searchParams.get('redirect') || '/dashboard';
+      router.replace(redirectUrl);
     }
-  }, [isAuthenticated, isLoading, router]);
+  }, [isAuthenticated, authIsLoading, router, searchParams]);
 
-  const handleUsernamePasswordLogin = (e: React.FormEvent) => {
+  const handleEmailPasswordSignIn = async (e: FormEvent) => {
     e.preventDefault();
-    // Here you would typically handle the username/password login logic
-    // For now, we can just log the credentials and simulate a login
-    console.log("Username/Password Login Attempt:", { username, password });
-    // Example: if (username === "test" && password === "test") login();
-    // Since we don't have a real backend for this, we'll just call the Google login for now
-    // or show a message. For this example, let's prevent actual login to avoid confusion.
-    alert("Inicio de sesión con usuario/contraseña no implementado en este prototipo.");
+    setIsSubmitting(true);
+    try {
+      await loginWithPassword({ email_: email, password_: password });
+      // onAuthStateChange in AuthContext will handle redirect
+    } catch (error: any) {
+      toast({ variant: "destructive", title: "Error al Iniciar Sesión", description: error.message });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+  
+  const handleEmailPasswordSignUp = async (e: FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    try {
+      await signupWithPassword({ email_: email, password_: password, name_: name });
+      toast({ title: "Registro Exitoso", description: "Por favor, revisa tu correo para confirmar tu cuenta si es necesario." });
+      // onAuthStateChange in AuthContext may handle redirect or user needs to confirm email
+    } catch (error: any) {
+      toast({ variant: "destructive", title: "Error en el Registro", description: error.message });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
+  const handleGoogleSignIn = async () => {
+    setIsSubmitting(true);
+    try {
+      await loginWithGoogle();
+    } catch (error: any) {
+      toast({ variant: "destructive", title: "Error con Google Sign-In", description: error.message });
+    } finally {
+      setIsSubmitting(false); // May not be reached if OAuth redirects immediately
+    }
+  };
 
-  if (isLoading || isAuthenticated) {
+  if (authIsLoading || (!authIsLoading && isAuthenticated)) {
      return (
         <div className="flex h-screen items-center justify-center">
-          <p>Cargando...</p>
+          <LoadingSpinner text="Cargando..." size="lg"/>
         </div>
      );
   }
@@ -61,7 +94,7 @@ export default function SignInPage() {
       <Card className="w-full max-w-md shadow-xl">
         <CardHeader className="text-center">
           <div className="mx-auto mb-6 w-fit">
-            <Logo size="lg" />
+            <Logo />
           </div>
           <CardTitle className="font-headline text-3xl">Bienvenido a CÓDIGO</CardTitle>
           <CardDescription className="text-md">
@@ -69,50 +102,104 @@ export default function SignInPage() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          <form onSubmit={handleUsernamePasswordLogin} className="space-y-4">
-            <div>
-              <Label htmlFor="username">Usuario</Label>
-              <Input 
-                id="username" 
-                type="text" 
-                placeholder="Tu nombre de usuario" 
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                className="mt-1"
-                required
-              />
-            </div>
-            <div>
-              <Label htmlFor="password">Contraseña</Label>
-              <Input 
-                id="password" 
-                type="password" 
-                placeholder="Tu contraseña" 
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="mt-1"
-                required
-              />
-            </div>
-            <Button type="submit" className="w-full text-lg py-6">
-              Iniciar Sesión
-            </Button>
-          </form>
+          <Tabs defaultValue="signin" className="w-full">
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="signin">Iniciar Sesión</TabsTrigger>
+              <TabsTrigger value="signup">Registrarse</TabsTrigger>
+            </TabsList>
+            <TabsContent value="signin">
+              <form onSubmit={handleEmailPasswordSignIn} className="space-y-4 mt-4">
+                <div>
+                  <Label htmlFor="email-signin">Correo Electrónico</Label>
+                  <Input 
+                    id="email-signin" 
+                    type="email" 
+                    placeholder="tu@email.com" 
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="mt-1"
+                    required
+                    disabled={isSubmitting}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="password-signin">Contraseña</Label>
+                  <Input 
+                    id="password-signin" 
+                    type="password" 
+                    placeholder="Tu contraseña" 
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="mt-1"
+                    required
+                    disabled={isSubmitting}
+                  />
+                </div>
+                <Button type="submit" className="w-full text-lg py-6" disabled={isSubmitting}>
+                  {isSubmitting ? <LoadingSpinner size="sm" /> : 'Iniciar Sesión'}
+                </Button>
+              </form>
+            </TabsContent>
+            <TabsContent value="signup">
+              <form onSubmit={handleEmailPasswordSignUp} className="space-y-4 mt-4">
+                <div>
+                  <Label htmlFor="name-signup">Nombre Completo</Label>
+                  <Input 
+                    id="name-signup" 
+                    type="text" 
+                    placeholder="Tu Nombre Completo" 
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="mt-1"
+                    required
+                    disabled={isSubmitting}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="email-signup">Correo Electrónico</Label>
+                  <Input 
+                    id="email-signup" 
+                    type="email" 
+                    placeholder="tu@email.com" 
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="mt-1"
+                    required
+                    disabled={isSubmitting}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="password-signup">Contraseña</Label>
+                  <Input 
+                    id="password-signup" 
+                    type="password" 
+                    placeholder="Crea una contraseña segura" 
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="mt-1"
+                    required
+                    disabled={isSubmitting}
+                  />
+                   <p className="text-xs text-muted-foreground mt-1">Mínimo 6 caracteres.</p>
+                </div>
+                <Button type="submit" className="w-full text-lg py-6" disabled={isSubmitting}>
+                  {isSubmitting ? <LoadingSpinner size="sm" /> : 'Crear Cuenta'}
+                </Button>
+              </form>
+            </TabsContent>
+          </Tabs>
 
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
               <span className="w-full border-t" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-card px-2 text-muted-foreground">
-                O
-              </span>
+              <span className="bg-card px-2 text-muted-foreground">O</span>
             </div>
           </div>
 
-          <Button onClick={login} variant="outline" className="w-full text-lg py-6 border-2 border-foreground/50 hover:border-primary">
-            <GoogleIcon />
-            Iniciar Sesión con Google
+          <Button onClick={handleGoogleSignIn} variant="outline" className="w-full text-lg py-6 border-2 border-foreground/50 hover:border-primary" disabled={isSubmitting}>
+            {isSubmitting ? <LoadingSpinner size="sm" text="Conectando con Google..." /> : <><GoogleIcon /> Continuar con Google</>}
           </Button>
           
           <div className="relative">
@@ -120,9 +207,7 @@ export default function SignInPage() {
               <span className="w-full border-t" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-card px-2 text-muted-foreground">
-                O
-              </span>
+              <span className="bg-card px-2 text-muted-foreground">O</span>
             </div>
           </div>
           <Button asChild variant="default" className="w-full text-lg py-6 bg-primary hover:bg-primary/90 text-primary-foreground">

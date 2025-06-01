@@ -3,99 +3,193 @@
 
 import type { ReactNode } from 'react';
 import React, { createContext, useState, useEffect, useCallback } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
+import { supabase } from '@/lib/supabaseClient';
+import type { AuthChangeEvent, Session, User } from '@supabase/supabase-js';
 
 interface UserProfile {
-  name?: string;
-  email?: string;
-  photoURL?: string;
+  id?: string; // Supabase user ID
+  name?: string | null;
+  email?: string | null;
+  photoURL?: string | null;
+  // Add any other custom profile fields you might store in user_metadata or a separate table
 }
 
 interface AuthContextType {
   isAuthenticated: boolean;
   isLoading: boolean;
-  login: () => void;
-  logout: () => void;
   user: UserProfile | null;
-  updateUser: (newUserData: Partial<UserProfile>) => void;
+  session: Session | null;
+  loginWithPassword: (credentials: { email_?: string; password_?: string }) => Promise<void>;
+  loginWithGoogle: () => Promise<void>;
+  signupWithPassword: (credentials: { email_?: string; password_?: string, name_?: string }) => Promise<void>;
+  logout: () => Promise<void>;
+  updateUserAccount: (updatedData: { name?: string; photoURL?: string, password?: string }) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const AUTH_KEY = 'codigo_auth_token';
-const USER_PROFILE_KEY = 'codigo_user_profile'; // Key to store user profile details
-
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState<UserProfile | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
-    try {
-      const token = localStorage.getItem(AUTH_KEY);
-      const storedUserProfile = localStorage.getItem(USER_PROFILE_KEY);
-
-      if (token) {
-        setIsAuthenticated(true);
-        if (storedUserProfile) {
-          setUser(JSON.parse(storedUserProfile));
-        } else {
-          // Fallback if profile not in localStorage but token exists
-          setUser({ name: 'Usuario Ejemplo', email: 'usuario@ejemplo.com', photoURL: 'https://placehold.co/100x100.png' });
-        }
+    const getInitialSession = async () => {
+      const { data: { session: initialSession } } = await supabase.auth.getSession();
+      setSession(initialSession);
+      if (initialSession?.user) {
+        setUser({
+          id: initialSession.user.id,
+          email: initialSession.user.email,
+          name: initialSession.user.user_metadata?.name || initialSession.user.email?.split('@')[0],
+          photoURL: initialSession.user.user_metadata?.photo_url,
+        });
       } else {
-        setIsAuthenticated(false);
         setUser(null);
       }
-    } catch (error) {
-      console.warn("Could not access localStorage for auth state:", error);
-      setIsAuthenticated(false);
-      setUser(null);
-    } finally {
       setIsLoading(false);
-    }
-  }, []);
+    };
 
-  const login = useCallback(() => {
-    try {
-      const defaultUser: UserProfile = { name: 'Usuario Ejemplo', email: 'usuario@ejemplo.com', photoURL: 'https://placehold.co/100x100.png' };
-      localStorage.setItem(AUTH_KEY, 'mock_google_token'); // Simulate token
-      localStorage.setItem(USER_PROFILE_KEY, JSON.stringify(defaultUser)); // Store profile
-      setIsAuthenticated(true);
-      setUser(defaultUser);
-      router.push('/dashboard');
-    } catch (error) {
-      console.error("Failed to set auth token/profile in localStorage:", error);
-    }
-  }, [router]);
+    getInitialSession();
 
-  const logout = useCallback(() => {
-    try {
-      localStorage.removeItem(AUTH_KEY);
-      localStorage.removeItem(USER_PROFILE_KEY); // Remove profile on logout
-      setIsAuthenticated(false);
-      setUser(null);
-      router.push('/auth/signin');
-    } catch (error) {
-      console.error("Failed to remove auth token/profile from localStorage:", error);
-    }
-  }, [router]);
-
-  const updateUser = useCallback((newUserData: Partial<UserProfile>) => {
-    setUser(prevUser => {
-      const updatedUser = { ...prevUser, ...newUserData } as UserProfile; // Type assertion
-      try {
-        localStorage.setItem(USER_PROFILE_KEY, JSON.stringify(updatedUser));
-      } catch (error) {
-        console.error("Failed to update user profile in localStorage:", error);
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      async (event: AuthChangeEvent, session: Session | null) => {
+        setSession(session);
+        if (session?.user) {
+          setUser({
+            id: session.user.id,
+            email: session.user.email,
+            name: session.user.user_metadata?.name || session.user.email?.split('@')[0],
+            photoURL: session.user.user_metadata?.photo_url,
+          });
+           if (event === 'SIGNED_IN' && (pathname === '/auth/signin' || pathname === '/auth/signup')) {
+            router.push('/dashboard');
+          }
+        } else {
+          setUser(null);
+          if (event === 'SIGNED_OUT') {
+             router.push('/auth/signin');
+          }
+        }
+        setIsLoading(false);
       }
-      return updatedUser;
+    );
+
+    return () => {
+      authListener?.subscription.unsubscribe();
+    };
+  }, [router, pathname]);
+
+  const loginWithPassword = useCallback(async (credentials: { email_?: string; password_?: string }) => {
+    if (!credentials.email_ || !credentials.password_) {
+        throw new Error("Email y contraseña son requeridos.");
+    }
+    setIsLoading(true);
+    const { error } = await supabase.auth.signInWithPassword({
+      email: credentials.email_,
+      password: credentials.password_,
     });
+    if (error) {
+      setIsLoading(false);
+      throw error;
+    }
+    // Auth state change will handle setting user and redirecting
   }, []);
+  
+  const loginWithGoogle = useCallback(async () => {
+    setIsLoading(true);
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback`, // Ensure you have an auth callback page or handle appropriately
+      },
+    });
+    if (error) {
+      setIsLoading(false);
+      throw error;
+    }
+  }, []);
+
+  const signupWithPassword = useCallback(async (credentials: { email_?: string; password_?: string, name_?: string }) => {
+    if (!credentials.email_ || !credentials.password_ || !credentials.name_) {
+        throw new Error("Email, contraseña y nombre son requeridos para el registro.");
+    }
+    setIsLoading(true);
+    const { data, error } = await supabase.auth.signUp({
+      email: credentials.email_,
+      password: credentials.password_,
+      options: {
+        data: { // This data is stored in user_metadata
+          name: credentials.name_,
+          photo_url: `https://placehold.co/100x100.png?text=${credentials.name_?.charAt(0).toUpperCase()}`, // Default placeholder
+        },
+      },
+    });
+    if (error) {
+      setIsLoading(false);
+      throw error;
+    }
+    if (data.user) {
+      // Optionally handle new user (e.g. send welcome email, create profile in DB)
+      // For now, onAuthStateChange will pick it up.
+      // If email confirmation is required, user won't be fully signed in until confirmed.
+    }
+    // Auth state change will handle setting user and redirecting if auto-confirm is on
+    // or user confirms email
+  }, []);
+
+  const logout = useCallback(async () => {
+    setIsLoading(true);
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      setIsLoading(false);
+      throw error;
+    }
+    // onAuthStateChange will handle setting user to null and redirecting
+  }, []);
+  
+  const updateUserAccount = useCallback(async (updatedData: { name?: string; photoURL?: string, password?: string }) => {
+    if (!session?.user) throw new Error("Usuario no autenticado.");
+
+    const updatePayload: any = { data: {} };
+    if (updatedData.name) updatePayload.data.name = updatedData.name;
+    if (updatedData.photoURL) updatePayload.data.photo_url = updatedData.photoURL;
+    if (updatedData.password) updatePayload.password = updatedData.password;
+
+
+    setIsLoading(true);
+    const { data, error } = await supabase.auth.updateUser(updatePayload);
+    setIsLoading(false);
+
+    if (error) {
+      throw error;
+    }
+    if (data.user) {
+        setUser({ // Update local user state immediately for responsiveness
+            id: data.user.id,
+            email: data.user.email,
+            name: data.user.user_metadata?.name,
+            photoURL: data.user.user_metadata?.photo_url,
+        });
+    }
+  }, [session]);
+
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, isLoading, login, logout, user, updateUser }}>
+    <AuthContext.Provider value={{ 
+      isAuthenticated: !!session?.user, 
+      isLoading, 
+      user, 
+      session,
+      loginWithPassword, 
+      loginWithGoogle,
+      signupWithPassword,
+      logout,
+      updateUserAccount
+    }}>
       {children}
     </AuthContext.Provider>
   );
