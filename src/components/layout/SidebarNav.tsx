@@ -1,3 +1,4 @@
+
 // src/components/layout/SidebarNav.tsx
 "use client";
 
@@ -13,7 +14,8 @@ import {
   Network,
   Bot,
   type LucideIcon,
-  FileSignature
+  FileSignature,
+  Library, // Nuevo ícono
 } from "lucide-react";
 import {
   Tooltip,
@@ -34,6 +36,7 @@ export const navItems: NavItem[] = [
   { href: "/agente-ia", label: "Agente IA", icon: Bot },
   { href: "/ruta-aprendizaje", label: "Ruta de Aprendizaje", icon: BookOpen },
   { href: "/generar-curso", label: "Generar Curso", icon: FileSignature },
+  { href: "/mis-cursos", label: "Mis Cursos", icon: Library }, // Nuevo ítem
   { href: "/ecosistema", label: "Ecosistema Digital", icon: Network },
 ];
 
