@@ -8,7 +8,7 @@
 - Constructor Visual de Ecosistemas (No-Code Conceptual): Representación gráfica intuitiva del ecosistema digital del usuario (sitio web, redes sociales, automatizaciones) y sus interconexiones.
 - Dashboard de Progreso: Visualización clara y concisa del avance del usuario en los módulos del método CÓDIGO, hitos alcanzados y áreas de mejora.
 - Integración Stripe: Vinculación directa al enlace de pago https://buy.stripe.com/cNi8wRcnJdbH8Eh0qJ para facilitar la adquisición del acceso a la plataforma.
-- Login con Google: Permite a los usuarios iniciar sesión de forma segura con su cuenta de Google, utilizando Client IDs : 549119051603-kgslbasaartipvjfpmehvtjqm9t779tt.apps.googleusercontent.com y Client Secret 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.
+- Login con Google: Permite a los usuarios iniciar sesión de forma segura con su cuenta de Google, utilizando Client IDs : [ESCRIBE_AQUÍ_TU_GOOGLE_OAUTH_CLIENT_ID] y Client Secret [ESCRIBE_AQUÍ_TU_GOOGLE_OAUTH_SECRET].
 
 ## Style Guidelines:
 
