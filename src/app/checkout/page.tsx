@@ -1,13 +1,13 @@
 //
-// !! THIS FILE (`src/app/checkout/page.tsx`) IS CAUSING A CRITICAL BUILD ERROR !!
+// !! ESTE ARCHIVO (`src/app/checkout/page.tsx`) ESTÁ CAUSANDO UN ERROR CRÍTICO DE BUILD !!
 // !! Error: "You cannot have two parallel pages that resolve to the same path." !!
 //
-// This file conflicts with `src/app/(app)/checkout/page.tsx`.
+// Este archivo entra en conflicto con `src/app/(app)/checkout/page.tsx`.
 //
-// TO FIX THE BUILD, YOU **MUST MANUALLY DELETE THIS FILE** FROM YOUR PROJECT.
+// PARA SOLUCIONAR EL ERROR DE BUILD, DEBES **ELIMINAR MANUALMENTE ESTE ARCHIVO** DE TU PROYECTO.
 //
-// Leaving this file empty or with non-React content has not been sufficient
-// for the Next.js build process in Firebase App Hosting to ignore it.
+// Dejar este archivo vacío o con contenido no funcional no ha sido suficiente
+// para que el proceso de build de Next.js en Firebase App Hosting lo ignore.
 //
-// ACTION REQUIRED: Delete this file (`src/app/checkout/page.tsx`) MANUALLY.
+// ACCIÓN REQUERIDA: Elimina este archivo (`src/app/checkout/page.tsx`) MANUALMENTE.
 //
