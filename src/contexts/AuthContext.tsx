@@ -119,22 +119,20 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   
   const loginWithGoogle = useCallback(async () => {
     setIsLoading(true);
+    const redirectTo = window.location.origin; // Especificar la URL de redirección
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
-      // options: { // Removing explicit redirectTo for simplification
-      //   redirectTo: `${window.location.origin}/auth/callback`, 
-      // },
+      options: {
+        redirectTo: redirectTo, // Usar la URL de redirección
+      },
     });
-    // After Google auth, Supabase handles its /auth/v1/callback,
-    // then redirects to the "Site URL" (or other configured URLs) in Supabase Auth settings.
-    // Ensure this Site URL is what you expect (e.g., your app's main page).
     if (error) {
       setIsLoading(false);
       toast({ variant: "destructive", title: "Error con Google Sign-In", description: error.message });
-      throw error; // Re-throw to be caught by the caller if necessary
+      throw error; 
     }
-    // Don't setLoading(false) here if a redirect is expected,
-    // as onAuthStateChange or page navigation will handle the state.
+    // No establecer setIsLoading(false) aquí si se espera una redirección,
+    // ya que onAuthStateChange o la navegación de la página manejarán el estado.
   }, [toast]);
 
   const signupWithPassword = useCallback(async (credentials: { email_?: string; password_?: string, name_?: string }) => {
@@ -168,13 +166,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const logout = useCallback(async () => {
     setIsLoading(true);
     const { error } = await supabase.auth.signOut();
-    // No need to setIsLoading(false) here as onAuthStateChange will handle it
     if (error) {
-      setIsLoading(false); // only set if error, otherwise onAuthStateChange handles
+      setIsLoading(false); 
       toast({ variant: "destructive", title: "Error al Cerrar Sesión", description: error.message });
       throw error;
     }
-    // onAuthStateChange will set user to null and handle redirect.
   }, [toast]);
   
   const updateUserAccount = useCallback(async (updatedData: { name?: string; photoURL?: string, password?: string }) => {
@@ -199,11 +195,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       changed = true;
     }
     
-    if (!changed && !updatedData.password) { // if only password changed, 'changed' could be false
+    if (!changed && !updatedData.password) { 
         toast({ title: "Sin cambios", description: "No se detectaron cambios para guardar." });
         return;
     }
-
 
     setIsLoading(true);
     const { data: updatedUserResponse, error } = await supabase.auth.updateUser(updatePayload);
@@ -214,12 +209,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       throw error;
     }
     if (updatedUserResponse.user) {
-        // Update local user state immediately for responsiveness based on what was sent
-        // Supabase's onAuthStateChange will also fire and update with the authoritative data
         setUser(prevUser => ({
             ...prevUser,
-            id: updatedUserResponse.user!.id, // id should not change
-            email: updatedUserResponse.user!.email, // email should not change by this method
+            id: updatedUserResponse.user!.id, 
+            email: updatedUserResponse.user!.email, 
             name: updatedData.name || prevUser?.name,
             photoURL: updatedData.photoURL || prevUser?.photoURL,
         }));
