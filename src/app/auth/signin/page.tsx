@@ -1,17 +1,17 @@
 // src/app/auth/signin/page.tsx
 "use client";
 
+import React, { Suspense, useEffect, useState, FormEvent } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { CircleDollarSign, ExternalLink, UserPlus } from "lucide-react";
+import { CircleDollarSign, ExternalLink } from "lucide-react";
 import Link from 'next/link';
 import Logo from '@/components/Logo';
-import {useEffect, useState, FormEvent} from "react";
-import {useRouter, useSearchParams} from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import LoadingSpinner from '@/components/LoadingSpinner';
 
@@ -25,10 +25,11 @@ const GoogleIcon = () => (
   </svg>
 );
 
-export default function SignInPage() {
+// Componente principal que contiene la lógica y UI de la página de inicio de sesión
+function SignInPageContent() {
   const { loginWithPassword, loginWithGoogle, signupWithPassword, isAuthenticated, isLoading: authIsLoading } = useAuth();
   const router = useRouter();
-  const searchParams = useSearchParams();
+  const searchParams = useSearchParams(); // useSearchParams se usa aquí
   const { toast } = useToast();
 
   const [email, setEmail] = useState('');
@@ -77,14 +78,16 @@ export default function SignInPage() {
     } catch (error: any) {
       toast({ variant: "destructive", title: "Error con Google Sign-In", description: error.message });
     } finally {
-      setIsSubmitting(false); // May not be reached if OAuth redirects immediately
+      // setIsSubmitting(false); // Puede no alcanzarse si OAuth redirige inmediatamente
     }
   };
 
+  // Este estado de carga es para cuando el usuario ya está autenticado y se está procesando la redirección.
+  // El fallback del Suspense maneja la carga inicial mientras useSearchParams se resuelve.
   if (authIsLoading || (!authIsLoading && isAuthenticated)) {
      return (
         <div className="flex h-screen items-center justify-center">
-          <LoadingSpinner text="Cargando..." size="lg"/>
+          <LoadingSpinner text="Verificando sesión y redirigiendo..." size="lg"/>
         </div>
      );
   }
@@ -225,5 +228,14 @@ export default function SignInPage() {
         </CardFooter>
       </Card>
     </div>
+  );
+}
+
+// El export default ahora envuelve SignInPageContent en Suspense
+export default function SignInPage() {
+  return (
+    <Suspense fallback={<div className="flex h-screen items-center justify-center"><LoadingSpinner text="Cargando..." size="lg"/></div>}>
+      <SignInPageContent />
+    </Suspense>
   );
 }
