@@ -20,6 +20,20 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  // Configuración para desarrollo en Cloud Workstations
+  allowedDevOrigins: [
+    '9000-firebase-studio-1748739584969.cluster-hf4yr35cmnbd4vhbxvfvc6cp5q.cloudworkstations.dev'
+  ],
+  experimental: {
+    turbo: {
+      rules: {
+        '*.svg': {
+          loaders: ['@svgr/webpack'],
+          as: '*.js',
+        },
+      },
+    },
+  },
   webpack: (config, { isServer }) => {
     if (!isServer) {
       config.resolve.fallback = {
