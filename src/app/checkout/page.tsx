@@ -21,9 +21,8 @@
 // POR FAVOR, PROCEDE A LA ELIMINACIÓN MANUAL DE ESTE ARCHIVO.
 // =================================================================================================
 
-export const ESTE_ARCHIVO_DEBE_SER_ELIMINADO_MANUALMENTE = true;
-
 // No se exporta un componente 'default' con la esperanza de que Next.js
 // no lo trate como una página. Sin embargo, la convención de nombres de archivo (page.tsx)
 // probablemente prevalecerá sobre esto.
 // LA ELIMINACIÓN MANUAL ES LA ÚNICA SOLUCIÓN REAL Y EFECTIVA.
+export const ESTE_ARCHIVO_DEBE_SER_ELIMINADO_MANUALMENTE_PARA_CORREGIR_EL_ERROR_DE_RUTAS_PARALELAS = true;
