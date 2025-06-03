@@ -1,5 +1,5 @@
 import { genkit } from 'genkit';
-import { GoogleAI } from '@genkit-ai/googleai';
+import { googleAI } from '@genkit-ai/googleai';
 
 const plugins = [];
 
@@ -7,7 +7,7 @@ const plugins = [];
 const googleApiKey = process.env.GOOGLE_API_KEY || process.env.GOOGLE_GENERATIVE_LANGUAGE_API_KEY;
 
 if (googleApiKey) {
-    plugins.push(GoogleAI());
+    plugins.push(googleAI());
 } else {
     console.warn(
         "[Genkit Init] GOOGLE_API_KEY or GOOGLE_GENERATIVE_LANGUAGE_API_KEY is not set." +
