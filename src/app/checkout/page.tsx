@@ -6,8 +6,9 @@
 //
 // PARA SOLUCIONAR EL ERROR DE BUILD, DEBES **ELIMINAR MANUALMENTE ESTE ARCHIVO** DE TU PROYECTO.
 //
-// Dejar este archivo vacío o con contenido no funcional no ha sido suficiente
-// para que el proceso de build de Next.js en Firebase App Hosting lo ignore.
+// Modificar su contenido (vaciarlo, comentarlo, etc.) no ha sido suficiente para que
+// el proceso de build de Next.js en Firebase App Hosting lo ignore.
+// Su mera presencia en esta ubicación con el nombre `page.tsx` es el problema.
 //
 // ACCIÓN REQUERIDA: Elimina este archivo (`src/app/checkout/page.tsx`) MANUALMENTE.
 //
