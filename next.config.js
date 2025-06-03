@@ -3,7 +3,7 @@ const path = require('path');
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  swcMinify: true,
+  swcMinify: false,
   webpack: (config, { isServer }) => {
     if (!isServer) {
       config.resolve.fallback = {
