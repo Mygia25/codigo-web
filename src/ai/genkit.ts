@@ -1,6 +1,6 @@
-
-import {genkit, type GenkitPlugin} from 'genkit';
-import {googleAI} from '@genkit-ai/googleai';
+import { genkit } from 'genkit';
+import { type GenkitPlugin } from '@genkit-ai/core'; // Import GenkitPlugin from @genkit-ai/core
+import { googleAI } from '@genkit-ai/googleai';
 
 const plugins: GenkitPlugin[] = [];
 
@@ -16,7 +16,7 @@ if (googleApiKey) {
     "[Genkit Init] GOOGLE_API_KEY or GOOGLE_GENERATIVE_LANGUAGE_API_KEY is not set." +
     " Google AI plugin will not be available. Flows relying on it may fail at runtime."
   );
-  // Note: If no model-providing plugins are loaded, Genkit calls like ai.generate() will fail.
+  // Note: If no model-providing plugins are loaded, Genkit calls like ai.generate().
 }
 
 export const ai = genkit({
