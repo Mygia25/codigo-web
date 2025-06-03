@@ -12,3 +12,7 @@
 //
 // ACCIÓN REQUERIDA: Elimina este archivo (`src/app/checkout/page.tsx`) MANUALMENTE.
 //
+
+// Este archivo se deja intencionalmente casi vacío y con este único comentario
+// para minimizar cualquier posibilidad de que sea procesado por Next.js.
+// La única solución real es la ELIMINACIÓN MANUAL del archivo.
