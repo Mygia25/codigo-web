@@ -1,0 +1,1 @@
+import '@opentelemetry/exporter-jaeger';
