@@ -5,18 +5,16 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   swcMinify: false, // Explicitly set to false to address build warning
   typescript: {
-    ignoreBuildErrors: true,
+    ignoreBuildErrors: false, // CHANGED: Surface TypeScript errors during build
   },
   eslint: {
-    ignoreDuringBuilds: true,
+    ignoreDuringBuilds: false, // CHANGED: Surface ESLint errors during build
   },
   images: {
     remotePatterns: [
       {
         protocol: 'https',
         hostname: 'placehold.co',
-        port: '',
-        pathname: '/**',
       },
     ],
   },
