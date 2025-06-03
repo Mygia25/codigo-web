@@ -1,6 +1,10 @@
+// This file is no longer needed as its contents have been merged into next.config.ts
+// You can safely delete this file.
+/*
 const path = require('path');
 
 /** @type {import('next').NextConfig} */
+/*
 const nextConfig = {
   reactStrictMode: true,
   webpack: (config, { isServer }) => {
@@ -30,3 +34,4 @@ const nextConfig = {
 };
 
 module.exports = nextConfig;
+*/

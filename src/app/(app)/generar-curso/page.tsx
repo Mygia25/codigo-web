@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { generatePersonalizedCourse, type PersonalizedCourseInput, type PersonalizedCourseOutput } from '@/ai/flows/personalized-course-generation';
+import { generatePersonalizedCourse, type PersonalizedCourseInput, type PersonalizedCourseWithIdsOutput } from '@/ai/flows/personalized-course-generation'; // Updated type
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { useToast } from "@/hooks/use-toast";
 import { Sparkles, FileSignature, Brain, BookHeart, Target, Save, List, ChevronDown, ChevronRight, UploadCloud, Languages } from "lucide-react";
@@ -23,9 +23,9 @@ export default function GenerarCursoPage() {
   const [knowledge, setKnowledge] = useState('');
   const [passions, setPassions] = useState('');
   const [niche, setNiche] = useState('');
-  const [language, setLanguage] = useState('Español'); // Default language
+  const [language, setLanguage] = useState('Español'); 
   
-  const [generatedCourse, setGeneratedCourse] = useState<PersonalizedCourseOutput | null>(null);
+  const [generatedCourse, setGeneratedCourse] = useState<PersonalizedCourseWithIdsOutput | null>(null); // Updated type
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const router = useRouter();
@@ -71,15 +71,15 @@ export default function GenerarCursoPage() {
     }
 
     const newCourse: UserCourseData = {
-      id: Date.now().toString(),
+      id: Date.now().toString(), // Main course ID
       title: generatedCourse.courseTitle,
       description: generatedCourse.courseDescription,
       modules: generatedCourse.modules.map(mod => ({
-        id: (mod as any).id || `mod-${Date.now()}-${Math.random()}`,
+        id: mod.id, // Use ID from PersonalizedCourseWithIdsOutput
         moduleTitle: mod.moduleTitle,
         moduleDescription: mod.moduleDescription,
         lessons: mod.lessons.map(les => ({
-          id: (les as any).id || `les-${Date.now()}-${Math.random()}`,
+          id: les.id, // Use ID from PersonalizedCourseWithIdsOutput
           lessonTitle: les.lessonTitle,
           topics: les.topics,
         })),
@@ -90,7 +90,6 @@ export default function GenerarCursoPage() {
       niche,
       language,
       createdAt: new Date().toISOString(),
-      // Initialize checklist for new courses - can be expanded in edit page
       checklist: [
         { id: 'chk-define-obj', text: "Definir objetivos de aprendizaje claros para el curso", completed: false, link: "/cursos/1" },
         { id: 'chk-structure-modules', text: "Estructurar los módulos y lecciones principales", completed: false },
@@ -195,7 +194,6 @@ export default function GenerarCursoPage() {
         </form>
       </Card>
       
-      {/* Placeholder for content upload */}
       <Card className="shadow-md mt-8">
         <CardHeader>
             <CardTitle className="font-headline text-xl flex items-center">
@@ -235,7 +233,7 @@ export default function GenerarCursoPage() {
             {generatedCourse.modules && generatedCourse.modules.length > 0 ? (
               <Accordion type="multiple" className="w-full space-y-3">
                 {generatedCourse.modules.map((module, moduleIndex) => (
-                  <AccordionItem key={(module as any).id || `module-${moduleIndex}`} value={(module as any).id || `module-${moduleIndex}`} className="bg-card/60 border border-border rounded-lg shadow-sm">
+                  <AccordionItem key={module.id} value={module.id} className="bg-card/60 border border-border rounded-lg shadow-sm">
                     <AccordionTrigger className="p-4 hover:no-underline">
                       <div className="flex flex-col text-left">
                         <span className="text-lg font-semibold text-primary">{module.moduleTitle}</span>
@@ -247,12 +245,12 @@ export default function GenerarCursoPage() {
                       {module.lessons && module.lessons.length > 0 ? (
                         <ul className="space-y-3 pl-2">
                           {module.lessons.map((lesson, lessonIndex) => (
-                            <li key={(lesson as any).id || `lesson-${lessonIndex}`} className="p-3 bg-background/70 rounded-md border">
+                            <li key={lesson.id} className="p-3 bg-background/70 rounded-md border">
                               <p className="font-medium text-foreground">{lesson.lessonTitle}</p>
                               {lesson.topics && lesson.topics.length > 0 && (
                                 <ul className="list-disc list-inside pl-4 mt-1 space-y-0.5 text-sm text-muted-foreground">
                                   {lesson.topics.map((topic, topicIndex) => (
-                                    <li key={`topic-${topicIndex}`}>{topic}</li>
+                                    <li key={`topic-${lesson.id}-${topicIndex}`}>{topic}</li>
                                   ))}
                                 </ul>
                               )}
@@ -281,4 +279,3 @@ export default function GenerarCursoPage() {
     </div>
   );
 }
-

@@ -4,13 +4,15 @@
 /**
  * @fileOverview This file defines a Genkit flow for generating personalized courses based on user's skills, knowledge, and passions.
  *
- * - generatePersonalizedCourse - A function that generates a personalized course.
+ * - generatePersonalizedCourse - A function that generates a personalized course structure with unique IDs.
  * - PersonalizedCourseInput - The input type for the generatePersonalizedCourse function.
- * - PersonalizedCourseOutput - The return type for the generatePersonalizedCourse function.
+ * - PersonalizedCourseOutput - The raw output type from the AI model, without IDs.
+ * - PersonalizedCourseWithIdsOutput - The output type for the `generatePersonalizedCourse` function, including unique IDs for modules and lessons.
  */
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
+import type { CourseModule, CourseLesson } from '@/types/course'; // Assuming these types define 'id'
 
 const PersonalizedCourseInputSchema = z.object({
   skills: z.string().describe('The user’s current skills.'),
@@ -30,21 +32,54 @@ const PersonalizedCourseOutputSchema = z.object({
     lessons: z.array(z.object({
       lessonTitle: z.string().describe('Title of the lesson.'),
       topics: z.array(z.string()).describe('List of specific topic names covered in this lesson. Each topic should be a concise phrase.')
-    })).describe('List of lessons within the module. Each lesson should have between 2 to 5 topics.')
+    })).describe('List of lessons within the module. Each lesson should have between 2 to 4 lessons.')
   })).describe('A detailed outline of the course content, structured into modules. Each module should have between 2 to 4 lessons.'),
 });
 export type PersonalizedCourseOutput = z.infer<typeof PersonalizedCourseOutputSchema>;
 
+// Define a new type for the output that includes IDs
+export interface PersonalizedCourseModuleWithId extends PersonalizedCourseOutput['modules'][0] {
+  id: string;
+  lessons: PersonalizedCourseLessonWithId[];
+}
+export interface PersonalizedCourseLessonWithId extends PersonalizedCourseOutput['modules'][0]['lessons'][0] {
+  id: string;
+}
+export interface PersonalizedCourseWithIdsOutput extends Omit<PersonalizedCourseOutput, 'modules'> {
+  modules: PersonalizedCourseModuleWithId[];
+}
+
+
 export async function generatePersonalizedCourse(
   input: PersonalizedCourseInput
-): Promise<PersonalizedCourseOutput> {
-  return personalizedCourseFlow(input);
+): Promise<PersonalizedCourseWithIdsOutput> {
+  const aiOutput = await personalizedCourseFlow(input);
+
+  if (!aiOutput) {
+    throw new Error("AI failed to generate course content in the expected format.");
+  }
+  
+  // Add unique IDs to modules and lessons for client-side key props
+  // Ensure Date.now() and Math.random() are only called client-side if this function is ever used in SSR.
+  // However, this flow is called from a 'use client' component's event handler, so it's client-side.
+  const outputWithIds: PersonalizedCourseWithIdsOutput = {
+      ...aiOutput,
+      modules: aiOutput.modules.map(module => ({
+          ...module,
+          id: `mod-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
+          lessons: module.lessons.map(lesson => ({
+              ...lesson,
+              id: `les-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
+          }))
+      }))
+  };
+  return outputWithIds;
 }
 
 const prompt = ai.definePrompt({
   name: 'personalizedCoursePrompt',
   input: {schema: PersonalizedCourseInputSchema},
-  output: {schema: PersonalizedCourseOutputSchema},
+  output: {schema: PersonalizedCourseOutputSchema}, // Flow's direct output matches this schema
   prompt: `You are an expert course creator. A user will provide their skills, knowledge, passions, niche, and desired language, and you will generate a personalized course tailored to them in the specified language.
 
 Skills: {{{skills}}}
@@ -70,6 +105,7 @@ Example of a lesson's topics array: ["Introduction to Topic A", "Core Concepts o
 `,
 });
 
+// This flow returns data strictly matching PersonalizedCourseOutputSchema
 const personalizedCourseFlow = ai.defineFlow(
   {
     name: 'personalizedCourseFlow',
@@ -81,19 +117,6 @@ const personalizedCourseFlow = ai.defineFlow(
     if (!output) {
       throw new Error("AI failed to generate course content in the expected format.");
     }
-    // Add unique IDs to modules and lessons for client-side key props
-    const outputWithIds = {
-        ...output,
-        modules: output.modules.map(module => ({
-            ...module,
-            id: `mod-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-            lessons: module.lessons.map(lesson => ({
-                ...lesson,
-                id: `les-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-            }))
-        }))
-    };
-    return outputWithIds;
+    return output; // Return raw AI output without IDs
   }
 );
-
