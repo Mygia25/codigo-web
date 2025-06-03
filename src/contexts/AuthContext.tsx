@@ -5,14 +5,14 @@ import type { ReactNode } from 'react';
 import React, { createContext, useState, useEffect, useCallback } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { supabase } from '@/lib/supabaseClient';
-import type { AuthChangeEvent, Session, User } from '@supabase/supabase-js';
+import type { AuthChangeEvent, Session, User as SupabaseUser } from '@supabase/supabase-js';
+import { useToast } from "@/hooks/use-toast";
 
 interface UserProfile {
   id?: string; // Supabase user ID
   name?: string | null;
   email?: string | null;
   photoURL?: string | null;
-  // Add any other custom profile fields you might store in user_metadata or a separate table
 }
 
 interface AuthContextType {
@@ -35,42 +35,60 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [session, setSession] = useState<Session | null>(null);
   const router = useRouter();
   const pathname = usePathname();
+  const { toast } = useToast();
 
   useEffect(() => {
     const getInitialSession = async () => {
-      const { data: { session: initialSession } } = await supabase.auth.getSession();
-      setSession(initialSession);
-      if (initialSession?.user) {
-        setUser({
-          id: initialSession.user.id,
-          email: initialSession.user.email,
-          name: initialSession.user.user_metadata?.name || initialSession.user.email?.split('@')[0],
-          photoURL: initialSession.user.user_metadata?.photo_url,
-        });
-      } else {
+      try {
+        const { data: { session: initialSession }, error } = await supabase.auth.getSession();
+        if (error) {
+          console.error("Error getting initial session:", error);
+          setUser(null);
+          setSession(null);
+          setIsLoading(false);
+          return;
+        }
+        
+        setSession(initialSession);
+        if (initialSession?.user) {
+          setUser({
+            id: initialSession.user.id,
+            email: initialSession.user.email,
+            name: initialSession.user.user_metadata?.name || initialSession.user.email?.split('@')[0],
+            photoURL: initialSession.user.user_metadata?.photo_url || initialSession.user.user_metadata?.avatar_url,
+          });
+        } else {
+          setUser(null);
+        }
+      } catch (e) {
+        console.error("Exception in getInitialSession:", e);
         setUser(null);
+        setSession(null);
+      } finally {
+        setIsLoading(false);
       }
-      setIsLoading(false);
     };
 
     getInitialSession();
 
     const { data: authListener } = supabase.auth.onAuthStateChange(
-      async (event: AuthChangeEvent, session: Session | null) => {
-        setSession(session);
-        if (session?.user) {
+      (event: AuthChangeEvent, currentSession: Session | null) => {
+        setSession(currentSession);
+        if (currentSession?.user) {
           setUser({
-            id: session.user.id,
-            email: session.user.email,
-            name: session.user.user_metadata?.name || session.user.email?.split('@')[0],
-            photoURL: session.user.user_metadata?.photo_url,
+            id: currentSession.user.id,
+            email: currentSession.user.email,
+            name: currentSession.user.user_metadata?.name || currentSession.user.email?.split('@')[0],
+            photoURL: currentSession.user.user_metadata?.photo_url || currentSession.user.user_metadata?.avatar_url,
           });
            if (event === 'SIGNED_IN' && (pathname === '/auth/signin' || pathname === '/auth/signup')) {
             router.push('/dashboard');
           }
         } else {
           setUser(null);
-          if (event === 'SIGNED_OUT') {
+          // Only redirect on explicit sign out or if user is on a protected page
+          // This avoids redirect loops if the user is on a public page and session expires.
+          if (event === 'SIGNED_OUT' && !pathname.startsWith('/auth')) {
              router.push('/auth/signin');
           }
         }
@@ -92,26 +110,32 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       email: credentials.email_,
       password: credentials.password_,
     });
+    setIsLoading(false); // Set loading to false regardless of outcome for this function
     if (error) {
-      setIsLoading(false);
       throw error;
     }
-    // Auth state change will handle setting user and redirecting
+    // onAuthStateChange will handle redirect if successful
   }, []);
   
   const loginWithGoogle = useCallback(async () => {
     setIsLoading(true);
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
-      options: {
-        redirectTo: `${window.location.origin}/auth/callback`, // Ensure you have an auth callback page or handle appropriately
-      },
+      // options: { // Removing explicit redirectTo for simplification
+      //   redirectTo: `${window.location.origin}/auth/callback`, 
+      // },
     });
+    // After Google auth, Supabase handles its /auth/v1/callback,
+    // then redirects to the "Site URL" (or other configured URLs) in Supabase Auth settings.
+    // Ensure this Site URL is what you expect (e.g., your app's main page).
     if (error) {
       setIsLoading(false);
-      throw error;
+      toast({ variant: "destructive", title: "Error con Google Sign-In", description: error.message });
+      throw error; // Re-throw to be caught by the caller if necessary
     }
-  }, []);
+    // Don't setLoading(false) here if a redirect is expected,
+    // as onAuthStateChange or page navigation will handle the state.
+  }, [toast]);
 
   const signupWithPassword = useCallback(async (credentials: { email_?: string; password_?: string, name_?: string }) => {
     if (!credentials.email_ || !credentials.password_ || !credentials.name_) {
@@ -122,60 +146,86 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       email: credentials.email_,
       password: credentials.password_,
       options: {
-        data: { // This data is stored in user_metadata
+        data: { 
           name: credentials.name_,
-          photo_url: `https://placehold.co/100x100.png?text=${credentials.name_?.charAt(0).toUpperCase()}`, // Default placeholder
+          photo_url: `https://placehold.co/100x100.png?text=${credentials.name_?.charAt(0).toUpperCase() || 'U'}`,
         },
       },
     });
+    setIsLoading(false);
     if (error) {
-      setIsLoading(false);
       throw error;
     }
-    if (data.user) {
-      // Optionally handle new user (e.g. send welcome email, create profile in DB)
-      // For now, onAuthStateChange will pick it up.
-      // If email confirmation is required, user won't be fully signed in until confirmed.
+    if (data.user && data.user.identities && data.user.identities.length === 0) {
+      // This can indicate email confirmation is required
+      toast({ title: "Registro Casi Completo", description: "Por favor, revisa tu correo para confirmar tu cuenta." });
+    } else if (data.user) {
+        toast({ title: "Registro Exitoso", description: "¡Bienvenido! Redirigiendo..."});
+         // onAuthStateChange should pick this up
     }
-    // Auth state change will handle setting user and redirecting if auto-confirm is on
-    // or user confirms email
-  }, []);
+  }, [toast]);
 
   const logout = useCallback(async () => {
     setIsLoading(true);
     const { error } = await supabase.auth.signOut();
+    // No need to setIsLoading(false) here as onAuthStateChange will handle it
     if (error) {
-      setIsLoading(false);
+      setIsLoading(false); // only set if error, otherwise onAuthStateChange handles
+      toast({ variant: "destructive", title: "Error al Cerrar Sesión", description: error.message });
       throw error;
     }
-    // onAuthStateChange will handle setting user to null and redirecting
-  }, []);
+    // onAuthStateChange will set user to null and handle redirect.
+  }, [toast]);
   
   const updateUserAccount = useCallback(async (updatedData: { name?: string; photoURL?: string, password?: string }) => {
-    if (!session?.user) throw new Error("Usuario no autenticado.");
+    if (!session?.user) {
+        toast({variant: "destructive", title: "Error", description: "Usuario no autenticado."});
+        throw new Error("Usuario no autenticado.");
+    }
 
-    const updatePayload: any = { data: {} };
-    if (updatedData.name) updatePayload.data.name = updatedData.name;
-    if (updatedData.photoURL) updatePayload.data.photo_url = updatedData.photoURL;
-    if (updatedData.password) updatePayload.password = updatedData.password;
+    const updatePayload: { data?: { name?: string; photo_url?: string }; password?: string } = { data: {} };
+    let changed = false;
+
+    if (updatedData.name && updatedData.name !== user?.name) {
+      updatePayload.data!.name = updatedData.name;
+      changed = true;
+    }
+    if (updatedData.photoURL && updatedData.photoURL !== user?.photoURL) {
+      updatePayload.data!.photo_url = updatedData.photoURL;
+      changed = true;
+    }
+    if (updatedData.password) {
+      updatePayload.password = updatedData.password;
+      changed = true;
+    }
+    
+    if (!changed && !updatedData.password) { // if only password changed, 'changed' could be false
+        toast({ title: "Sin cambios", description: "No se detectaron cambios para guardar." });
+        return;
+    }
 
 
     setIsLoading(true);
-    const { data, error } = await supabase.auth.updateUser(updatePayload);
+    const { data: updatedUserResponse, error } = await supabase.auth.updateUser(updatePayload);
     setIsLoading(false);
 
     if (error) {
+      toast({variant: "destructive", title: "Error al Actualizar", description: error.message});
       throw error;
     }
-    if (data.user) {
-        setUser({ // Update local user state immediately for responsiveness
-            id: data.user.id,
-            email: data.user.email,
-            name: data.user.user_metadata?.name,
-            photoURL: data.user.user_metadata?.photo_url,
-        });
+    if (updatedUserResponse.user) {
+        // Update local user state immediately for responsiveness based on what was sent
+        // Supabase's onAuthStateChange will also fire and update with the authoritative data
+        setUser(prevUser => ({
+            ...prevUser,
+            id: updatedUserResponse.user!.id, // id should not change
+            email: updatedUserResponse.user!.email, // email should not change by this method
+            name: updatedData.name || prevUser?.name,
+            photoURL: updatedData.photoURL || prevUser?.photoURL,
+        }));
+        toast({ title: "Perfil Actualizado", description: "Tus cambios han sido guardados." });
     }
-  }, [session]);
+  }, [session, user, toast]);
 
 
   return (
