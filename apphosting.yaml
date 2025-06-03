@@ -9,11 +9,11 @@ runConfig:
 environmentVariables:
   # Esta línea le dice a Firebase que busque el secreto llamado CODIGO_WEB_GOOGLE_API_KEY
   # en el proyecto 'cdigo-tu-start-inteligente' y lo ponga en la variable de entorno GOOGLE_API_KEY.
+  # Asegúrate de que el secreto 'CODIGO_WEB_GOOGLE_API_KEY' exista en Secret Manager y contenga tu clave de API.
   GOOGLE_API_KEY: "secret:projects/cdigo-tu-start-inteligente/secrets/CODIGO_WEB_GOOGLE_API_KEY/versions/latest"
 
   NODE_ENV: "production" # Es una buena práctica tener esta variable
 
-  # Variables de Supabase (reemplaza con tus valores reales)
-  # Estas son necesarias durante el build según tus logs.
-  NEXT_PUBLIC_SUPABASE_URL: "https://itrklyodvrgowtanxvhn.supabase.co" 
+  # Variables de Supabase. Estas son necesarias durante el build y en runtime.
+  NEXT_PUBLIC_SUPABASE_URL: "https://itrklyodvrgowtanxvhn.supabase.co"
   NEXT_PUBLIC_SUPABASE_ANON_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml0cmtseW9kdnJnb3d0YW54dmhuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDcxNjgwNTUsImV4cCI6MjA2Mjc0NDA1NX0.0dF0l5zl6wSww2gz26ThQV3AAcxzaA96f2t6zpwD7pI"
