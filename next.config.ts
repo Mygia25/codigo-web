@@ -1,4 +1,3 @@
-
 import type {NextConfig} from 'next';
 import path from 'path'; // Added for webpack alias
 
