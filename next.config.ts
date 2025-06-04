@@ -1,27 +1,35 @@
-import type {NextConfig} from 'next';
-import path from 'path'; // Added for webpack alias
+import type { NextConfig } from 'next';
+import path from 'path'; // For webpack alias
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  // swcMinify: false, // Removed as per Next.js 15 compatibility / build warning
-  typescript: {
-    ignoreBuildErrors: false, // CHANGED: Surface TypeScript errors during build
-  },
-  eslint: {
-    ignoreDuringBuilds: false, // CHANGED: Surface ESLint errors during build
-  },
+  // Ensure no swcMinify is here if it caused issues
+
+  // User's specified images configuration
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'placehold.co',
+        protocol: "https",
+        hostname: "placehold.co",
       },
     ],
   },
-  // Configuración para desarrollo en Cloud Workstations
+
+  // User's specified allowedDevOrigins configuration
   allowedDevOrigins: [
-    '9000-firebase-studio-1748739584969.cluster-hf4yr35cmnbd4vhbxvfvc6cp5q.cloudworkstations.dev'
+    "http://localhost:3000",
+    "https://3000-firebase-studio-1748739584969.cluster-hf4yr35cmnbd4vhbxvfvc6cp5q.cloudworkstations.dev",
   ],
+
+  // Preserving existing TypeScript and ESLint settings
+  typescript: {
+    ignoreBuildErrors: false,
+  },
+  eslint: {
+    ignoreDuringBuilds: false,
+  },
+
+  // Preserving existing experimental.turbo (appDir is not and should not be here)
   experimental: {
     turbo: {
       rules: {
@@ -32,6 +40,8 @@ const nextConfig: NextConfig = {
       },
     },
   },
+
+  // Preserving existing webpack configuration
   webpack: (config, { isServer }) => {
     if (!isServer) {
       config.resolve.fallback = {
@@ -49,7 +59,6 @@ const nextConfig: NextConfig = {
     config.resolve.alias['handlebars'] = path.resolve(__dirname, 'node_modules/handlebars/dist/handlebars.min.js');
     return config;
   },
-  // env block removed to rely solely on apphosting.yaml for build-time environment variables
 };
 
 export default nextConfig;

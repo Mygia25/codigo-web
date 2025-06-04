@@ -1,3 +1,4 @@
+
 // src/app/page.tsx (originally landing/page.tsx)
 "use client";
 
@@ -5,7 +6,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { CheckCircle, ChevronRight, Users, Video, Gift, BarChartHorizontal, ShieldCheck, HelpCircle, ShoppingCart, ExternalLink } from 'lucide-react';
+import { CheckCircle, ChevronRight, Users, Video, Gift, BarChartHorizontal, ShieldCheck, HelpCircle, ShoppingCart, ExternalLink, XCircle, CheckCircle2 } from 'lucide-react'; // Added XCircle, CheckCircle2
 import Image from 'next/image';
 import Link from 'next/link';
 import { useAuth } from '@/hooks/useAuth';
@@ -93,6 +94,23 @@ export default function Home() { // Renamed from LandingPage to Home
     }
   ];
 
+  const antesItems = [
+    { text: "Frustración por no vender.", icon: XCircle, color: "text-destructive" },
+    { text: "Dinero perdido en estrategias que no funcionan.", icon: XCircle, color: "text-destructive" },
+    { text: "Confusión sobre qué pasos seguir.", icon: XCircle, color: "text-destructive" },
+    { text: "Perseguir clientes uno por uno.", icon: XCircle, color: "text-destructive" },
+    { text: "Horas interminables sin resultados claros.", icon: XCircle, color: "text-destructive" },
+  ];
+
+  const despuesItems = [
+    { text: "Confianza y ventas consistentes.", icon: CheckCircle2, color: "text-green-600" },
+    { text: "Ingresos predecibles y automatizados.", icon: CheckCircle2, color: "text-green-600" },
+    { text: "Un plan claro y probado paso a paso.", icon: CheckCircle2, color: "text-green-600" },
+    { text: "Atraer clientes cualificados en piloto automático.", icon: CheckCircle2, color: "text-green-600" },
+    { text: "Más tiempo libre y libertad financiera.", icon: CheckCircle2, color: "text-green-600" },
+  ];
+
+
   return (
     <div className="landing-page-body min-h-screen antialiased">
       <LandingPageHeader timeLeft={timeLeft} />
@@ -119,7 +137,6 @@ export default function Home() { // Renamed from LandingPage to Home
           </Button>
           <p className="mt-4 text-sm text-landing-fg/70">¡Únete a cientos que ya están monetizando sus pasiones!</p>
         </div>
-         {/* TODO: Add high-quality image or video background here - for now, placeholder styling */}
          <div className="absolute inset-0 z-0">
             <Image 
                 src="https://placehold.co/1920x1080.png" 
@@ -157,7 +174,6 @@ export default function Home() { // Renamed from LandingPage to Home
               <p className="mb-4 text-landing-fg/90">Muchos expertos fracasan no por falta de calidad, sino por no tener un sistema probado para atraer, convertir y fidelizar alumnos. Perseguir clientes, invertir en publicidad sin retorno, y la complejidad técnica son obstáculos comunes.</p>
               <h3 className="text-2xl font-semibold mb-3 text-accent">La Solución: El MÉTODO CÓDIGO</h3>
               <p className="text-landing-fg/90">Te entregamos el mapa exacto, las herramientas y las estrategias paso a paso para construir un negocio digital rentable alrededor de tu conocimiento. Deja de adivinar y empieza a implementar un sistema que funciona.</p>
-               {/* TODO: Event Tracking for CTA clicks - GTM/Analytics */}
             </div>
           </div>
         </div>
@@ -196,10 +212,8 @@ export default function Home() { // Renamed from LandingPage to Home
         <div className="container mx-auto px-6 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-8">Descubre el Poder del MÉTODO CÓDIGO en Acción</h2>
           <div className="aspect-video max-w-3xl mx-auto bg-slate-200 rounded-lg shadow-xl flex items-center justify-center">
-            {/* Placeholder for YouTube/Vimeo embed or local MP4 */}
             <Video className="h-24 w-24 text-slate-400" data-ai-hint="video play button"/>
             <p className="absolute text-slate-500">Video de presentación próximamente</p>
-            {/* TODO: Implement Event Tracking for video interactions - GTM/Analytics */}
           </div>
           <p className="mt-6 text-lg text-landing-fg/80">Un breve tour por la plataforma y la metodología que cambiará tu forma de ver los negocios digitales.</p>
         </div>
@@ -209,7 +223,6 @@ export default function Home() { // Renamed from LandingPage to Home
       <section className="py-16 md:py-24 bg-landing-bg text-landing-fg">
         <div className="container mx-auto px-6">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Lo Que Nuestros Alumnos Opinan</h2>
-          {/* TODO: Implement slider or animated cards for testimonials */}
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
               { name: "Valeria M.", testimonial: "¡El MÉTODO CÓDIGO transformó mi negocio! Pasé de 0 a facturar $5,000 USD en mis primeros 3 meses. ¡Increíble!", imageHint: "happy student female", photoUrl:"https://placehold.co/100x100.png" },
@@ -228,7 +241,6 @@ export default function Home() { // Renamed from LandingPage to Home
               </Card>
             ))}
           </div>
-          {/* TODO: Implement Event Tracking for slider interactions - GTM/Analytics */}
         </div>
       </section>
 
@@ -238,7 +250,6 @@ export default function Home() { // Renamed from LandingPage to Home
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Además, al Unirte Hoy, Recibirás Estos <span className="text-primary">Bonos Exclusivos:</span></h2>
             <p className="text-lg text-landing-fg/80 max-w-2xl mx-auto mb-12">Valorados en más de $997 USD, ¡Gratis para ti!</p>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                {/* Placeholder Bonus Cards */}
                 {[
                     { title: "Plantillas PRO de Embudos", description: "Embudos de venta listos para copiar y pegar.", icon: <Gift className="text-accent"/>, dataAiHint:"template funnel" },
                     { title: "Comunidad VIP de Alumnos", description: "Networking, soporte y colaboración con otros emprendedores.", icon: <Users className="text-accent"/>, dataAiHint:"community group" },
@@ -254,29 +265,33 @@ export default function Home() { // Renamed from LandingPage to Home
         </div>
       </section>
       
-      {/* Section: Comparison Table */}
+      {/* Section: Comparison Table - UPDATED */}
       <section className="py-16 md:py-24 bg-landing-bg text-landing-fg">
         <div className="container mx-auto px-6">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Compara tu Situación: Antes vs. Después del MÉTODO CÓDIGO</h2>
-          <div className="grid md:grid-cols-2 gap-0 max-w-4xl mx-auto shadow-2xl rounded-lg overflow-hidden border border-primary/20">
-            <div className="bg-red-100 p-8">
-              <h3 className="text-2xl font-bold text-red-700 mb-6 text-center">ANTES</h3>
-              <ul className="space-y-3 text-red-600">
-                <li className="flex items-start"><span className="text-2xl mr-2">😩</span><span>Frustración por no vender.</span></li>
-                <li className="flex items-start"><span className="text-2xl mr-2">💸</span><span>Dinero perdido en estrategias que no funcionan.</span></li>
-                <li className="flex items-start"><span className="text-2xl mr-2">🤯</span><span>Confusión sobre qué pasos seguir.</span></li>
-                <li className="flex items-start"><span className="text-2xl mr-2">🏃‍♂️</span><span>Perseguir clientes uno por uno.</span></li>
-                <li className="flex items-start"><span className="text-2xl mr-2">🕒</span><span>Horas interminables sin resultados claros.</span></li>
+          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            {/* Card "ANTES" */}
+            <div className="bg-white p-6 sm:p-8 rounded-lg shadow-xl hover:shadow-2xl transition-all duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-[1.02]">
+              <h3 className="text-2xl font-bold text-destructive mb-6 text-center">ANTES</h3>
+              <ul className="space-y-4">
+                {antesItems.map((item, index) => (
+                  <li key={`antes-${index}`} className="flex items-start text-landing-fg/80">
+                    <item.icon className="h-5 w-5 sm:h-6 sm:w-6 mr-3 text-destructive shrink-0 mt-0.5 sm:mt-1" />
+                    <span>{item.text}</span>
+                  </li>
+                ))}
               </ul>
             </div>
-            <div className="bg-green-100 p-8">
-              <h3 className="text-2xl font-bold text-green-700 mb-6 text-center">DESPUÉS (Con CÓDIGO)</h3>
-              <ul className="space-y-3 text-green-800">
-                <li className="flex items-start"><span className="text-2xl mr-2">😊</span><span>Confianza y ventas consistentes.</span></li>
-                <li className="flex items-start"><span className="text-2xl mr-2">💰</span><span>Ingresos predecibles y automatizados.</span></li>
-                <li className="flex items-start"><span className="text-2xl mr-2">🗺️</span><span>Un plan claro y probado paso a paso.</span></li>
-                <li className="flex items-start"><span className="text-2xl mr-2">🧲</span><span>Atraer clientes cualificados en piloto automático.</span></li>
-                <li className="flex items-start"><span className="text-2xl mr-2">🏖️</span><span>Más tiempo libre y libertad financiera.</span></li>
+            {/* Card "DESPUÉS" */}
+            <div className="bg-white p-6 sm:p-8 rounded-lg shadow-xl hover:shadow-2xl transition-all duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-[1.02]">
+              <h3 className="text-2xl font-bold text-green-600 mb-6 text-center">DESPUÉS (Con CÓDIGO)</h3>
+              <ul className="space-y-4">
+                {despuesItems.map((item, index) => (
+                  <li key={`despues-${index}`} className="flex items-start text-landing-fg/80">
+                    <item.icon className="h-5 w-5 sm:h-6 sm:w-6 mr-3 text-green-600 shrink-0 mt-0.5 sm:mt-1" />
+                    <span>{item.text}</span>
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
@@ -291,7 +306,6 @@ export default function Home() { // Renamed from LandingPage to Home
           <p className="text-lg text-landing-fg/80 max-w-2xl mx-auto mb-8">
             Estamos convencidos del poder transformador del MÉTODO CÓDIGO. Si en los próximos 30 días aplicas el método, participas en la comunidad, y no ves resultados tangibles o no estás completamente satisfecho, te devolvemos el 100% de tu inversión. Sin preguntas complicadas. Tu éxito es nuestra prioridad.
           </p>
-          {/* TODO: Event Tracking for CTA clicks - GTM/Analytics */}
           <Button 
             size="lg" 
             className="bg-primary text-primary-foreground hover:bg-primary/90 text-xl px-10 py-7 rounded-lg shadow-xl transform hover:scale-105 transition-transform"
@@ -319,7 +333,6 @@ export default function Home() { // Renamed from LandingPage to Home
               </AccordionItem>
             ))}
           </Accordion>
-          {/* TODO: Event Tracking for FAQ interactions - GTM/Analytics */}
         </div>
       </section>
 
@@ -338,11 +351,9 @@ export default function Home() { // Renamed from LandingPage to Home
             ACCEDER AL MÉTODO AHORA
             <ShoppingCart className="ml-2 h-5 w-5" />
           </Button>
-           {/* TODO: Event Tracking for CTA clicks - GTM/Analytics */}
         </div>
       </div>
-       {/* TODO: General page view, scroll depth tracking - GTM/Analytics */}
-       {/* TODO: Consider A/B testing for headlines, CTAs, images - GTM/Optimize */}
     </div>
   );
 }
+
