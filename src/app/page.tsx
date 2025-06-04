@@ -13,6 +13,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import Logo from '@/components/Logo';
 import { cn } from "@/lib/utils";
+import FloatingWhatsAppButton from '@/components/FloatingWhatsAppButton'; // New import
 
 const COUNTDOWN_DURATION = 48 * 60 * 60 * 1000; // 48 hours in milliseconds
 const COUNTDOWN_STORAGE_KEY = 'codigo_launch_countdown_end_time';
@@ -117,7 +118,7 @@ export default function Home() {
     { text: "Más tiempo libre y libertad financiera.", icon: CheckCircle2, color: "text-green-600" },
   ];
 
-  const bonusItems = [
+ const bonusItems = [
     { title: "Plantillas PRO de Embudos", description: "Embudos de venta listos para copiar y pegar, optimizados para convertir.", icon: <Gift className="text-accent"/>, dataAiHint:"template funnel", value: 170 },
     { title: "Comunidad VIP de Alumnos", description: "Networking, soporte y colaboración con otros emprendedores como tú.", icon: <Users className="text-accent"/>, dataAiHint:"community group", value: 137 },
     { title: "Masterclass 'Escalado a 6 Cifras'", description: "Estrategias avanzadas para llevar tu negocio de cursos al siguiente nivel.", icon: <BarChartHorizontal className="text-accent"/>, dataAiHint:"masterclass trophy", value: 260 },
@@ -149,7 +150,6 @@ export default function Home() {
           </Button>
           <p className="mt-4 text-sm text-landing-fg/70">¡Únete a cientos que ya están monetizando sus pasiones!</p>
         </div>
-         {/* The background image div that was causing the issue has been removed from here */}
       </section>
 
       {/* Section: Problem & Solution */}
@@ -280,7 +280,7 @@ export default function Home() {
                           <p className="text-landing-fg/80 text-sm">{bonus.description}</p>
                         </CardContent>
                         <CardFooter className="p-0 pt-4 mt-auto justify-center">
-                            <p className="text-sm text-landing-fg/70">
+                           <p className="text-sm text-landing-fg/70">
                                 Valorado en <span className="line-through">${bonus.value} USD</span>
                             </p>
                         </CardFooter>
@@ -291,7 +291,7 @@ export default function Home() {
       </section>
       
       {/* Section: Comparison Table - REFINED */}
-      <section className="py-16 md:py-24 bg-landing-bg text-landing-fg"> {/* Alternating background */}
+      <section className="py-16 md:py-24 bg-landing-bg text-landing-fg"> 
         <div className="container mx-auto px-6">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Compara tu Situación: Antes vs. Después del MÉTODO CÓDIGO</h2>
           <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
@@ -330,7 +330,7 @@ export default function Home() {
       </section>
 
       {/* Section: Guarantee */}
-      <section className="py-16 md:py-24 bg-white text-landing-fg"> {/* Alternating background */}
+      <section className="py-16 md:py-24 bg-white text-landing-fg"> 
         <div className="container mx-auto px-6 text-center">
           <ShieldCheck className="h-20 w-20 text-primary mx-auto mb-6" data-ai-hint="guarantee shield badge"/>
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Tu Inversión 100% Segura: Garantía de Satisfacción</h2>
@@ -349,7 +349,7 @@ export default function Home() {
       </section>
 
       {/* Section: FAQ */}
-      <section className="py-16 md:py-24 bg-landing-bg text-landing-fg"> {/* Alternating background */}
+      <section className="py-16 md:py-24 bg-landing-bg text-landing-fg"> 
         <div className="container mx-auto px-6 max-w-3xl">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Preguntas Frecuentes</h2>
           <Accordion type="single" collapsible className="w-full">
@@ -384,6 +384,7 @@ export default function Home() {
           </Button>
         </div>
       </div>
+      <FloatingWhatsAppButton />
     </div>
   );
 }
