@@ -132,8 +132,6 @@ export default function Home() {
 
       {/* Hero Section */}
       <section className="relative py-20 md:py-32 bg-landing-bg text-landing-fg flex items-center min-h-[calc(100vh-68px)]">
-        <div className="absolute inset-0 opacity-5">
-        </div>
         <div className="container mx-auto px-6 text-center relative z-10">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 !leading-tight">
             Descubre el <span className="text-primary">MÉTODO CÓDIGO:</span> Tu Start Inteligente <br className="hidden md:block"/> Para Crear y Vender Cursos Online Exitosos.
@@ -151,17 +149,7 @@ export default function Home() {
           </Button>
           <p className="mt-4 text-sm text-landing-fg/70">¡Únete a cientos que ya están monetizando sus pasiones!</p>
         </div>
-         <div className="absolute inset-0 z-0">
-            <Image 
-                src="https://placehold.co/1920x1080.png" 
-                alt="Background image representing success or digital products"
-                layout="fill"
-                objectFit="cover"
-                className="opacity-10"
-                data-ai-hint="digital product hero background"
-                priority
-            />
-         </div>
+         {/* The background image div that was causing the issue has been removed from here */}
       </section>
 
       {/* Section: Problem & Solution */}
