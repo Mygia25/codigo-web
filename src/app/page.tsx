@@ -25,14 +25,24 @@ const LandingPageHeader: React.FC<{ timeLeft: number }> = ({ timeLeft }) => {
     return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
   };
 
+  const offerText = "🚀 ¡Oferta de Lanzamiento Exclusiva! - Acceso al MÉTODO CÓDIGO con Descuento Especial";
+
   return (
-    <header className="sticky top-0 z-50 bg-landing-fg text-white py-3 px-4 sm:px-6 shadow-lg">
-      <div className="container mx-auto flex flex-col sm:flex-row justify-between items-center text-center sm:text-left">
-        <p className="text-sm sm:text-base font-semibold mb-2 sm:mb-0">
-          🚀 ¡Oferta de Lanzamiento Exclusiva! <span className="hidden sm:inline">-</span> Acceso al MÉTODO CÓDIGO con Descuento Especial
-        </p>
-        <div className="bg-primary/80 text-primary-foreground px-3 py-1 rounded-md text-base sm:text-lg font-bold">
-          Tiempo Restante: {formatTime(timeLeft)}
+    <header className="sticky top-0 z-50 bg-landing-fg text-white shadow-lg overflow-hidden h-12 flex items-center">
+      <div className="container mx-auto flex items-center justify-between px-4 sm:px-6 h-full">
+        {/* Scrolling Banner Part */}
+        <div className="flex-grow overflow-hidden relative h-full flex items-center">
+          {/* The animated div needs to be wide enough to contain duplicates of the text for a smooth scroll */}
+          <div className="animate-marquee-slow whitespace-nowrap flex">
+            <span className="text-sm sm:text-base font-semibold py-3 pr-12">{offerText}</span>
+            <span className="text-sm sm:text-base font-semibold py-3 pr-12">{offerText}</span> {/* Duplicate for seamless effect */}
+            <span className="text-sm sm:text-base font-semibold py-3 pr-12">{offerText}</span> {/* Optional: Third duplicate for very wide screens or slower speeds */}
+          </div>
+        </div>
+
+        {/* Countdown Timer Part */}
+        <div className="bg-primary/80 text-primary-foreground px-2 py-1 rounded-md text-xs sm:text-sm font-bold ml-4 flex-shrink-0">
+          {formatTime(timeLeft)}
         </div>
       </div>
     </header>

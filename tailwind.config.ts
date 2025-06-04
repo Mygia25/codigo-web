@@ -1,3 +1,4 @@
+
 import type {Config} from 'tailwindcss';
 
 export default {
@@ -91,10 +92,15 @@ export default {
             height: '0',
           },
         },
+        'marquee-slow': { // Definición de la animación de marquesina
+          '0%': { transform: 'translateX(0%)' }, // El texto comienza completamente a la derecha (fuera de la vista si el contenedor es más pequeño que el texto)
+          '100%': { transform: 'translateX(-100%)' }, // El texto se desplaza completamente hacia la izquierda
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
+        'marquee-slow': 'marquee-slow 30s linear infinite', // Ajusta la duración (30s) según necesites
       },
     },
   },
