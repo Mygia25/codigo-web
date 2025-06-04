@@ -132,7 +132,7 @@ export default function Home() {
       <LandingPageHeader timeLeft={timeLeft} />
 
       {/* Hero Section */}
-      <section className="relative py-20 md:py-32 bg-landing-bg text-landing-fg flex items-center min-h-[calc(100vh-68px)]">
+      <section className="relative py-16 md:py-24 bg-landing-bg text-landing-fg flex items-center min-h-[calc(80vh-68px)]">
         <div className="container mx-auto px-6 text-center relative z-10">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 !leading-tight">
             Descubre el <span className="text-primary">MÉTODO CÓDIGO:</span> Tu Start Inteligente <br className="hidden md:block"/> Para Crear y Vender Cursos Online Exitosos.
