@@ -6,7 +6,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { CheckCircle, ChevronRight, Users, Video, Gift, BarChartHorizontal, ShieldCheck, HelpCircle, ShoppingCart, ExternalLink, XCircle, CheckCircle2, Cpu, Sparkles } from 'lucide-react'; // Added Cpu, Sparkles
+import { CheckCircle, ChevronRight, Users, Video, Gift, BarChartHorizontal, ShieldCheck, HelpCircle, ShoppingCart, ExternalLink, XCircle, CheckCircle2, Cpu, Sparkles, MessageSquare } from 'lucide-react'; // Added Cpu, Sparkles, MessageSquare
 import Image from 'next/image';
 import Link from 'next/link';
 import { useAuth } from '@/hooks/useAuth';
@@ -118,6 +118,13 @@ export default function Home() { // Renamed from LandingPage to Home
     { text: "Un plan claro y probado paso a paso.", icon: CheckCircle2, color: "text-green-600" },
     { text: "Atraer clientes cualificados en piloto automático.", icon: CheckCircle2, color: "text-green-600" },
     { text: "Más tiempo libre y libertad financiera.", icon: CheckCircle2, color: "text-green-600" },
+  ];
+
+  const bonusItems = [
+    { title: "Plantillas PRO de Embudos", description: "Embudos de venta listos para copiar y pegar.", icon: <Gift className="text-accent"/>, dataAiHint:"template funnel" },
+    { title: "Comunidad VIP de Alumnos", description: "Networking, soporte y colaboración con otros emprendedores.", icon: <Users className="text-accent"/>, dataAiHint:"community group" },
+    { title: "Masterclass 'Escalado a 6 Cifras'", description: "Estrategias avanzadas para llevar tu negocio al siguiente nivel.", icon: <BarChartHorizontal className="text-accent"/>, dataAiHint:"masterclass trophy" },
+    { title: "Sesión Privada de Coaching con Nuestro Equipo", description: "Estrategia personalizada de 60 minutos para acelerar tus resultados y despejar tus dudas clave.", icon: <MessageSquare className="text-accent"/>, dataAiHint:"coaching session team" }
   ];
 
 
@@ -259,12 +266,8 @@ export default function Home() { // Renamed from LandingPage to Home
         <div className="container mx-auto px-6 text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Además, al Unirte Hoy, Recibirás Estos <span className="text-primary">Bonos Exclusivos:</span></h2>
             <p className="text-lg text-landing-fg/80 max-w-2xl mx-auto mb-12">Valorados en más de $997 USD, ¡Gratis para ti!</p>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                {[
-                    { title: "Plantillas PRO de Embudos", description: "Embudos de venta listos para copiar y pegar.", icon: <Gift className="text-accent"/>, dataAiHint:"template funnel" },
-                    { title: "Comunidad VIP de Alumnos", description: "Networking, soporte y colaboración con otros emprendedores.", icon: <Users className="text-accent"/>, dataAiHint:"community group" },
-                    { title: "Masterclass 'Escalado a 6 Cifras'", description: "Estrategias avanzadas para llevar tu negocio al siguiente nivel.", icon: <BarChartHorizontal className="text-accent"/>, dataAiHint:"masterclass trophy" }
-                ].map(bonus => (
+            <div className="grid sm:grid-cols-2 lg:grid-cols-2 gap-8"> {/* Adjusted for 4 items (2x2 grid) */}
+                {bonusItems.map(bonus => (
                      <Card key={bonus.title} className="bg-landing-bg shadow-lg p-6">
                         <div className="flex justify-center text-3xl mb-3">{bonus.icon}</div>
                         <h3 className="text-xl font-semibold mb-2 text-landing-fg">{bonus.title}</h3>
@@ -276,7 +279,7 @@ export default function Home() { // Renamed from LandingPage to Home
       </section>
 
       {/* Section: Custom GPTs */}
-      <section className="py-16 md:py-24 bg-white text-landing-fg">
+      <section className="py-16 md:py-24 bg-landing-bg text-landing-fg"> {/* Changed bg to landing-bg for alternation */}
         <div className="container mx-auto px-6 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
             GPTs Personalizados y Probados
@@ -284,7 +287,7 @@ export default function Home() { // Renamed from LandingPage to Home
           <p className="text-lg text-landing-fg/80 max-w-3xl mx-auto mb-12">
             Impulsa el desarrollo de tu metodología CÓDIGO con nuestra suite de asistentes de IA especializados, diseñados para potenciar cada etapa de creación y refinamiento de tu curso.
           </p>
-          <Card className="max-w-3xl mx-auto bg-card shadow-xl p-6 sm:p-8 text-left hover:shadow-2xl transition-shadow duration-300 border border-primary/20">
+          <Card className="max-w-3xl mx-auto bg-white shadow-xl p-6 sm:p-8 text-left hover:shadow-2xl transition-shadow duration-300 border border-primary/20"> {/* Card bg white */}
             <CardHeader className="flex flex-row items-start gap-4 p-0 mb-4 sm:mb-6">
               <Cpu className="h-10 w-10 sm:h-12 sm:w-12 text-primary flex-shrink-0 mt-1" data-ai-hint="ai processor" />
               <div>
@@ -325,40 +328,48 @@ export default function Home() { // Renamed from LandingPage to Home
       </section>
       
       {/* Section: Comparison Table - REFINED */}
-      <section className="py-16 md:py-24 bg-landing-bg text-landing-fg">
+      <section className="py-16 md:py-24 bg-white text-landing-fg"> {/* Changed bg to white for alternation */}
         <div className="container mx-auto px-6">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Compara tu Situación: Antes vs. Después del MÉTODO CÓDIGO</h2>
           <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
             {/* Card "ANTES" */}
-            <div className="bg-white p-6 sm:p-8 rounded-lg shadow-lg hover:shadow-xl border border-gray-200 transition-all duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-[1.02]">
-              <h3 className="text-2xl font-bold text-destructive mb-6 text-center">ANTES</h3>
-              <ul className="space-y-4">
-                {antesItems.map((item, index) => (
-                  <li key={`antes-${index}`} className="flex items-start text-landing-fg/80">
-                    <item.icon className="h-5 w-5 sm:h-6 sm:w-6 mr-3 text-destructive shrink-0 mt-0.5 sm:mt-1" />
-                    <span>{item.text}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            <Card className="bg-white p-6 sm:p-8 rounded-lg shadow-lg hover:shadow-xl border border-gray-200 transition-all duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-[1.02]">
+              <CardHeader className="p-0 mb-6">
+                <CardTitle className="text-2xl font-bold text-destructive text-center">ANTES</CardTitle>
+              </CardHeader>
+              <CardContent className="p-0">
+                <ul className="space-y-4">
+                  {antesItems.map((item, index) => (
+                    <li key={`antes-${index}`} className="flex items-start text-landing-fg/80">
+                      <item.icon className="h-5 w-5 sm:h-6 sm:w-6 mr-3 text-destructive shrink-0 mt-0.5 sm:mt-1" />
+                      <span>{item.text}</span>
+                    </li>
+                  ))}
+                </ul>
+              </CardContent>
+            </Card>
             {/* Card "DESPUÉS" */}
-            <div className="bg-white p-6 sm:p-8 rounded-lg shadow-lg hover:shadow-xl border border-gray-200 transition-all duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-[1.02]">
-              <h3 className="text-2xl font-bold text-green-600 mb-6 text-center">DESPUÉS (Con CÓDIGO)</h3>
-              <ul className="space-y-4">
-                {despuesItems.map((item, index) => (
-                  <li key={`despues-${index}`} className="flex items-start text-landing-fg/80">
-                    <item.icon className="h-5 w-5 sm:h-6 sm:w-6 mr-3 text-green-600 shrink-0 mt-0.5 sm:mt-1" />
-                    <span>{item.text}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            <Card className="bg-white p-6 sm:p-8 rounded-lg shadow-lg hover:shadow-xl border border-gray-200 transition-all duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-[1.02]">
+              <CardHeader className="p-0 mb-6">
+                <CardTitle className="text-2xl font-bold text-green-600 text-center">DESPUÉS (Con CÓDIGO)</CardTitle>
+              </CardHeader>
+              <CardContent className="p-0">
+                <ul className="space-y-4">
+                  {despuesItems.map((item, index) => (
+                    <li key={`despues-${index}`} className="flex items-start text-landing-fg/80">
+                      <item.icon className="h-5 w-5 sm:h-6 sm:w-6 mr-3 text-green-600 shrink-0 mt-0.5 sm:mt-1" />
+                      <span>{item.text}</span>
+                    </li>
+                  ))}
+                </ul>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>
 
       {/* Section: Guarantee */}
-      <section className="py-16 md:py-24 bg-white text-landing-fg">
+      <section className="py-16 md:py-24 bg-landing-bg text-landing-fg"> {/* Changed bg to landing-bg for alternation */}
         <div className="container mx-auto px-6 text-center">
           <ShieldCheck className="h-20 w-20 text-primary mx-auto mb-6" data-ai-hint="guarantee shield badge"/>
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Tu Inversión 100% Segura: Garantía de Satisfacción</h2>
@@ -377,12 +388,12 @@ export default function Home() { // Renamed from LandingPage to Home
       </section>
 
       {/* Section: FAQ */}
-      <section className="py-16 md:py-24 bg-landing-bg text-landing-fg">
+      <section className="py-16 md:py-24 bg-white text-landing-fg"> {/* Changed bg to white for alternation */}
         <div className="container mx-auto px-6 max-w-3xl">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Preguntas Frecuentes</h2>
           <Accordion type="single" collapsible className="w-full">
             {faqItems.map((item, index) => (
-              <AccordionItem value={`item-${index}`} key={index} className="bg-white shadow-sm rounded-lg mb-3 border-b-0">
+              <AccordionItem value={`item-${index}`} key={index} className="bg-landing-bg shadow-sm rounded-lg mb-3 border-b-0"> {/* Card bg landing-bg */}
                 <AccordionTrigger className="p-6 text-lg font-semibold text-left hover:no-underline text-landing-fg focus:text-primary">
                   {item.question}
                 </AccordionTrigger>
