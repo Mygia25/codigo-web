@@ -6,12 +6,13 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { CheckCircle, ChevronRight, Users, Video, Gift, BarChartHorizontal, ShieldCheck, HelpCircle, ShoppingCart, ExternalLink, XCircle, CheckCircle2, Cpu, Sparkles, MessageSquare } from 'lucide-react'; // Added Cpu, Sparkles, MessageSquare
+import { CheckCircle, ChevronRight, Users, Video, Gift, BarChartHorizontal, ShieldCheck, HelpCircle, ShoppingCart, ExternalLink, XCircle, CheckCircle2, Cpu, Sparkles, MessageSquare } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useAuth } from '@/hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import Logo from '@/components/Logo';
+import { cn } from "@/lib/utils";
 
 const COUNTDOWN_DURATION = 48 * 60 * 60 * 1000; // 48 hours in milliseconds
 const COUNTDOWN_STORAGE_KEY = 'codigo_launch_countdown_end_time';
@@ -30,17 +31,13 @@ const LandingPageHeader: React.FC<{ timeLeft: number }> = ({ timeLeft }) => {
   return (
     <header className="sticky top-0 z-50 bg-landing-fg text-white shadow-lg overflow-hidden h-12 flex items-center">
       <div className="container mx-auto flex items-center justify-between px-4 sm:px-6 h-full">
-        {/* Scrolling Banner Part */}
         <div className="flex-grow overflow-hidden relative h-full flex items-center">
-          {/* The animated div needs to be wide enough to contain duplicates of the text for a smooth scroll */}
           <div className="animate-marquee-slow whitespace-nowrap flex">
             <span className="text-sm sm:text-base font-semibold py-3 pr-12">{offerText}</span>
-            <span className="text-sm sm:text-base font-semibold py-3 pr-12">{offerText}</span> {/* Duplicate for seamless effect */}
-            <span className="text-sm sm:text-base font-semibold py-3 pr-12">{offerText}</span> {/* Optional: Third duplicate for very wide screens or slower speeds */}
+            <span className="text-sm sm:text-base font-semibold py-3 pr-12">{offerText}</span>
+            <span className="text-sm sm:text-base font-semibold py-3 pr-12">{offerText}</span>
           </div>
         </div>
-
-        {/* Countdown Timer Part */}
         <div className="bg-primary/80 text-primary-foreground px-2 py-1 rounded-md text-xs sm:text-sm font-bold ml-4 flex-shrink-0">
           {formatTime(timeLeft)}
         </div>
@@ -49,7 +46,7 @@ const LandingPageHeader: React.FC<{ timeLeft: number }> = ({ timeLeft }) => {
   );
 };
 
-export default function Home() { // Renamed from LandingPage to Home
+export default function Home() {
   const { isAuthenticated } = useAuth();
   const router = useRouter();
   const [timeLeft, setTimeLeft] = useState(COUNTDOWN_DURATION);
@@ -81,7 +78,7 @@ export default function Home() { // Renamed from LandingPage to Home
     if (isAuthenticated) {
       router.push('/checkout');
     } else {
-      router.push('/auth/signin?redirect=/checkout'); // Redirect to checkout after signin
+      router.push('/auth/signin?redirect=/checkout');
     }
   };
   
@@ -121,10 +118,11 @@ export default function Home() { // Renamed from LandingPage to Home
   ];
 
   const bonusItems = [
-    { title: "Plantillas PRO de Embudos", description: "Embudos de venta listos para copiar y pegar.", icon: <Gift className="text-accent"/>, dataAiHint:"template funnel", value: 170 },
-    { title: "Comunidad VIP de Alumnos", description: "Networking, soporte y colaboración con otros emprendedores.", icon: <Users className="text-accent"/>, dataAiHint:"community group", value: 137 },
-    { title: "Masterclass 'Escalado a 6 Cifras'", description: "Estrategias avanzadas para llevar tu negocio al siguiente nivel.", icon: <BarChartHorizontal className="text-accent"/>, dataAiHint:"masterclass trophy", value: 260 },
-    { title: "Sesión Privada de Coaching con Nuestro Equipo", description: "Estrategia personalizada de 60 minutos para acelerar tus resultados y despejar tus dudas clave.", icon: <MessageSquare className="text-accent"/>, dataAiHint:"coaching session team", value: 527 }
+    { title: "Plantillas PRO de Embudos", description: "Embudos de venta listos para copiar y pegar, optimizados para convertir.", icon: <Gift className="text-accent"/>, dataAiHint:"template funnel", value: 170 },
+    { title: "Comunidad VIP de Alumnos", description: "Networking, soporte y colaboración con otros emprendedores como tú.", icon: <Users className="text-accent"/>, dataAiHint:"community group", value: 137 },
+    { title: "Masterclass 'Escalado a 6 Cifras'", description: "Estrategias avanzadas para llevar tu negocio de cursos al siguiente nivel.", icon: <BarChartHorizontal className="text-accent"/>, dataAiHint:"masterclass trophy", value: 260 },
+    { title: "Sesión Privada de Coaching con Nuestro Equipo", description: "Estrategia personalizada de 60 minutos para acelerar tus resultados y despejar tus dudas clave.", icon: <MessageSquare className="text-accent"/>, dataAiHint:"coaching session team", value: 527 },
+    { title: "GPTs Personalizados y Probados", description: "Accede a nuestra suite de asistentes IA para potenciar cada etapa de creación de tu curso: desde validar tu nicho y estructurar contenido, hasta generar ideas y optimizar textos para máxima conversión.", icon: <Cpu className="text-accent"/>, dataAiHint:"ai gpt assistant", value: 580 }
   ];
 
 
@@ -135,7 +133,6 @@ export default function Home() { // Renamed from LandingPage to Home
       {/* Hero Section */}
       <section className="relative py-20 md:py-32 bg-landing-bg text-landing-fg flex items-center min-h-[calc(100vh-68px)]">
         <div className="absolute inset-0 opacity-5">
-            {/* Subtle background pattern or image if desired */}
         </div>
         <div className="container mx-auto px-6 text-center relative z-10">
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 !leading-tight">
@@ -273,18 +270,28 @@ export default function Home() { // Renamed from LandingPage to Home
       <section className="py-16 md:py-24 bg-white text-landing-fg">
         <div className="container mx-auto px-6 text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Además, al Unirte Hoy, Recibirás Estos <span className="text-primary">Bonos Exclusivos:</span></h2>
-            <p className="text-lg text-landing-fg/80 max-w-2xl mx-auto mb-12">Valorados en más de $997 USD, ¡Gratis para ti!</p>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-2 gap-8">
-                {bonusItems.map(bonus => (
-                     <Card key={bonus.title} className="bg-landing-bg shadow-lg p-6 flex flex-col">
+            <p className="text-lg text-landing-fg/80 max-w-2xl mx-auto mb-12">
+                ¡Todos estos recursos, valorados en más de <span className="font-bold line-through">$1674 USD</span>, <span className="font-bold text-primary">GRATIS</span> para ti!
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                {bonusItems.map((bonus, index) => (
+                     <Card 
+                        key={bonus.title} 
+                        className={cn(
+                            "bg-landing-bg shadow-lg p-6 flex flex-col text-left hover:shadow-xl transition-shadow duration-300",
+                            index === 4 && "sm:col-span-2" // GPTs bonus spans full width
+                        )}
+                     >
                         <CardHeader className="p-0 mb-3">
-                          <div className="flex justify-center text-3xl mb-3">{bonus.icon}</div>
-                          <CardTitle className="text-xl font-semibold text-landing-fg">{bonus.title}</CardTitle>
+                          <div className="flex items-center space-x-3 mb-2">
+                            <div className="text-3xl flex-shrink-0 w-10 h-10 flex items-center justify-center">{bonus.icon}</div>
+                            <CardTitle className="text-xl font-semibold text-landing-fg">{bonus.title}</CardTitle>
+                          </div>
                         </CardHeader>
                         <CardContent className="p-0 flex-grow">
-                          <p className="text-landing-fg/80">{bonus.description}</p>
+                          <p className="text-landing-fg/80 text-sm">{bonus.description}</p>
                         </CardContent>
-                        <CardFooter className="p-0 pt-4 mt-auto justify-center">
+                        <CardFooter className="p-0 pt-4 mt-auto justify-start">
                             <p className="text-xs text-landing-fg/70">
                                 Valorado en <span className="line-through">${bonus.value} USD</span>
                             </p>
@@ -294,58 +301,9 @@ export default function Home() { // Renamed from LandingPage to Home
             </div>
         </div>
       </section>
-
-      {/* Section: Custom GPTs */}
-      <section className="py-16 md:py-24 bg-landing-bg text-landing-fg">
-        <div className="container mx-auto px-6 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            GPTs Personalizados y Probados
-          </h2>
-          <p className="text-lg text-landing-fg/80 max-w-3xl mx-auto mb-12">
-            Impulsa el desarrollo de tu metodología CÓDIGO con nuestra suite de asistentes de IA especializados, diseñados para potenciar cada etapa de creación y refinamiento de tu curso.
-          </p>
-          <Card className="max-w-3xl mx-auto bg-white shadow-xl p-6 sm:p-8 text-left hover:shadow-2xl transition-shadow duration-300 border border-primary/20">
-            <CardHeader className="flex flex-row items-start gap-4 p-0 mb-4 sm:mb-6">
-              <Cpu className="h-10 w-10 sm:h-12 sm:w-12 text-primary flex-shrink-0 mt-1" data-ai-hint="ai processor" />
-              <div>
-                <CardTitle className="text-xl sm:text-2xl font-semibold text-landing-fg mb-1">
-                  Asistentes IA Dedicados
-                </CardTitle>
-                <CardDescription className="text-sm sm:text-base text-landing-fg/70">
-                  Herramientas inteligentes integradas en tu flujo de trabajo.
-                </CardDescription>
-              </div>
-            </CardHeader>
-            <CardContent className="p-0 space-y-3 sm:space-y-4">
-              <p className="text-base text-landing-fg/90">
-                Aprovecha nuestros GPTs, entrenados específicamente para ayudarte a:
-              </p>
-              <ul className="space-y-2">
-                {[
-                  "Identificar y validar tu nicho con precisión.",
-                  "Estructurar el contenido de tu curso de manera lógica y atractiva.",
-                  "Generar ideas creativas para lecciones, módulos y materiales de apoyo.",
-                  "Optimizar tus textos y scripts para máxima claridad y conversión.",
-                  "Obtener retroalimentación instantánea sobre tus propuestas de valor."
-                ].map((item, index) => (
-                  <li key={index} className="flex items-start">
-                    <Sparkles className="h-5 w-5 text-primary mr-3 mt-1 shrink-0" />
-                    <span className="text-landing-fg/80">{item}</span>
-                  </li>
-                ))}
-              </ul>
-              <Button asChild className="mt-6 w-full sm:w-auto bg-accent hover:bg-accent/90 text-accent-foreground">
-                <Link href="/agente-ia">
-                  Explorar Asistentes IA <ChevronRight className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
-      </section>
       
       {/* Section: Comparison Table - REFINED */}
-      <section className="py-16 md:py-24 bg-white text-landing-fg">
+      <section className="py-16 md:py-24 bg-landing-bg text-landing-fg"> {/* Alternating background */}
         <div className="container mx-auto px-6">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Compara tu Situación: Antes vs. Después del MÉTODO CÓDIGO</h2>
           <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
@@ -384,7 +342,7 @@ export default function Home() { // Renamed from LandingPage to Home
       </section>
 
       {/* Section: Guarantee */}
-      <section className="py-16 md:py-24 bg-landing-bg text-landing-fg">
+      <section className="py-16 md:py-24 bg-white text-landing-fg"> {/* Alternating background */}
         <div className="container mx-auto px-6 text-center">
           <ShieldCheck className="h-20 w-20 text-primary mx-auto mb-6" data-ai-hint="guarantee shield badge"/>
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Tu Inversión 100% Segura: Garantía de Satisfacción</h2>
@@ -403,12 +361,12 @@ export default function Home() { // Renamed from LandingPage to Home
       </section>
 
       {/* Section: FAQ */}
-      <section className="py-16 md:py-24 bg-white text-landing-fg">
+      <section className="py-16 md:py-24 bg-landing-bg text-landing-fg"> {/* Alternating background */}
         <div className="container mx-auto px-6 max-w-3xl">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Preguntas Frecuentes</h2>
           <Accordion type="single" collapsible className="w-full">
             {faqItems.map((item, index) => (
-              <AccordionItem value={`item-${index}`} key={index} className="bg-landing-bg shadow-sm rounded-lg mb-3 border-b-0">
+              <AccordionItem value={`item-${index}`} key={index} className="bg-white shadow-sm rounded-lg mb-3 border-b-0">
                 <AccordionTrigger className="p-6 text-lg font-semibold text-left hover:no-underline text-landing-fg focus:text-primary">
                   {item.question}
                 </AccordionTrigger>
@@ -441,4 +399,3 @@ export default function Home() { // Renamed from LandingPage to Home
     </div>
   );
 }
-
