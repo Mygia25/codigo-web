@@ -4,7 +4,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { CheckCircle, ChevronRight, Users, Video, Gift, BarChartHorizontal, ShieldCheck, HelpCircle, ShoppingCart, ExternalLink, XCircle, CheckCircle2, Cpu, Sparkles, MessageSquare } from 'lucide-react'; // Added Cpu, Sparkles, MessageSquare
 import Image from 'next/image';
@@ -121,10 +121,10 @@ export default function Home() { // Renamed from LandingPage to Home
   ];
 
   const bonusItems = [
-    { title: "Plantillas PRO de Embudos", description: "Embudos de venta listos para copiar y pegar.", icon: <Gift className="text-accent"/>, dataAiHint:"template funnel" },
-    { title: "Comunidad VIP de Alumnos", description: "Networking, soporte y colaboración con otros emprendedores.", icon: <Users className="text-accent"/>, dataAiHint:"community group" },
-    { title: "Masterclass 'Escalado a 6 Cifras'", description: "Estrategias avanzadas para llevar tu negocio al siguiente nivel.", icon: <BarChartHorizontal className="text-accent"/>, dataAiHint:"masterclass trophy" },
-    { title: "Sesión Privada de Coaching con Nuestro Equipo", description: "Estrategia personalizada de 60 minutos para acelerar tus resultados y despejar tus dudas clave.", icon: <MessageSquare className="text-accent"/>, dataAiHint:"coaching session team" }
+    { title: "Plantillas PRO de Embudos", description: "Embudos de venta listos para copiar y pegar.", icon: <Gift className="text-accent"/>, dataAiHint:"template funnel", value: 170 },
+    { title: "Comunidad VIP de Alumnos", description: "Networking, soporte y colaboración con otros emprendedores.", icon: <Users className="text-accent"/>, dataAiHint:"community group", value: 137 },
+    { title: "Masterclass 'Escalado a 6 Cifras'", description: "Estrategias avanzadas para llevar tu negocio al siguiente nivel.", icon: <BarChartHorizontal className="text-accent"/>, dataAiHint:"masterclass trophy", value: 260 },
+    { title: "Sesión Privada de Coaching con Nuestro Equipo", description: "Estrategia personalizada de 60 minutos para acelerar tus resultados y despejar tus dudas clave.", icon: <MessageSquare className="text-accent"/>, dataAiHint:"coaching session team", value: 527 }
   ];
 
 
@@ -213,11 +213,15 @@ export default function Home() { // Renamed from LandingPage to Home
               { title: "Optimizar y Escalar tu Negocio", description: "Haz crecer tus ingresos de forma sostenible y sin agotarte.", icon: <HelpCircle className="h-8 w-8 mb-3 text-primary" />, dataAiHint:"business growth scale" }
             ].map(benefit => (
               <Card key={benefit.title} className="bg-white shadow-lg hover:shadow-2xl transition-shadow p-6 text-center">
-                <div className="flex justify-center items-center mb-4">
-                  {React.cloneElement(benefit.icon, { 'data-ai-hint': benefit.dataAiHint })}
-                </div>
-                <h3 className="text-xl font-semibold mb-2 text-landing-fg">{benefit.title}</h3>
-                <p className="text-landing-fg/80">{benefit.description}</p>
+                <CardHeader className="p-0 mb-4">
+                  <div className="flex justify-center items-center mb-3">
+                    {React.cloneElement(benefit.icon, { 'data-ai-hint': benefit.dataAiHint })}
+                  </div>
+                  <CardTitle className="text-xl font-semibold text-landing-fg">{benefit.title}</CardTitle>
+                </CardHeader>
+                <CardContent className="p-0">
+                  <p className="text-landing-fg/80">{benefit.description}</p>
+                </CardContent>
               </Card>
             ))}
           </div>
@@ -246,15 +250,19 @@ export default function Home() { // Renamed from LandingPage to Home
               { name: "Carlos R.", testimonial: "Estaba perdido con tanta información. CÓDIGO me dio la claridad y el paso a paso que necesitaba. ¡100% recomendado!", imageHint: "smiling student male", photoUrl:"https://placehold.co/100x100.png" },
               { name: "Ana P.", testimonial: "Lo mejor es la comunidad y el soporte. Siempre hay alguien para ayudarte. ¡Ya lancé mi primer curso y estoy emocionada!", imageHint: "student working laptop", photoUrl:"https://placehold.co/100x100.png" }
             ].map((item, index) => (
-              <Card key={index} className="bg-white shadow-lg p-6">
-                <div className="flex items-center mb-4">
-                    <Image src={item.photoUrl} alt={item.name} width={60} height={60} className="rounded-full mr-4" data-ai-hint={item.imageHint}/>
-                    <div>
-                        <CardTitle className="text-lg text-landing-fg">{item.name}</CardTitle>
-                        <CardDescription className="text-sm text-primary">Alumno Verificado</CardDescription>
-                    </div>
-                </div>
-                <p className="text-landing-fg/80 italic">"{item.testimonial}"</p>
+              <Card key={index} className="bg-white shadow-lg p-6 flex flex-col">
+                <CardHeader className="p-0 mb-4">
+                  <div className="flex items-center mb-2">
+                      <Image src={item.photoUrl} alt={item.name} width={60} height={60} className="rounded-full mr-4" data-ai-hint={item.imageHint}/>
+                      <div>
+                          <CardTitle className="text-lg text-landing-fg">{item.name}</CardTitle>
+                          <CardDescription className="text-sm text-primary">Alumno Verificado</CardDescription>
+                      </div>
+                  </div>
+                </CardHeader>
+                <CardContent className="p-0 flex-grow">
+                  <p className="text-landing-fg/80 italic">"{item.testimonial}"</p>
+                </CardContent>
               </Card>
             ))}
           </div>
@@ -266,12 +274,21 @@ export default function Home() { // Renamed from LandingPage to Home
         <div className="container mx-auto px-6 text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Además, al Unirte Hoy, Recibirás Estos <span className="text-primary">Bonos Exclusivos:</span></h2>
             <p className="text-lg text-landing-fg/80 max-w-2xl mx-auto mb-12">Valorados en más de $997 USD, ¡Gratis para ti!</p>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-2 gap-8"> {/* Adjusted for 4 items (2x2 grid) */}
+            <div className="grid sm:grid-cols-2 lg:grid-cols-2 gap-8">
                 {bonusItems.map(bonus => (
-                     <Card key={bonus.title} className="bg-landing-bg shadow-lg p-6">
-                        <div className="flex justify-center text-3xl mb-3">{bonus.icon}</div>
-                        <h3 className="text-xl font-semibold mb-2 text-landing-fg">{bonus.title}</h3>
-                        <p className="text-landing-fg/80">{bonus.description}</p>
+                     <Card key={bonus.title} className="bg-landing-bg shadow-lg p-6 flex flex-col">
+                        <CardHeader className="p-0 mb-3">
+                          <div className="flex justify-center text-3xl mb-3">{bonus.icon}</div>
+                          <CardTitle className="text-xl font-semibold text-landing-fg">{bonus.title}</CardTitle>
+                        </CardHeader>
+                        <CardContent className="p-0 flex-grow">
+                          <p className="text-landing-fg/80">{bonus.description}</p>
+                        </CardContent>
+                        <CardFooter className="p-0 pt-4 mt-auto justify-center">
+                            <p className="text-xs text-landing-fg/70">
+                                Valorado en <span className="line-through">${bonus.value} USD</span>
+                            </p>
+                        </CardFooter>
                     </Card>
                 ))}
             </div>
@@ -279,7 +296,7 @@ export default function Home() { // Renamed from LandingPage to Home
       </section>
 
       {/* Section: Custom GPTs */}
-      <section className="py-16 md:py-24 bg-landing-bg text-landing-fg"> {/* Changed bg to landing-bg for alternation */}
+      <section className="py-16 md:py-24 bg-landing-bg text-landing-fg">
         <div className="container mx-auto px-6 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
             GPTs Personalizados y Probados
@@ -287,7 +304,7 @@ export default function Home() { // Renamed from LandingPage to Home
           <p className="text-lg text-landing-fg/80 max-w-3xl mx-auto mb-12">
             Impulsa el desarrollo de tu metodología CÓDIGO con nuestra suite de asistentes de IA especializados, diseñados para potenciar cada etapa de creación y refinamiento de tu curso.
           </p>
-          <Card className="max-w-3xl mx-auto bg-white shadow-xl p-6 sm:p-8 text-left hover:shadow-2xl transition-shadow duration-300 border border-primary/20"> {/* Card bg white */}
+          <Card className="max-w-3xl mx-auto bg-white shadow-xl p-6 sm:p-8 text-left hover:shadow-2xl transition-shadow duration-300 border border-primary/20">
             <CardHeader className="flex flex-row items-start gap-4 p-0 mb-4 sm:mb-6">
               <Cpu className="h-10 w-10 sm:h-12 sm:w-12 text-primary flex-shrink-0 mt-1" data-ai-hint="ai processor" />
               <div>
@@ -328,11 +345,10 @@ export default function Home() { // Renamed from LandingPage to Home
       </section>
       
       {/* Section: Comparison Table - REFINED */}
-      <section className="py-16 md:py-24 bg-white text-landing-fg"> {/* Changed bg to white for alternation */}
+      <section className="py-16 md:py-24 bg-white text-landing-fg">
         <div className="container mx-auto px-6">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Compara tu Situación: Antes vs. Después del MÉTODO CÓDIGO</h2>
           <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-            {/* Card "ANTES" */}
             <Card className="bg-white p-6 sm:p-8 rounded-lg shadow-lg hover:shadow-xl border border-gray-200 transition-all duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-[1.02]">
               <CardHeader className="p-0 mb-6">
                 <CardTitle className="text-2xl font-bold text-destructive text-center">ANTES</CardTitle>
@@ -348,7 +364,6 @@ export default function Home() { // Renamed from LandingPage to Home
                 </ul>
               </CardContent>
             </Card>
-            {/* Card "DESPUÉS" */}
             <Card className="bg-white p-6 sm:p-8 rounded-lg shadow-lg hover:shadow-xl border border-gray-200 transition-all duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-[1.02]">
               <CardHeader className="p-0 mb-6">
                 <CardTitle className="text-2xl font-bold text-green-600 text-center">DESPUÉS (Con CÓDIGO)</CardTitle>
@@ -369,7 +384,7 @@ export default function Home() { // Renamed from LandingPage to Home
       </section>
 
       {/* Section: Guarantee */}
-      <section className="py-16 md:py-24 bg-landing-bg text-landing-fg"> {/* Changed bg to landing-bg for alternation */}
+      <section className="py-16 md:py-24 bg-landing-bg text-landing-fg">
         <div className="container mx-auto px-6 text-center">
           <ShieldCheck className="h-20 w-20 text-primary mx-auto mb-6" data-ai-hint="guarantee shield badge"/>
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Tu Inversión 100% Segura: Garantía de Satisfacción</h2>
@@ -388,12 +403,12 @@ export default function Home() { // Renamed from LandingPage to Home
       </section>
 
       {/* Section: FAQ */}
-      <section className="py-16 md:py-24 bg-white text-landing-fg"> {/* Changed bg to white for alternation */}
+      <section className="py-16 md:py-24 bg-white text-landing-fg">
         <div className="container mx-auto px-6 max-w-3xl">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Preguntas Frecuentes</h2>
           <Accordion type="single" collapsible className="w-full">
             {faqItems.map((item, index) => (
-              <AccordionItem value={`item-${index}`} key={index} className="bg-landing-bg shadow-sm rounded-lg mb-3 border-b-0"> {/* Card bg landing-bg */}
+              <AccordionItem value={`item-${index}`} key={index} className="bg-landing-bg shadow-sm rounded-lg mb-3 border-b-0">
                 <AccordionTrigger className="p-6 text-lg font-semibold text-left hover:no-underline text-landing-fg focus:text-primary">
                   {item.question}
                 </AccordionTrigger>
