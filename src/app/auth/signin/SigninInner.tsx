@@ -27,14 +27,21 @@ const GoogleIcon = () => (
 
 // Componente principal que contiene la lógica y UI de la página de inicio de sesión
 export default function SignInInner() {
-  const { loginWithPassword, loginWithGoogle, signupWithPassword, isAuthenticated, isLoading: authIsLoading } = useAuth();
+  const { 
+    loginWithPassword, 
+    loginWithGoogle, 
+    signupWithPassword, 
+    isAuthenticated, 
+    isLoading: authIsLoading,
+    simulateLogin // Get simulateLogin from useAuth
+  } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams(); 
   const { toast } = useToast();
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [name, setName] = useState(''); // For signup
+  const [email, setEmail] = useState('test@example.com'); // Pre-fill for quicker simulation
+  const [password, setPassword] = useState('password'); // Pre-fill for quicker simulation
+  const [name, setName] = useState('Test User'); // For signup
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
@@ -47,13 +54,18 @@ export default function SignInInner() {
   const handleEmailPasswordSignIn = async (e: FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    try {
-      await loginWithPassword({ email_: email, password_: password });
-    } catch (error: any) {
-      toast({ variant: "destructive", title: "Error al Iniciar Sesión", description: error.message });
-    } finally {
-      setIsSubmitting(false);
-    }
+    // --- SIMULATION ---
+    simulateLogin(); 
+    // setIsSubmitting(false); // useEffect will handle unmount or state change
+    // --- END SIMULATION ---
+    
+    // Original logic (commented out for simulation):
+    // try {
+    //   await loginWithPassword({ email_: email, password_: password });
+    // } catch (error: any) {
+    //   toast({ variant: "destructive", title: "Error al Iniciar Sesión", description: error.message });
+    //   setIsSubmitting(false); // Reset on error
+    // }
   };
   
   const handleEmailPasswordSignUp = async (e: FormEvent) => {
@@ -71,16 +83,21 @@ export default function SignInInner() {
 
   const handleGoogleSignIn = async () => {
     setIsSubmitting(true);
-    try {
-      await loginWithGoogle();
-    } catch (error: any) {
-      toast({ variant: "destructive", title: "Error con Google Sign-In", description: error.message });
-    } finally {
-      // No se establece setIsSubmitting(false) aquí si OAuth redirige inmediatamente
-    }
+    // --- SIMULATION ---
+    simulateLogin();
+    // setIsSubmitting(false); // useEffect will handle unmount or state change
+    // --- END SIMULATION ---
+
+    // Original logic (commented out for simulation):
+    // try {
+    //   await loginWithGoogle();
+    // } catch (error: any) {
+    //   toast({ variant: "destructive", title: "Error con Google Sign-In", description: error.message });
+    //   setIsSubmitting(false); // Reset on error
+    // }
   };
 
-  if (authIsLoading || (!authIsL<ctrl61>oading && isAuthenticated)) {
+  if (authIsLoading || (!authIsLoading && isAuthenticated)) {
      return (
         <div className="flex h-screen items-center justify-center">
           <LoadingSpinner text="Verificando sesión y redirigiendo..." size="lg"/>
@@ -135,7 +152,7 @@ export default function SignInInner() {
                   />
                 </div>
                 <Button type="submit" className="w-full text-lg py-6" disabled={isSubmitting}>
-                  {isSubmitting ? <LoadingSpinner size="sm" /> : 'Iniciar Sesión'}
+                  {isSubmitting ? <LoadingSpinner size="sm" /> : 'Iniciar Sesión (Simulado)'}
                 </Button>
               </form>
             </TabsContent>
@@ -198,7 +215,7 @@ export default function SignInInner() {
           </div>
 
           <Button onClick={handleGoogleSignIn} variant="outline" className="w-full text-lg py-6 border-2 border-foreground/50 hover:border-primary" disabled={isSubmitting}>
-            {isSubmitting ? <LoadingSpinner size="sm" text="Conectando con Google..." /> : <><GoogleIcon /> Continuar con Google</>}
+            {isSubmitting ? <LoadingSpinner size="sm" text="Conectando..." /> : <><GoogleIcon /> Continuar con Google (Simulado)</>}
           </Button>
           
           <div className="relative">

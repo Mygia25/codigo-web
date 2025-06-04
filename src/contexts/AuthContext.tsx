@@ -25,6 +25,7 @@ interface AuthContextType {
   signupWithPassword: (credentials: { email_?: string; password_?: string, name_?: string }) => Promise<void>;
   logout: () => Promise<void>;
   updateUserAccount: (updatedData: { name?: string; photoURL?: string, password?: string }) => Promise<void>;
+  simulateLogin: () => void; // New function for simulation
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -73,6 +74,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     const { data: authListener } = supabase.auth.onAuthStateChange(
       (event: AuthChangeEvent, currentSession: Session | null) => {
+        // Prevent real auth changes from overwriting simulated session
+        if (user?.id === 'simulated-user-id' && session?.access_token === 'simulated-access-token' && event !== 'SIGNED_OUT') {
+          return;
+        }
+        
         setSession(currentSession);
         if (currentSession?.user) {
           setUser({
@@ -86,8 +92,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           }
         } else {
           setUser(null);
-          // Only redirect on explicit sign out or if user is on a protected page
-          // This avoids redirect loops if the user is on a public page and session expires.
           if (event === 'SIGNED_OUT' && !pathname.startsWith('/auth')) {
              router.push('/auth/signin');
           }
@@ -99,7 +103,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return () => {
       authListener?.subscription.unsubscribe();
     };
-  }, [router, pathname]);
+  }, [router, pathname, user?.id, session?.access_token]);
 
   const loginWithPassword = useCallback(async (credentials: { email_?: string; password_?: string }) => {
     if (!credentials.email_ || !credentials.password_) {
@@ -110,20 +114,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       email: credentials.email_,
       password: credentials.password_,
     });
-    setIsLoading(false); // Set loading to false regardless of outcome for this function
+    setIsLoading(false);
     if (error) {
       throw error;
     }
-    // onAuthStateChange will handle redirect if successful
   }, []);
   
   const loginWithGoogle = useCallback(async () => {
     setIsLoading(true);
-    const redirectTo = window.location.origin; // Especificar la URL de redirección
+    const redirectTo = typeof window !== 'undefined' ? window.location.origin : '';
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: redirectTo, // Usar la URL de redirección
+        redirectTo: redirectTo,
       },
     });
     if (error) {
@@ -131,8 +134,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       toast({ variant: "destructive", title: "Error con Google Sign-In", description: error.message });
       throw error; 
     }
-    // No establecer setIsLoading(false) aquí si se espera una redirección,
-    // ya que onAuthStateChange o la navegación de la página manejarán el estado.
   }, [toast]);
 
   const signupWithPassword = useCallback(async (credentials: { email_?: string; password_?: string, name_?: string }) => {
@@ -155,23 +156,71 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       throw error;
     }
     if (data.user && data.user.identities && data.user.identities.length === 0) {
-      // This can indicate email confirmation is required
       toast({ title: "Registro Casi Completo", description: "Por favor, revisa tu correo para confirmar tu cuenta." });
     } else if (data.user) {
         toast({ title: "Registro Exitoso", description: "¡Bienvenido! Redirigiendo..."});
-         // onAuthStateChange should pick this up
     }
+  }, [toast]);
+
+  const simulateLogin = useCallback(() => {
+    console.log('[AuthContext] Simulating login...');
+    const simulatedUserName = 'Usuario Simulado';
+    setUser({
+      id: 'simulated-user-id',
+      name: simulatedUserName,
+      email: 'simulado@ejemplo.com',
+      photoURL: `https://placehold.co/100x100.png?text=${simulatedUserName.charAt(0).toUpperCase()}`,
+    });
+    setSession({
+      access_token: 'simulated-access-token',
+      refresh_token: 'simulated-refresh-token',
+      user: { 
+        id: 'simulated-user-id',
+        app_metadata: {},
+        user_metadata: { name: simulatedUserName, photo_url: `https://placehold.co/100x100.png?text=${simulatedUserName.charAt(0).toUpperCase()}` },
+        aud: 'authenticated',
+        created_at: new Date().toISOString(),
+        // Cast to any to satisfy SupabaseUser if not all fields are needed for app functionality
+      } as any as SupabaseUser,
+      expires_in: 3600,
+      expires_at: Math.floor(Date.now() / 1000) + 3600,
+      token_type: 'bearer',
+    });
+    setIsLoading(false); 
+    toast({
+      title: "Modo Simulación Activado",
+      description: "Has iniciado sesión como Usuario Simulado.",
+    });
   }, [toast]);
 
   const logout = useCallback(async () => {
     setIsLoading(true);
+    if (user?.id === 'simulated-user-id' && session?.access_token === 'simulated-access-token') {
+      setUser(null);
+      setSession(null);
+      setIsLoading(false);
+      toast({ title: "Simulación Terminada", description: "Has cerrado la sesión simulada." });
+      if (pathname !== '/auth/signin') {
+          router.push('/auth/signin');
+      }
+      return;
+    }
+
     const { error } = await supabase.auth.signOut();
+    if (!error) {
+        setUser(null); 
+        setSession(null);
+    }
+    setIsLoading(false); 
     if (error) {
-      setIsLoading(false); 
       toast({ variant: "destructive", title: "Error al Cerrar Sesión", description: error.message });
       throw error;
     }
-  }, [toast]);
+    // onAuthStateChange should also handle redirect if user is not on auth page
+     if (!pathname.startsWith('/auth')) {
+        router.push('/auth/signin');
+     }
+  }, [user, session, toast, router, pathname]);
   
   const updateUserAccount = useCallback(async (updatedData: { name?: string; photoURL?: string, password?: string }) => {
     if (!session?.user) {
@@ -231,7 +280,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       loginWithGoogle,
       signupWithPassword,
       logout,
-      updateUserAccount
+      updateUserAccount,
+      simulateLogin // Expose simulateLogin
     }}>
       {children}
     </AuthContext.Provider>
