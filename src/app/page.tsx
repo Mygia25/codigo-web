@@ -135,10 +135,10 @@ export default function Home() {
         <div className="absolute inset-0 opacity-5">
         </div>
         <div className="container mx-auto px-6 text-center relative z-10">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 !leading-tight">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 !leading-tight">
             Descubre el <span className="text-primary">MÉTODO CÓDIGO:</span> Tu Start Inteligente <br className="hidden md:block"/> Para Crear y Vender Cursos Online Exitosos.
           </h1>
-          <p className="text-lg md:text-xl mb-10 max-w-3xl mx-auto text-landing-fg/80">
+          <p className="text-base md:text-lg mb-10 max-w-3xl mx-auto text-landing-fg/80">
             Transforma tu conocimiento en ingresos pasivos, sin perseguir clientes y con un sistema que trabaja para ti 24/7. Aprende a generar, ordenar, determinar, implementar, ganar y optimizar.
           </p>
           <Button 
@@ -282,13 +282,13 @@ export default function Home() {
                             index === 4 && "sm:col-span-2" 
                         )}
                      >
-                        <CardHeader className="p-0 mb-3">
+                        <CardHeader className="p-0 mb-3 text-center">
                           <div className="flex items-center justify-center space-x-3 mb-2">
                             <div className="text-3xl flex-shrink-0 w-10 h-10 flex items-center justify-center">{bonus.icon}</div>
                             <CardTitle className="text-xl font-semibold text-landing-fg">{bonus.title}</CardTitle>
                           </div>
                         </CardHeader>
-                        <CardContent className="p-0 flex-grow">
+                        <CardContent className="p-0 flex-grow text-center">
                           <p className="text-landing-fg/80 text-sm">{bonus.description}</p>
                         </CardContent>
                         <CardFooter className="p-0 pt-4 mt-auto justify-center">
