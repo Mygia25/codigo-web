@@ -3,7 +3,7 @@ import path from 'path'; // Added for webpack alias
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  swcMinify: false, // Explicitly set to false to address build warning
+  // swcMinify: false, // Removed as per Next.js 15 compatibility / build warning
   typescript: {
     ignoreBuildErrors: false, // CHANGED: Surface TypeScript errors during build
   },
