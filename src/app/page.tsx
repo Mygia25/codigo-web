@@ -271,7 +271,7 @@ export default function Home() {
                         )}
                      >
                         <CardHeader className="p-0 mb-3 text-center">
-                          <div className="flex items-center justify-center space-x-3 mb-2">
+                          <div className="flex flex-col items-center justify-center space-y-2 mb-2">
                             <div className="text-3xl flex-shrink-0 w-10 h-10 flex items-center justify-center">{bonus.icon}</div>
                             <CardTitle className="text-xl font-semibold text-landing-fg">{bonus.title}</CardTitle>
                           </div>
@@ -369,14 +369,14 @@ export default function Home() {
 
       {/* Sticky CTA Footer */}
       <div className="sticky bottom-0 z-40 bg-landing-fg/90 backdrop-blur-sm text-white p-4 shadow-2xl_upward">
-        <div className="container mx-auto flex flex-col sm:flex-row justify-between items-center">
-          <div>
-            <h3 className="text-xl font-bold">¡No Esperes Más! Transforma tu Conocimiento en Ingresos.</h3>
-            <p className="text-sm opacity-80">Accede al MÉTODO CÓDIGO con la oferta de lanzamiento.</p>
+        <div className="container mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+          <div className="flex-1 text-center sm:text-left">
+            <h3 className="text-lg font-semibold">¡No Esperes Más! Transforma tu Conocimiento en Ingresos.</h3>
+            <p className="text-xs opacity-80">Accede al MÉTODO CÓDIGO con la oferta de lanzamiento.</p>
           </div>
           <Button 
             size="lg" 
-            className="bg-primary text-primary-foreground hover:bg-primary/90 text-lg px-8 py-4 mt-4 sm:mt-0 rounded-md shadow-lg transform hover:scale-105 transition-transform"
+            className="bg-primary text-primary-foreground hover:bg-primary/90 text-lg px-8 py-4 mt-4 sm:mt-0 rounded-md shadow-lg transform hover:scale-105 transition-transform flex-shrink-0"
             onClick={handleCTAClick}
           >
             ACCEDER AL MÉTODO AHORA

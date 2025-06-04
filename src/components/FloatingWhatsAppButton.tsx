@@ -14,7 +14,7 @@ export default function FloatingWhatsAppButton() {
       href={whatsappLink}
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-8 right-8 z-50 bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-xl transition-transform duration-300 ease-in-out hover:scale-110 flex items-center justify-center"
+      className="fixed bottom-24 right-8 z-50 bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-xl transition-transform duration-300 ease-in-out hover:scale-110 flex items-center justify-center"
       aria-label="Contactar por WhatsApp"
     >
       <MessageCircle className="h-7 w-7" />
