@@ -13,7 +13,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import Logo from '@/components/Logo';
 import { cn } from "@/lib/utils";
-import FloatingWhatsAppButton from '@/components/FloatingWhatsAppButton'; // New import
+import FloatingWhatsAppButton from '@/components/FloatingWhatsAppButton';
 
 const COUNTDOWN_DURATION = 48 * 60 * 60 * 1000; // 48 hours in milliseconds
 const COUNTDOWN_STORAGE_KEY = 'codigo_launch_countdown_end_time';
@@ -31,15 +31,15 @@ const LandingPageHeader: React.FC<{ timeLeft: number }> = ({ timeLeft }) => {
 
   return (
     <header className="sticky top-0 z-50 bg-landing-fg text-white shadow-lg overflow-hidden h-12 flex items-center">
-      <div className="container mx-auto flex items-center justify-between px-4 sm:px-6 h-full">
-        <div className="flex-grow overflow-hidden relative h-full flex items-center">
+      <div className="flex items-center justify-between w-full h-full relative"> {/* Full width for background */}
+        <div className="flex-grow overflow-hidden relative h-full flex items-center pl-4 sm:pl-6"> {/* Padding for marquee start */}
           <div className="animate-marquee-slow whitespace-nowrap flex">
             <span className="text-sm sm:text-base font-semibold py-3 pr-12">{offerText}</span>
             <span className="text-sm sm:text-base font-semibold py-3 pr-12">{offerText}</span>
             <span className="text-sm sm:text-base font-semibold py-3 pr-12">{offerText}</span>
           </div>
         </div>
-        <div className="bg-primary/80 text-primary-foreground px-2 py-1 rounded-md text-xs sm:text-sm font-bold ml-4 flex-shrink-0">
+        <div className="bg-primary/80 text-primary-foreground px-2 py-1 rounded-md text-xs sm:text-sm font-bold ml-4 mr-4 sm:mr-6 flex-shrink-0 z-10">
           {formatTime(timeLeft)}
         </div>
       </div>
@@ -198,13 +198,13 @@ export default function Home() {
               { title: "Optimizar y Escalar tu Negocio", description: "Haz crecer tus ingresos de forma sostenible y sin agotarte.", icon: <HelpCircle className="h-8 w-8 mb-3 text-primary" />, dataAiHint:"business growth scale" }
             ].map(benefit => (
               <Card key={benefit.title} className="bg-white shadow-lg hover:shadow-2xl transition-shadow p-6 text-center">
-                <CardHeader className="p-0 mb-4">
+                <CardHeader className="p-0 mb-4 text-center">
                   <div className="flex justify-center items-center mb-3">
                     {React.cloneElement(benefit.icon, { 'data-ai-hint': benefit.dataAiHint })}
                   </div>
                   <CardTitle className="text-xl font-semibold text-landing-fg">{benefit.title}</CardTitle>
                 </CardHeader>
-                <CardContent className="p-0">
+                <CardContent className="p-0 text-center">
                   <p className="text-landing-fg/80">{benefit.description}</p>
                 </CardContent>
               </Card>
@@ -236,7 +236,7 @@ export default function Home() {
               { name: "Ana P.", testimonial: "Lo mejor es la comunidad y el soporte. Siempre hay alguien para ayudarte. ¡Ya lancé mi primer curso y estoy emocionada!", imageHint: "student working laptop", photoUrl:"https://placehold.co/100x100.png" }
             ].map((item, index) => (
               <Card key={index} className="bg-white shadow-lg p-6 flex flex-col">
-                <CardHeader className="p-0 mb-4">
+                <CardHeader className="p-0 mb-4 text-center">
                   <div className="flex items-center mb-2">
                       <Image src={item.photoUrl} alt={item.name} width={60} height={60} className="rounded-full mr-4" data-ai-hint={item.imageHint}/>
                       <div>
@@ -245,7 +245,7 @@ export default function Home() {
                       </div>
                   </div>
                 </CardHeader>
-                <CardContent className="p-0 flex-grow">
+                <CardContent className="p-0 flex-grow text-center">
                   <p className="text-landing-fg/80 italic">"{item.testimonial}"</p>
                 </CardContent>
               </Card>
@@ -294,7 +294,7 @@ export default function Home() {
       <section className="py-16 md:py-24 bg-landing-bg text-landing-fg"> 
         <div className="container mx-auto px-6">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Compara tu Situación: Antes vs. Después del MÉTODO CÓDIGO</h2>
-          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto"> {/* Ensured md:grid-cols-2 */}
             <Card className="bg-white p-6 sm:p-8 rounded-lg shadow-lg hover:shadow-xl border border-gray-200 transition-all duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-[1.02]">
               <CardHeader className="p-0 mb-6">
                 <CardTitle className="text-2xl font-bold text-destructive text-center">ANTES</CardTitle>
@@ -368,8 +368,8 @@ export default function Home() {
       </section>
 
       {/* Sticky CTA Footer */}
-      <div className="sticky bottom-0 z-40 bg-landing-fg/90 backdrop-blur-sm text-white p-4 shadow-2xl_upward">
-        <div className="container mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+      <div className="sticky bottom-0 z-40 bg-landing-fg/90 backdrop-blur-sm text-white p-0 shadow-2xl_upward"> {/* p-0 for full-width background */}
+        <div className="container mx-auto flex flex-col sm:flex-row justify-between items-center gap-4 py-4 px-4 sm:px-6 lg:px-8"> {/* Container for content margins */}
           <div className="flex-1 text-center sm:text-left">
             <h3 className="text-lg font-semibold">¡No Esperes Más! Transforma tu Conocimiento en Ingresos.</h3>
             <p className="text-xs opacity-80">Accede al MÉTODO CÓDIGO con la oferta de lanzamiento.</p>
