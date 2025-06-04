@@ -275,13 +275,13 @@ export default function Home() { // Renamed from LandingPage to Home
         </div>
       </section>
       
-      {/* Section: Comparison Table - UPDATED */}
+      {/* Section: Comparison Table - REFINED */}
       <section className="py-16 md:py-24 bg-landing-bg text-landing-fg">
         <div className="container mx-auto px-6">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Compara tu Situación: Antes vs. Después del MÉTODO CÓDIGO</h2>
           <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
             {/* Card "ANTES" */}
-            <div className="bg-white p-6 sm:p-8 rounded-lg shadow-xl hover:shadow-2xl transition-all duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-[1.02]">
+            <div className="bg-white p-6 sm:p-8 rounded-lg shadow-lg hover:shadow-xl border border-gray-200 transition-all duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-[1.02]">
               <h3 className="text-2xl font-bold text-destructive mb-6 text-center">ANTES</h3>
               <ul className="space-y-4">
                 {antesItems.map((item, index) => (
@@ -293,7 +293,7 @@ export default function Home() { // Renamed from LandingPage to Home
               </ul>
             </div>
             {/* Card "DESPUÉS" */}
-            <div className="bg-white p-6 sm:p-8 rounded-lg shadow-xl hover:shadow-2xl transition-all duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-[1.02]">
+            <div className="bg-white p-6 sm:p-8 rounded-lg shadow-lg hover:shadow-xl border border-gray-200 transition-all duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-[1.02]">
               <h3 className="text-2xl font-bold text-green-600 mb-6 text-center">DESPUÉS (Con CÓDIGO)</h3>
               <ul className="space-y-4">
                 {despuesItems.map((item, index) => (
