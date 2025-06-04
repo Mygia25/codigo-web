@@ -278,12 +278,12 @@ export default function Home() {
                      <Card 
                         key={bonus.title} 
                         className={cn(
-                            "bg-landing-bg shadow-lg p-6 flex flex-col text-left hover:shadow-xl transition-shadow duration-300",
-                            index === 4 && "sm:col-span-2" // GPTs bonus spans full width
+                            "bg-landing-bg shadow-lg p-6 flex flex-col text-center hover:shadow-xl transition-shadow duration-300",
+                            index === 4 && "sm:col-span-2" 
                         )}
                      >
                         <CardHeader className="p-0 mb-3">
-                          <div className="flex items-center space-x-3 mb-2">
+                          <div className="flex items-center justify-center space-x-3 mb-2">
                             <div className="text-3xl flex-shrink-0 w-10 h-10 flex items-center justify-center">{bonus.icon}</div>
                             <CardTitle className="text-xl font-semibold text-landing-fg">{bonus.title}</CardTitle>
                           </div>
@@ -291,8 +291,8 @@ export default function Home() {
                         <CardContent className="p-0 flex-grow">
                           <p className="text-landing-fg/80 text-sm">{bonus.description}</p>
                         </CardContent>
-                        <CardFooter className="p-0 pt-4 mt-auto justify-start">
-                            <p className="text-xs text-landing-fg/70">
+                        <CardFooter className="p-0 pt-4 mt-auto justify-center">
+                            <p className="text-sm text-landing-fg/70">
                                 Valorado en <span className="line-through">${bonus.value} USD</span>
                             </p>
                         </CardFooter>
@@ -399,3 +399,4 @@ export default function Home() {
     </div>
   );
 }
+
