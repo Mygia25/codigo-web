@@ -6,7 +6,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { CheckCircle, ChevronRight, Users, Video, Gift, BarChartHorizontal, ShieldCheck, HelpCircle, ShoppingCart, ExternalLink, XCircle, CheckCircle2 } from 'lucide-react'; // Added XCircle, CheckCircle2
+import { CheckCircle, ChevronRight, Users, Video, Gift, BarChartHorizontal, ShieldCheck, HelpCircle, ShoppingCart, ExternalLink, XCircle, CheckCircle2, Cpu, Sparkles } from 'lucide-react'; // Added Cpu, Sparkles
 import Image from 'next/image';
 import Link from 'next/link';
 import { useAuth } from '@/hooks/useAuth';
@@ -272,6 +272,55 @@ export default function Home() { // Renamed from LandingPage to Home
                     </Card>
                 ))}
             </div>
+        </div>
+      </section>
+
+      {/* Section: Custom GPTs */}
+      <section className="py-16 md:py-24 bg-white text-landing-fg">
+        <div className="container mx-auto px-6 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            GPTs Personalizados y Probados
+          </h2>
+          <p className="text-lg text-landing-fg/80 max-w-3xl mx-auto mb-12">
+            Impulsa el desarrollo de tu metodología CÓDIGO con nuestra suite de asistentes de IA especializados, diseñados para potenciar cada etapa de creación y refinamiento de tu curso.
+          </p>
+          <Card className="max-w-3xl mx-auto bg-card shadow-xl p-6 sm:p-8 text-left hover:shadow-2xl transition-shadow duration-300 border border-primary/20">
+            <CardHeader className="flex flex-row items-start gap-4 p-0 mb-4 sm:mb-6">
+              <Cpu className="h-10 w-10 sm:h-12 sm:w-12 text-primary flex-shrink-0 mt-1" data-ai-hint="ai processor" />
+              <div>
+                <CardTitle className="text-xl sm:text-2xl font-semibold text-landing-fg mb-1">
+                  Asistentes IA Dedicados
+                </CardTitle>
+                <CardDescription className="text-sm sm:text-base text-landing-fg/70">
+                  Herramientas inteligentes integradas en tu flujo de trabajo.
+                </CardDescription>
+              </div>
+            </CardHeader>
+            <CardContent className="p-0 space-y-3 sm:space-y-4">
+              <p className="text-base text-landing-fg/90">
+                Aprovecha nuestros GPTs, entrenados específicamente para ayudarte a:
+              </p>
+              <ul className="space-y-2">
+                {[
+                  "Identificar y validar tu nicho con precisión.",
+                  "Estructurar el contenido de tu curso de manera lógica y atractiva.",
+                  "Generar ideas creativas para lecciones, módulos y materiales de apoyo.",
+                  "Optimizar tus textos y scripts para máxima claridad y conversión.",
+                  "Obtener retroalimentación instantánea sobre tus propuestas de valor."
+                ].map((item, index) => (
+                  <li key={index} className="flex items-start">
+                    <Sparkles className="h-5 w-5 text-primary mr-3 mt-1 shrink-0" />
+                    <span className="text-landing-fg/80">{item}</span>
+                  </li>
+                ))}
+              </ul>
+              <Button asChild className="mt-6 w-full sm:w-auto bg-accent hover:bg-accent/90 text-accent-foreground">
+                <Link href="/agente-ia">
+                  Explorar Asistentes IA <ChevronRight className="ml-2 h-4 w-4" />
+                </Link>
+              </Button>
+            </CardContent>
+          </Card>
         </div>
       </section>
       
