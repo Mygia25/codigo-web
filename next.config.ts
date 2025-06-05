@@ -3,9 +3,7 @@ import path from 'path'; // For webpack alias
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  // Ensure no swcMinify is here if it caused issues
 
-  // User's specified images configuration
   images: {
     remotePatterns: [
       {
@@ -15,22 +13,19 @@ const nextConfig: NextConfig = {
     ],
   },
 
-  // User's specified allowedDevOrigins configuration
   allowedDevOrigins: [
     "http://localhost:3000",
     "https://3000-firebase-studio-1748739584969.cluster-hf4yr35cmnbd4vhbxvfvc6cp5q.cloudworkstations.dev",
   ],
 
-  // Preserving existing TypeScript and ESLint settings
   typescript: {
-    ignoreBuildErrors: false,
+    ignoreBuildErrors: false, // Preserved from previous state
   },
   eslint: {
-    ignoreDuringBuilds: false,
+    ignoreDuringBuilds: false, // Preserved from previous state
   },
 
-  // Preserving existing experimental.turbo (appDir is not and should not be here)
-  experimental: {
+  experimental: { // Preserved from previous state (appDir is not here)
     turbo: {
       rules: {
         '*.svg': {
@@ -41,8 +36,7 @@ const nextConfig: NextConfig = {
     },
   },
 
-  // Preserving existing webpack configuration
-  webpack: (config, { isServer }) => {
+  webpack: (config, { isServer }) => { // Preserved from previous state
     if (!isServer) {
       config.resolve.fallback = {
         "fs": false,
