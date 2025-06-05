@@ -1,7 +1,7 @@
 // src/ai/flows/personalized-course-generation.ts
 import { genkit } from 'genkit';
 import { defineFlow } from '@genkit-ai/flow';
-import { ai } from '../../genkit'; // Adjusted path based on typical structure
+import { ai } from '../genkit'; // Corrected path to the AI client
 
 // Import Schemas and Types from the dedicated types file
 import {
@@ -9,10 +9,10 @@ import {
   type PersonalizedCourseInput,
   PersonalizedCourseOutputSchema,
   type PersonalizedCourseOutput,
-  type PersonalizedCourseModuleWithId, // Corrected import based on previous changes
-  type PersonalizedCourseLessonWithId, // Corrected import based on previous changes
+  type PersonalizedCourseModuleWithId,
+  type PersonalizedCourseLessonWithId,
   type PersonalizedCourseWithIdsOutput
-} from '@/types/course-generation'; // Assuming @/types resolves to src/types
+} from '@/types/course-generation';
 
 // Create the Genkit flow
 export const personalizedCourseFlow = defineFlow(
@@ -28,7 +28,6 @@ export const personalizedCourseFlow = defineFlow(
       prompt: prompt,
       model: 'googleai/gemini-2.0-flash', // Ensure this model is available and configured
       output: { schema: PersonalizedCourseOutputSchema },
-      // You can add config options here if needed, e.g., temperature
     });
     return llmResponse.output() || { courseTitle: 'Error', courseDescription: 'Error generating course', modules: [] };
   }
@@ -40,7 +39,6 @@ export async function generatePersonalizedCourse(
 ): Promise<PersonalizedCourseWithIdsOutput> {
   const aiOutput = await personalizedCourseFlow(input);
 
-  // Manually add IDs to modules and lessons
   const modulesWithIds: PersonalizedCourseModuleWithId[] = aiOutput.modules.map((module, moduleIndex) => ({
     ...module,
     id: `mod-${Date.now()}-${moduleIndex}`,
