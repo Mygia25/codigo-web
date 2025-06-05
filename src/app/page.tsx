@@ -67,9 +67,9 @@ export default function Home() { // Renamed from LandingPage to Home
     return () => clearInterval(timerInterval);
   }, []);
 
-  // Updated handleCTAClick to redirect to Stripe
+  // Updated handleCTAClick to redirect to the new Stripe link
   const handleCTAClick = () => {
-    window.location.href = 'https://buy.stripe.com/cNi8wRcnJdbH8Eh0qJ';
+    window.location.href = 'https://buy.stripe.com/8x24gB4Vh1sZf2F2yRgbm03';
   };
   
   const faqItems = [
