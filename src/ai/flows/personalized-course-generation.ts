@@ -33,26 +33,20 @@ export const personalizedCourseFlow = defineFlow(
 
     const llmResponse = await ai.generate({
       prompt,
-      model: 'googleai/gemini-2.0-flash', // This model is used by the 'ai' instance configured in src/ai/genkit.ts
+      model: 'googleai/gemini-2.0-flash', 
       output: { schema: PersonalizedCourseOutputSchema },
     });
 
-    // Corrected: Use llmResponse.output as a getter
-    const out = llmResponse.output; 
+    const out = llmResponse.output; // Used as a getter
 
-    // Ensure a null/undefined check follows
     if (!out) {
       console.error("LLM response output was null or undefined.", llmResponse);
-      // Fallback to a defined structure matching PersonalizedCourseOutputSchema
       return { 
         courseTitle: "Error", 
         courseDescription: "Failed to generate course content or output was empty.", 
         modules: [] 
       };
     }
-
-    // 'out' is now guaranteed to be of type PersonalizedCourseOutput (or the error object)
-    // and matches the flow's outputSchema.
     return out; 
   }
 );
@@ -61,13 +55,10 @@ export const personalizedCourseFlow = defineFlow(
 export async function generatePersonalizedCourse(
   input: PersonalizedCourseInput
 ): Promise<PersonalizedCourseWithIdsOutput> {
-  console.log('[generatePersonalizedCourse] Attempting to run personalizedCourseFlow - v2'); // <--- NEW DUMMY CHANGE
   // Corrected: Use .run() to execute the Genkit flow
-  const aiOutput = await personalizedCourseFlow.run(input);
+  const aiOutput = await personalizedCourseFlow.run(input); 
 
-  // Handle cases where aiOutput might be the error fallback from the flow
   if (aiOutput.courseTitle === "Error" || !aiOutput.modules) {
-    // Ensure the returned structure matches PersonalizedCourseWithIdsOutput for consistency
     return {
         courseTitle: aiOutput.courseTitle,
         courseDescription: aiOutput.courseDescription,
