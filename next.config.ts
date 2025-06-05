@@ -19,13 +19,13 @@ const nextConfig: NextConfig = {
   ],
 
   typescript: {
-    ignoreBuildErrors: false, // Preserved from previous state
+    ignoreBuildErrors: false,
   },
   eslint: {
-    ignoreDuringBuilds: false, // Preserved from previous state
+    ignoreDuringBuilds: false,
   },
 
-  experimental: { // Preserved from previous state (appDir is not here)
+  experimental: {
     turbo: {
       rules: {
         '*.svg': {
@@ -36,20 +36,45 @@ const nextConfig: NextConfig = {
     },
   },
 
-  webpack: (config, { isServer }) => { // Preserved from previous state
+  webpack: (config, { isServer }) => {
     if (!isServer) {
       config.resolve.fallback = {
-        "fs": false,
-        "tls": false,
-        "net": false,
-        "path": false,
-        "zlib": false,
-        "http": false,
-        "https": false,
-        "stream": false,
-        "crypto": false
+        ...config.resolve.fallback, // Preserve existing fallbacks
+        // Original fallbacks
+        fs: false,
+        tls: false,
+        net: false,
+        path: false,
+        zlib: false,
+        http: false,
+        https: false,
+        stream: false,
+        crypto: false,
+        dns: false,
+        http2: false,
+        dgram: false,
+        async_hooks: false,
+        child_process: false,
+        // Fallbacks for 'node:' prefixed imports
+        "node:fs": false,
+        "node:tls": false,
+        "node:net": false,
+        "node:path": false,
+        "node:zlib": false,
+        "node:http": false,
+        "node:https": false,
+        "node:stream": false,
+        "node:crypto": false,
+        "node:dns": false,
+        "node:http2": false,
+        "node:dgram": false,
+        "node:async_hooks": false,
+        "node:child_process": false,
+        "node:buffer": false, // From the latest error log
+        "node:events": false, // From the latest error log
       };
     }
+    // Preserve your handlebars alias or other webpack adjustments
     config.resolve.alias['handlebars'] = path.resolve(__dirname, 'node_modules/handlebars/dist/handlebars.min.js');
     return config;
   },

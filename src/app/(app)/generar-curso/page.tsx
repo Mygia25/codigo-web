@@ -1,4 +1,3 @@
-
 // src/app/(app)/generar-curso/page.tsx
 "use client";
 
@@ -10,7 +9,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { generatePersonalizedCourse, type PersonalizedCourseInput, type PersonalizedCourseWithIdsOutput } from '@/ai/flows/personalized-course-generation'; // Updated type
+// Import types only from the dedicated types file
+import { type PersonalizedCourseInput, type PersonalizedCourseWithIdsOutput } from '@/types/course-generation';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { useToast } from "@/hooks/use-toast";
 import { Sparkles, FileSignature, Brain, BookHeart, Target, Save, List, ChevronDown, ChevronRight, UploadCloud, Languages } from "lucide-react";
@@ -25,7 +25,7 @@ export default function GenerarCursoPage() {
   const [niche, setNiche] = useState('');
   const [language, setLanguage] = useState('Español'); 
   
-  const [generatedCourse, setGeneratedCourse] = useState<PersonalizedCourseWithIdsOutput | null>(null); // Updated type
+  const [generatedCourse, setGeneratedCourse] = useState<PersonalizedCourseWithIdsOutput | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const router = useRouter();
@@ -46,10 +46,31 @@ export default function GenerarCursoPage() {
 
     try {
       const input: PersonalizedCourseInput = { skills, knowledge, passions, niche, language };
-      const result = await generatePersonalizedCourse(input);
-      setGeneratedCourse(result);
+      
+      const response = await fetch('/api/generate-course', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(input),
+      });
+
+      if (!response.ok) {
+        const errorResult = await response.json();
+        throw new Error(errorResult.details || errorResult.error || `API Error: ${response.status}`);
+      }
+
+      const result = await response.json();
+      if (result.data) {
+        setGeneratedCourse(result.data as PersonalizedCourseWithIdsOutput);
+      } else if (result.error) {
+        throw new Error(result.details || result.error);
+      } else {
+        throw new Error('Respuesta inesperada de la API.');
+      }
+
     } catch (error) {
-      console.error("Error generating course:", error);
+      console.error("Error generating course via API:", error);
       toast({
         variant: "destructive",
         title: "Error de IA",
@@ -75,11 +96,11 @@ export default function GenerarCursoPage() {
       title: generatedCourse.courseTitle,
       description: generatedCourse.courseDescription,
       modules: generatedCourse.modules.map(mod => ({
-        id: mod.id, // Use ID from PersonalizedCourseWithIdsOutput
+        id: mod.id, 
         moduleTitle: mod.moduleTitle,
         moduleDescription: mod.moduleDescription,
         lessons: mod.lessons.map(les => ({
-          id: les.id, // Use ID from PersonalizedCourseWithIdsOutput
+          id: les.id, 
           lessonTitle: les.lessonTitle,
           topics: les.topics,
         })),
@@ -119,7 +140,6 @@ export default function GenerarCursoPage() {
       });
     }
   };
-
 
   return (
     <div className="space-y-8">
