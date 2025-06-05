@@ -1,7 +1,7 @@
 // src/ai/flows/personalized-course-generation.ts
 import { defineFlow } from '@genkit-ai/flow';
-// Correctly import the initialized Genkit AI client from your project
-import { ai } from '../genkit'; // This should point to your src/ai/genkit.ts
+// Correctly import the initialized Genkit AI client from your project's genkit.ts
+import { ai } from '../genkit'; 
 
 // Import Schemas and Types from the dedicated types file
 import {
@@ -14,7 +14,7 @@ import {
   type PersonalizedCourseWithIdsOutput
 } from '@/types/course-generation';
 
-// Create the Genkit flow
+// 1. Create the Genkit flow
 export const personalizedCourseFlow = defineFlow(
   {
     name: 'personalizedCourseFlow',
@@ -31,38 +31,41 @@ export const personalizedCourseFlow = defineFlow(
       The course should be in ${input.language}.
     `;
 
-    // Use the Genkit ai.generate() method
     const llmResponse = await ai.generate({
-      prompt: prompt,
-      model: 'googleai/gemini-2.0-flash', // This should be the model configured in your global 'ai' instance
-      output: { schema: PersonalizedCourseOutputSchema }, // Genkit uses this to structure the output
+      prompt,
+      model: 'googleai/gemini-2.0-flash', // This model is used by the 'ai' instance configured in src/ai/genkit.ts
+      output: { schema: PersonalizedCourseOutputSchema },
     });
 
-    // Handle the output carefully, as it might be null
-    const out = llmResponse.output?.(); // Corrected: Use optional chaining
-    
+    // Corrected: Use llmResponse.output as a getter
+    const out = llmResponse.output; 
+
+    // Ensure a null/undefined check follows
     if (!out) {
       console.error("LLM response output was null or undefined.", llmResponse);
+      // Fallback to a defined structure matching PersonalizedCourseOutputSchema
       return { 
-        courseTitle: 'Error', 
-        courseDescription: 'Failed to generate course content or output was empty.', 
+        courseTitle: "Error", 
+        courseDescription: "Failed to generate course content or output was empty.", 
         modules: [] 
       };
     }
-    
-    // If 'out' is not null, it should conform to PersonalizedCourseOutputSchema
+
+    // 'out' is now guaranteed to be of type PersonalizedCourseOutput (or the error object)
+    // and matches the flow's outputSchema.
     return out; 
   }
 );
 
-// Function to generate the course and add IDs
+// 2. Function that calls the flow and adds IDs manually
 export async function generatePersonalizedCourse(
   input: PersonalizedCourseInput
 ): Promise<PersonalizedCourseWithIdsOutput> {
   const aiOutput = await personalizedCourseFlow(input);
 
   // Handle cases where aiOutput might be the error fallback from the flow
-  if (aiOutput.courseTitle === 'Error' || !aiOutput.modules) {
+  if (aiOutput.courseTitle === "Error" || !aiOutput.modules) {
+    // Ensure the returned structure matches PersonalizedCourseWithIdsOutput for consistency
     return {
         courseTitle: aiOutput.courseTitle,
         courseDescription: aiOutput.courseDescription,
