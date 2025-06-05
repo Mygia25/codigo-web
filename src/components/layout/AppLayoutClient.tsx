@@ -11,7 +11,7 @@ interface AppLayoutClientProps {
 }
 
 const AppLayoutClient: React.FC<AppLayoutClientProps> = ({ children }) => {
-  const [isCollapsed, setIsCollapsed] = useState(false); // Default to true (collapsed) or false based on preference
+  const [isCollapsed, setIsCollapsed] = useState(false); // Default is expanded (false). Set true to start collapsed if preferred.
   
   useEffect(() => {
     const checkMobile = () => {
