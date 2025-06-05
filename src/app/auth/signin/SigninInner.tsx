@@ -112,9 +112,9 @@ export default function SignInInner() {
           <div className="mx-auto mb-6 w-fit">
             <Logo />
           </div>
-          <CardTitle className="font-headline text-3xl">Bienvenido a CÓDIGO</CardTitle>
+          <CardTitle className="font-headline text-3xl">Bienvenido</CardTitle>
           <CardDescription className="text-md">
-            Tu Start Inteligente para el éxito digital.
+            Empezamos desde cero para el éxito digital.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
@@ -227,7 +227,7 @@ export default function SignInInner() {
             </div>
           </div>
           <Button asChild variant="default" className="w-full text-lg py-6 bg-primary hover:bg-primary/90 text-primary-foreground">
-            <Link href="https://buy.stripe.com/cNi8wRcnJdbH8Eh0qJgbm02" target="_blank" rel="noopener noreferrer">
+            <Link href="https://buy.stripe.com/cNi8wRcnJdbH8Eh0qJ" target="_blank" rel="noopener noreferrer">
               <CircleDollarSign className="mr-2 h-5 w-5" />
               Adquirir Acceso Completo
               <ExternalLink className="ml-2 h-4 w-4 opacity-70" />
