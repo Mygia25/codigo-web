@@ -39,7 +39,7 @@ export const personalizedCourseFlow = defineFlow(
     });
 
     // Handle the output carefully, as it might be null
-    const out = llmResponse.output(); 
+    const out = llmResponse.output?.(); // Corrected: Use optional chaining
     
     if (!out) {
       console.error("LLM response output was null or undefined.", llmResponse);
