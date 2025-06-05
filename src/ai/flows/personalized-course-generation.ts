@@ -61,7 +61,8 @@ export const personalizedCourseFlow = defineFlow(
 export async function generatePersonalizedCourse(
   input: PersonalizedCourseInput
 ): Promise<PersonalizedCourseWithIdsOutput> {
-  const aiOutput = await personalizedCourseFlow(input);
+  // Corrected: Use .run() to execute the Genkit flow
+  const aiOutput = await personalizedCourseFlow.run(input);
 
   // Handle cases where aiOutput might be the error fallback from the flow
   if (aiOutput.courseTitle === "Error" || !aiOutput.modules) {
