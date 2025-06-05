@@ -1,8 +1,8 @@
 // src/ai/flows/personalized-course-generation.ts
 import { defineFlow } from '@genkit-ai/flow';
-import { ai } from '@genkit-ai/googleai'; // Corrected import for the AI client
+import ai from '@genkit-ai/googleai'; // Corrected to default import
 
-// Import Schemas and Types from the dedicated types file
+// Import Schemas y Types desde el archivo dedicado
 import {
   PersonalizedCourseInputSchema,
   type PersonalizedCourseInput,
@@ -13,7 +13,7 @@ import {
   type PersonalizedCourseWithIdsOutput
 } from '@/types/course-generation';
 
-// 1. Create the Genkit flow
+// 1. Crear el flujo de Genkit
 export const personalizedCourseFlow = defineFlow(
   {
     name: 'personalizedCourseFlow',
@@ -46,7 +46,7 @@ export const personalizedCourseFlow = defineFlow(
   }
 );
 
-// 2. Function that calls the flow and adds IDs manually
+// 2. Función que llama al flujo y agrega IDs manualmente
 export async function generatePersonalizedCourse(
   input: PersonalizedCourseInput
 ): Promise<PersonalizedCourseWithIdsOutput> {
