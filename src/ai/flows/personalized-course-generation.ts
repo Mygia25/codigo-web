@@ -1,7 +1,6 @@
 // src/ai/flows/personalized-course-generation.ts
-import { genkit } from 'genkit';
 import { defineFlow } from '@genkit-ai/flow';
-import { ai } from '../genkit'; // Corrected path to the AI client
+import { ai } from '@genkit-ai/googleai'; // Corrected import for the AI client
 
 // Import Schemas and Types from the dedicated types file
 import {
@@ -14,7 +13,7 @@ import {
   type PersonalizedCourseWithIdsOutput
 } from '@/types/course-generation';
 
-// Create the Genkit flow
+// 1. Create the Genkit flow
 export const personalizedCourseFlow = defineFlow(
   {
     name: 'personalizedCourseFlow',
@@ -22,18 +21,32 @@ export const personalizedCourseFlow = defineFlow(
     outputSchema: PersonalizedCourseOutputSchema,
   },
   async (input: PersonalizedCourseInput): Promise<PersonalizedCourseOutput> => {
-    const prompt = `Generate a personalized course structure based on the following user details: Skills: ${input.skills}, Knowledge: ${input.knowledge}, Passions: ${input.passions}, Niche: ${input.niche}. The course should be in ${input.language}.`;
+    const prompt = `
+      Generate a personalized course structure based on the following user details:
+      Skills: ${input.skills},
+      Knowledge: ${input.knowledge},
+      Passions: ${input.passions},
+      Niche: ${input.niche}.
+      The course should be in ${input.language}.
+    `;
 
     const llmResponse = await ai.generate({
-      prompt: prompt,
-      model: 'googleai/gemini-2.0-flash', // Ensure this model is available and configured
+      prompt,
+      model: 'googleai/gemini-2.0-flash', // Ensure this model is configured
       output: { schema: PersonalizedCourseOutputSchema },
     });
-    return llmResponse.output() || { courseTitle: 'Error', courseDescription: 'Error generating course', modules: [] };
+
+    // Corrected null check for strict mode
+    const out = llmResponse.output();
+    return out || {
+      courseTitle: 'Error',
+      courseDescription: 'Error generating course',
+      modules: [],
+    };
   }
 );
 
-// Function to generate the course and add IDs
+// 2. Function that calls the flow and adds IDs manually
 export async function generatePersonalizedCourse(
   input: PersonalizedCourseInput
 ): Promise<PersonalizedCourseWithIdsOutput> {
