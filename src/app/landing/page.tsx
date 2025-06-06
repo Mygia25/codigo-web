@@ -121,11 +121,11 @@ export default function LandingPage() {
         </div>
          {/* TODO: Add high-quality image or video background here - for now, placeholder styling */}
          <div className="absolute inset-0 z-0">
-            <Image 
-                src="https://placehold.co/1920x1080.png" 
+            <Image
+                src="https://placehold.co/1920x1080.png"
                 alt="Background image representing success or digital products"
-                layout="fill"
-                objectFit="cover"
+                fill
+                style={{ objectFit: 'cover' }}
                 className="opacity-10"
                 data-ai-hint="digital product hero background"
                 priority

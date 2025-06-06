@@ -159,12 +159,12 @@ export default function CursoModuloPage() {
             {moduleData.videos.map((video) => (
               <Card key={video.id} className="overflow-hidden hover:shadow-xl transition-shadow">
                 <div className="aspect-video relative">
-                  <Image 
-                    src={video.thumbnailUrl} 
-                    alt={video.title} 
-                    layout="fill" 
-                    objectFit="cover"
-                    data-ai-hint="course video" 
+                  <Image
+                    src={video.thumbnailUrl}
+                    alt={video.title}
+                    fill
+                    style={{ objectFit: 'cover' }}
+                    data-ai-hint="course video"
                   />
                   <div className="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
                     {video.duration}
