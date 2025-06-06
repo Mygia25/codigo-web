@@ -10,7 +10,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 // Import types only from the dedicated types file
-import { type PersonalizedCourseInput, type PersonalizedCourseWithIdsOutput } from '@/types/course-generation';
+import {
+  type PersonalizedCourseInput,
+  type PersonalizedCourseWithIdsOutput,
+  type PersonalizedCourseModuleWithId,
+  type PersonalizedCourseLessonWithId,
+} from '@/types/course-generation';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { useToast } from "@/hooks/use-toast";
 import { Sparkles, FileSignature, Brain, BookHeart, Target, Save, List, ChevronDown, ChevronRight, UploadCloud, Languages } from "lucide-react";
@@ -95,12 +100,12 @@ export default function GenerarCursoPage() {
       id: Date.now().toString(), // Main course ID
       title: generatedCourse.courseTitle,
       description: generatedCourse.courseDescription,
-      modules: generatedCourse.modules.map(mod => ({
-        id: mod.id, 
+      modules: generatedCourse.modules.map((mod: PersonalizedCourseModuleWithId) => ({
+        id: mod.id,
         moduleTitle: mod.moduleTitle,
         moduleDescription: mod.moduleDescription,
-        lessons: mod.lessons.map(les => ({
-          id: les.id, 
+        lessons: mod.lessons.map((les: PersonalizedCourseLessonWithId) => ({
+          id: les.id,
           lessonTitle: les.lessonTitle,
           topics: les.topics,
         })),
@@ -264,7 +269,7 @@ export default function GenerarCursoPage() {
                       <h4 className="font-semibold text-md mb-2 text-foreground/80">Lecciones:</h4>
                       {module.lessons && module.lessons.length > 0 ? (
                         <ul className="space-y-3 pl-2">
-                          {module.lessons.map((lesson, lessonIndex) => (
+                          {module.lessons.map((lesson: PersonalizedCourseLessonWithId, lessonIndex: number) => (
                             <li key={lesson.id} className="p-3 bg-background/70 rounded-md border">
                               <p className="font-medium text-foreground">{lesson.lessonTitle}</p>
                               {lesson.topics && lesson.topics.length > 0 && (

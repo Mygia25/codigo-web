@@ -1,9 +1,9 @@
 // genkit.config.ts
-import { configure } from '@genkit-ai/core';
+import { configureGenkit } from '@genkit-ai/core/lib/config.js';
 import { googleAI } from '@genkit-ai/googleai';
 import './valeria.codex'; // Ensures your codex actions are registered
 
-export default configure({
+export default configureGenkit({
   plugins: [
     googleAI({
       // Genkit will typically pick up GOOGLE_API_KEY or GOOGLE_GENERATIVE_LANGUAGE_API_KEY

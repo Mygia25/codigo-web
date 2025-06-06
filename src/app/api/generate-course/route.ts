@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
-import { generatePersonalizedCourse, type PersonalizedCourseInput } from '@/ai/flows/personalized-course-generation'; // Adjust path as needed
+import { generatePersonalizedCourse } from '@/ai/flows/personalized-course-generation';
+import type { PersonalizedCourseInput } from '@/types/course-generation';
 
 export async function POST(request: Request) {
   try {
