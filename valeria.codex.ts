@@ -1,5 +1,6 @@
 // valeria.codex.ts
-import { defineCodex, type Action } from '@genkit-ai/core'; // Corrected import
+import { defineAction } from '@genkit-ai/core';
+import { ai } from './src/ai/genkit';
 import { z } from 'zod';
 
 // Define the structure for a single task
@@ -76,19 +77,19 @@ const generarTareasSegunEtapa = (etapa: string): TareaLanzamiento[] => {
   ];
 };
 
-export const valeriaCodex = defineCodex({
-  name: 'valeria',
-  actions: {
-    saludo: async () => {
-      return 'Hola, soy Valeria. ¿En qué te puedo ayudar hoy?';
-    },
-    planificarLanzamiento: {
-      inputSchema: PlanificarLanzamientoInputSchema,
-      outputSchema: PlanificarLanzamientoOutputSchema,
-      handler: async (input) => {
-        const tareas = generarTareasSegunEtapa(input.etapaActual);
-        return tareas;
-      }
-    } as Action<typeof PlanificarLanzamientoInputSchema, typeof PlanificarLanzamientoOutputSchema>
-  }
-});
+export const saludoAction = defineAction(
+  ai.registry,
+  { name: 'valeria.saludo', actionType: 'custom', outputSchema: z.string() },
+  async () => 'Hola, soy Valeria. ¿En qué te puedo ayudar hoy?'
+);
+
+export const planificarLanzamientoAction = defineAction(
+  ai.registry,
+  {
+    name: 'valeria.planificarLanzamiento',
+    actionType: 'custom',
+    inputSchema: PlanificarLanzamientoInputSchema,
+    outputSchema: PlanificarLanzamientoOutputSchema,
+  },
+  async (input) => generarTareasSegunEtapa(input.etapaActual)
+);

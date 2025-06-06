@@ -1,5 +1,5 @@
 // src/ai/flows/personalized-course-generation.ts
-import { defineFlow } from '@genkit-ai/flow';
+import { defineFlow, runFlow } from '@genkit-ai/flow';
 // Correctly import the initialized Genkit AI client from your project's genkit.ts
 import { ai } from '../genkit'; 
 
@@ -55,8 +55,7 @@ export const personalizedCourseFlow = defineFlow(
 export async function generatePersonalizedCourse(
   input: PersonalizedCourseInput
 ): Promise<PersonalizedCourseWithIdsOutput> {
-  // Corrected: Use .run() to execute the Genkit flow
-  const aiOutput = await personalizedCourseFlow.run(input); 
+  const aiOutput = await runFlow(personalizedCourseFlow, input);
 
   if (aiOutput.courseTitle === "Error" || !aiOutput.modules) {
     return {
@@ -66,13 +65,16 @@ export async function generatePersonalizedCourse(
     };
   }
 
-  const modulesWithIds: PersonalizedCourseModuleWithId[] = aiOutput.modules.map((module, i) => ({
+  const modulesWithIds: PersonalizedCourseModuleWithId[] = aiOutput.modules.map(
+    (module: PersonalizedCourseOutput['modules'][0], i: number) => ({
     ...module,
     id: `mod-${Date.now()}-${i}`,
-    lessons: module.lessons.map((les, j) => ({
-      ...les,
-      id: `les-${Date.now()}-${i}-${j}`,
-    })),
+    lessons: module.lessons.map(
+      (les: PersonalizedCourseOutput['modules'][0]['lessons'][0], j: number) => ({
+        ...les,
+        id: `les-${Date.now()}-${i}-${j}`,
+      })
+    ),
   }));
 
   return {
