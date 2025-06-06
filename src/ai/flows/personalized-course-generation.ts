@@ -37,7 +37,7 @@ export const personalizedCourseFlow = defineFlow(
       output: { schema: PersonalizedCourseOutputSchema },
     });
 
-    const out = llmResponse.output; // Used as a getter
+    const out = llmResponse.output; // Use as a getter
 
     if (!out) {
       console.error("LLM response output was null or undefined.", llmResponse);
@@ -55,7 +55,7 @@ export const personalizedCourseFlow = defineFlow(
 export async function generatePersonalizedCourse(
   input: PersonalizedCourseInput
 ): Promise<PersonalizedCourseWithIdsOutput> {
-  // Corrected: Use .run() to execute the Genkit flow
+  // Corrected: Use .run() to execute the Genkit flow object
   const aiOutput = await personalizedCourseFlow.run(input); 
 
   if (aiOutput.courseTitle === "Error" || !aiOutput.modules) {
