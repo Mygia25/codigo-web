@@ -259,9 +259,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
     if (updatedUserResponse.user) {
         setUser(prevUser => ({
-            ...prevUser,
-            id: updatedUserResponse.user!.id, 
-            email: updatedUserResponse.user!.email, 
+            ...(prevUser ?? {}),
+            id: updatedUserResponse.user!.id,
+            email: updatedUserResponse.user!.email,
             name: updatedData.name || prevUser?.name,
             photoURL: updatedData.photoURL || prevUser?.photoURL,
         }));
