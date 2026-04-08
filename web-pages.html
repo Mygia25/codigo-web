@@ -158,14 +158,23 @@
             overflow: hidden;
             background: #fff;
             border: 1px solid #e8e8e8;
-            transition: transform 0.35s cubic-bezier(0.22,1,0.36,1), box-shadow 0.35s, border-color 0.35s;
+            border-left: 3px solid transparent;
+            transition: transform 0.35s cubic-bezier(0.22,1,0.36,1), box-shadow 0.35s, border-color 0.35s, border-left-width 0.25s;
             opacity: 1 !important;
         }
         .feature-card:hover {
             transform: translateY(-6px);
             box-shadow: 0 20px 50px rgba(0,0,0,0.10);
-            border-color: var(--verde-ia);
+            border-color: #e8e8e8;
+            border-left-width: 4px;
         }
+        /* Per-card accent colors */
+        .feature-card[data-accent="azul-tech"] { border-left-color: var(--azul-tech); }
+        .feature-card[data-accent="morado"] { border-left-color: var(--morado); }
+        .feature-card[data-accent="verde-ia"] { border-left-color: var(--verde-ia); }
+        .feature-card[data-accent="lila"] { border-left-color: var(--lila); }
+        .feature-card[data-accent="verde-progresivo"] { border-left-color: var(--verde-progresivo); }
+        .feature-card[data-accent="gris-oscuro"] { border-left-color: var(--gris-oscuro); }
         .feature-card .card-img {
             height: 140px;
             overflow: hidden;
@@ -578,90 +587,90 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
 
                 <!-- Card 1: Responsive Design -->
-                <div class="feature-card">
-                    <div class="p-5">
-                        <div class="w-11 h-11 rounded-xl flex items-center justify-center mb-4 bg-azul-tech text-white">
-                            <i data-lucide="monitor-smartphone" class="w-5 h-5"></i>
+                <div class="feature-card" data-accent="azul-tech">
+                    <div class="p-10">
+                        <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-5 bg-azul-tech text-white">
+                            <i data-lucide="monitor-smartphone" class="w-6 h-6"></i>
                         </div>
-                        <h4 class="font-bold text-gris-oscuro">Responsive Design</h4>
-                        <p class="text-sm text-gris-oscuro/55 mt-1.5 leading-relaxed">Mobile-first, perfect on every device.</p>
+                        <h4 class="font-bold text-gris-oscuro text-lg">Responsive Design</h4>
+                        <p class="text-sm text-gris-oscuro/55 mt-2 leading-relaxed">Every page is built mobile-first and rigorously tested across phones, tablets, and desktops. Your site adapts perfectly to any screen size.</p>
                     </div>
                 </div>
 
                 <!-- Card 2: Brand-Aligned Design -->
-                <div class="feature-card">
-                    <div class="p-5">
-                        <div class="w-11 h-11 rounded-xl flex items-center justify-center mb-4 bg-morado text-white">
-                            <i data-lucide="palette" class="w-5 h-5"></i>
+                <div class="feature-card" data-accent="morado">
+                    <div class="p-10">
+                        <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-5 bg-morado text-white">
+                            <i data-lucide="palette" class="w-6 h-6"></i>
                         </div>
-                        <h4 class="font-bold text-gris-oscuro">Brand-Aligned Design</h4>
-                        <p class="text-sm text-gris-oscuro/55 mt-1.5 leading-relaxed">Your colors, your identity, your story.</p>
+                        <h4 class="font-bold text-gris-oscuro text-lg">Brand-Aligned Design</h4>
+                        <p class="text-sm text-gris-oscuro/55 mt-2 leading-relaxed">We use your exact brand colors, typography, and visual identity. Your website feels authentically yours — never a cookie-cutter template.</p>
                     </div>
                 </div>
 
                 <!-- Card 3: Services Showcase -->
-                <div class="feature-card">
-                    <div class="p-5">
-                        <div class="w-11 h-11 rounded-xl flex items-center justify-center mb-4 text-white" style="background:var(--verde-ia);">
-                            <i data-lucide="layout-grid" class="w-5 h-5"></i>
+                <div class="feature-card" data-accent="verde-ia">
+                    <div class="p-10">
+                        <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-5 text-white" style="background:var(--verde-ia);">
+                            <i data-lucide="layout-grid" class="w-6 h-6"></i>
                         </div>
-                        <h4 class="font-bold text-gris-oscuro">Services Showcase</h4>
-                        <p class="text-sm text-gris-oscuro/55 mt-1.5 leading-relaxed">Present what you offer with clarity.</p>
+                        <h4 class="font-bold text-gris-oscuro text-lg">Services Showcase</h4>
+                        <p class="text-sm text-gris-oscuro/55 mt-2 leading-relaxed">Professionally structured sections to highlight your services, products, and specialties with compelling descriptions.</p>
                     </div>
                 </div>
 
                 <!-- Card 4: About Us Section -->
-                <div class="feature-card">
-                    <div class="p-5">
-                        <div class="w-11 h-11 rounded-xl flex items-center justify-center mb-4 bg-lila text-white">
-                            <i data-lucide="users" class="w-5 h-5"></i>
+                <div class="feature-card" data-accent="lila">
+                    <div class="p-10">
+                        <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-5 bg-lila text-white">
+                            <i data-lucide="users" class="w-6 h-6"></i>
                         </div>
-                        <h4 class="font-bold text-gris-oscuro">About Us Section</h4>
-                        <p class="text-sm text-gris-oscuro/55 mt-1.5 leading-relaxed">Build trust and tell your story.</p>
+                        <h4 class="font-bold text-gris-oscuro text-lg">About Us Section</h4>
+                        <p class="text-sm text-gris-oscuro/55 mt-2 leading-relaxed">Tell your company's story and build genuine trust. Include your history, mission, team, and what makes you different.</p>
                     </div>
                 </div>
 
                 <!-- Card 5: Location & Directions -->
-                <div class="feature-card">
-                    <div class="p-5">
-                        <div class="w-11 h-11 rounded-xl flex items-center justify-center mb-4 bg-azul-tech text-white">
-                            <i data-lucide="map-pin" class="w-5 h-5"></i>
+                <div class="feature-card" data-accent="azul-tech">
+                    <div class="p-10">
+                        <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-5 bg-azul-tech text-white">
+                            <i data-lucide="map-pin" class="w-6 h-6"></i>
                         </div>
-                        <h4 class="font-bold text-gris-oscuro">Location & Directions</h4>
-                        <p class="text-sm text-gris-oscuro/55 mt-1.5 leading-relaxed">Help customers find you with maps.</p>
+                        <h4 class="font-bold text-gris-oscuro text-lg">Location & Directions</h4>
+                        <p class="text-sm text-gris-oscuro/55 mt-2 leading-relaxed">Interactive map integration showing your business address, service area, and easy directions for walk-in customers.</p>
                     </div>
                 </div>
 
                 <!-- Card 6: Multi-Channel Contact -->
-                <div class="feature-card">
-                    <div class="p-5">
-                        <div class="w-11 h-11 rounded-xl flex items-center justify-center mb-4 text-white" style="background:var(--verde-progresivo);">
-                            <i data-lucide="phone" class="w-5 h-5"></i>
+                <div class="feature-card" data-accent="verde-progresivo">
+                    <div class="p-10">
+                        <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-5 text-white" style="background:var(--verde-progresivo);">
+                            <i data-lucide="phone" class="w-6 h-6"></i>
                         </div>
-                        <h4 class="font-bold text-gris-oscuro">Multi-Channel Contact</h4>
-                        <p class="text-sm text-gris-oscuro/55 mt-1.5 leading-relaxed">Phone, WhatsApp, email — all connected.</p>
+                        <h4 class="font-bold text-gris-oscuro text-lg">Multi-Channel Contact</h4>
+                        <p class="text-sm text-gris-oscuro/55 mt-2 leading-relaxed">Phone click-to-call, WhatsApp direct message, and email — all configured and ready. Zero friction for your customers.</p>
                     </div>
                 </div>
 
                 <!-- Card 7: SEO Optimization -->
-                <div class="feature-card">
-                    <div class="p-5">
-                        <div class="w-11 h-11 rounded-xl flex items-center justify-center mb-4 bg-morado text-white">
-                            <i data-lucide="search" class="w-5 h-5"></i>
+                <div class="feature-card" data-accent="morado">
+                    <div class="p-10">
+                        <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-5 bg-morado text-white">
+                            <i data-lucide="search" class="w-6 h-6"></i>
                         </div>
-                        <h4 class="font-bold text-gris-oscuro">SEO Optimization</h4>
-                        <p class="text-sm text-gris-oscuro/55 mt-1.5 leading-relaxed">Get found on Google in your area.</p>
+                        <h4 class="font-bold text-gris-oscuro text-lg">SEO Optimization</h4>
+                        <p class="text-sm text-gris-oscuro/55 mt-2 leading-relaxed">On-page SEO setup with meta tags, headings hierarchy, image optimization, and local search signals to rank on Google.</p>
                     </div>
                 </div>
 
                 <!-- Card 8: SSL + Revisions -->
-                <div class="feature-card">
-                    <div class="p-5">
-                        <div class="w-11 h-11 rounded-xl flex items-center justify-center mb-4 bg-gris-oscuro text-white">
-                            <i data-lucide="shield-check" class="w-5 h-5"></i>
+                <div class="feature-card" data-accent="gris-oscuro">
+                    <div class="p-10">
+                        <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-5 bg-gris-oscuro text-white">
+                            <i data-lucide="shield-check" class="w-6 h-6"></i>
                         </div>
-                        <h4 class="font-bold text-gris-oscuro">SSL + Revisions</h4>
-                        <p class="text-sm text-gris-oscuro/55 mt-1.5 leading-relaxed">Secure site with 2 revision rounds.</p>
+                        <h4 class="font-bold text-gris-oscuro text-lg">SSL + Revisions</h4>
+                        <p class="text-sm text-gris-oscuro/55 mt-2 leading-relaxed">Free SSL security certificate included. Plus 2 complete rounds of revisions to ensure everything meets your expectations.</p>
                     </div>
                 </div>
 
@@ -825,7 +834,7 @@
             <!-- Add-on 1: Payment Gateway -->
             <div class="addon-card reveal">
                 <div class="addon-img">
-                    <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&h=400&fit=crop&q=80" alt="Online payment gateway" loading="lazy">
+                    <img src="assets/addon-payment.png" alt="Online payment gateway" loading="lazy">
                 </div>
                 <div class="p-6">
                     <div class="flex items-center gap-3 mb-3">
@@ -842,7 +851,7 @@
             <!-- Add-on 2: Product Catalog -->
             <div class="addon-card reveal">
                 <div class="addon-img">
-                    <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&h=400&fit=crop&q=80" alt="Online shopping e-commerce" loading="lazy">
+                    <img src="assets/addon-catalog.png" alt="Online shopping e-commerce" loading="lazy">
                 </div>
                 <div class="p-6">
                     <div class="flex items-center gap-3 mb-3">
@@ -859,7 +868,7 @@
             <!-- Add-on 3: Advanced SEO + AI Search -->
             <div class="addon-card reveal">
                 <div class="addon-img">
-                    <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=600&h=400&fit=crop&q=80" alt="SEO and AI technology" loading="lazy">
+                    <img src="assets/addon-seo-ai.png" alt="SEO and AI technology" loading="lazy">
                 </div>
                 <div class="p-6">
                     <div class="flex items-center gap-3 mb-3">
@@ -876,7 +885,7 @@
             <!-- Add-on 4: AI Chatbot Agent -->
             <div class="addon-card reveal">
                 <div class="addon-img">
-                    <img src="https://images.unsplash.com/photo-1531746790095-e5e1e3e15b17?w=600&h=400&fit=crop&q=80" alt="AI chatbot messaging" loading="lazy">
+                    <img src="assets/addon-chatbot.png" alt="AI chatbot messaging" loading="lazy">
                 </div>
                 <div class="p-6">
                     <div class="flex items-center gap-3 mb-3">
@@ -893,7 +902,7 @@
             <!-- Add-on 5: AI Voice & Messaging -->
             <div class="addon-card reveal">
                 <div class="addon-img">
-                    <img src="https://images.unsplash.com/photo-1589254065878-42c014d66f47?w=600&h=400&fit=crop&q=80" alt="AI voice assistant" loading="lazy">
+                    <img src="assets/addon-voice.png" alt="AI voice assistant" loading="lazy">
                 </div>
                 <div class="p-6">
                     <div class="flex items-center gap-3 mb-3">
