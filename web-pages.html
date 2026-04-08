@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Web Pages | MY-GIA — AI-Powered Web Design</title>
+    <meta name="description" content="Professional websites starting at $399/page. Mobile-first, AI-powered development. Delivered in 5 business days. Texas & Florida.">
+    <meta property="og:title" content="Custom Web Pages Starting at $399 | MY-GIA">
+    <meta property="og:description" content="AI-powered web design delivered in 5 business days. Mobile-first, brand-aligned, SEO-optimized.">
+    <meta property="og:image" content="assets/logosinfondo.png">
+    <link rel="canonical" href="https://mygia.online/web-pages.html">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { 'inter': ['Inter', 'sans-serif'] },
+                    colors: {
+                        'verde-ia': '#00D1A0',
+                        'verde-prog': '#00C853',
+                        'azul-tech': '#0A74DA',
+                        'morado': '#7B2CBF',
+                        'morado-oscuro': '#1a0b2e',
+                        'lila': '#8587C6',
+                        'gris-oscuro': '#1C1C1C',
+                        'gris-claro': '#F2F2F2',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root {
+            --verde-ia: #00D1A0;
+            --verde-progresivo: #00C853;
+            --azul-tech: #0A74DA;
+            --morado-creativo: #7B2CBF;
+            --morado-oscuro: #1a0b2e;
+            --lila-cool: #8587C6;
+            --gris-oscuro: #1C1C1C;
+            --gris-claro: #F2F2F2;
+            --blanco: #FFFFFF;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; overflow-x: hidden; background: #fff; color: var(--gris-oscuro); }
+
+        /* Chrome gradient bar */
+        .chrome-bar {
+            height: 3px;
+            background: linear-gradient(90deg, #00D1A0, #0A74DA, #7B2CBF, #0A74DA, #00D1A0);
+            background-size: 200% 100%;
+            animation: shimmer 4s linear infinite;
+        }
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* Navbar */
+        .nav-main {
+            position: fixed;
+            top: 3px;
+            left: 0; right: 0;
+            z-index: 1000;
+            transition: background 0.35s, box-shadow 0.35s, backdrop-filter 0.35s;
+            background: transparent;
+        }
+        .nav-main.scrolled {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 2px 24px rgba(0,0,0,0.08);
+        }
+        .nav-main.scrolled .nav-link { color: var(--gris-oscuro); }
+        .nav-main.scrolled .nav-link:hover { color: var(--verde-ia); }
+        .nav-main.scrolled .logo-img { filter: none; }
+        .nav-main.scrolled .logo-text { color: var(--gris-oscuro); }
+        .nav-link {
+            color: rgba(255,255,255,0.8);
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: color 0.2s;
+            text-decoration: none;
+        }
+        .nav-link:hover { color: #fff; }
+        .logo-img { height: 28px; filter: brightness(0) invert(1); transition: filter 0.35s; }
+        .logo-text { color: #fff; font-weight: 900; font-size: 1.25rem; transition: color 0.35s; letter-spacing: -0.02em; }
+
+        /* Hero galaxy */
+        .hero-section {
+            min-height: 100vh;
+            background: var(--gris-oscuro);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 60% 50% at 20% 40%, rgba(123,44,191,0.18) 0%, transparent 70%),
+                radial-gradient(ellipse 50% 60% at 75% 30%, rgba(10,116,218,0.14) 0%, transparent 70%),
+                radial-gradient(ellipse 40% 40% at 50% 80%, rgba(0,209,160,0.10) 0%, transparent 70%);
+        }
+        .hero-section::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        /* Stars */
+        .star {
+            position: absolute;
+            width: 2px; height: 2px;
+            background: rgba(255,255,255,0.6);
+            border-radius: 50%;
+            animation: twinkle 3s ease-in-out infinite alternate;
+        }
+        @keyframes twinkle {
+            0% { opacity: 0.2; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1.2); }
+        }
+
+        /* Gradient text */
+        .grad-text {
+            background: linear-gradient(135deg, var(--verde-ia), var(--verde-progresivo));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Glass card */
+        .glass-card {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(16px);
+            border-radius: 16px;
+        }
+
+        /* Feature cards */
+        .feature-card {
+            border-radius: 16px;
+            overflow: hidden;
+            background: #fff;
+            border: 1px solid #e8e8e8;
+            transition: transform 0.35s cubic-bezier(0.22,1,0.36,1), box-shadow 0.35s, border-color 0.35s;
+            opacity: 1 !important;
+        }
+        .feature-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.10);
+            border-color: var(--verde-ia);
+        }
+        .feature-card .card-img {
+            height: 140px;
+            overflow: hidden;
+        }
+        .feature-card .card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s cubic-bezier(0.22,1,0.36,1);
+        }
+        .feature-card:hover .card-img img {
+            transform: scale(1.08);
+        }
+        .feature-card .icon-badge {
+            width: 36px; height: 36px;
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            position: absolute;
+            bottom: -18px; right: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+        }
+
+        /* Pricing cards (dark section) */
+        .pricing-card {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 2.5rem 2rem;
+            transition: transform 0.4s cubic-bezier(0.22,1,0.36,1), box-shadow 0.4s;
+            opacity: 1 !important;
+        }
+        .pricing-card:hover {
+            transform: translateY(-4px);
+        }
+        .pricing-card.highlighted {
+            border: 2px solid var(--verde-ia);
+            box-shadow: 0 0 30px rgba(0,209,160,0.2);
+            animation: neonPulse 3s ease-in-out infinite;
+        }
+        @keyframes neonPulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(0,209,160,0.15), 0 0 40px rgba(0,209,160,0.05); }
+            50% { box-shadow: 0 0 30px rgba(0,209,160,0.3), 0 0 60px rgba(0,209,160,0.1); }
+        }
+
+        /* Add-on cards */
+        .addon-card {
+            border-radius: 20px;
+            overflow: hidden;
+            background: #fff;
+            border: 1px solid #e8e8e8;
+            transition: transform 0.35s cubic-bezier(0.22,1,0.36,1), box-shadow 0.35s;
+            opacity: 1 !important;
+        }
+        .addon-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 24px 56px rgba(0,0,0,0.10);
+        }
+        .addon-card .addon-img {
+            height: 200px;
+            overflow: hidden;
+        }
+        .addon-card .addon-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s cubic-bezier(0.22,1,0.36,1);
+        }
+        .addon-card:hover .addon-img img {
+            transform: scale(1.06);
+        }
+
+        /* Process timeline */
+        .process-timeline {
+            display: flex;
+            position: relative;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 0;
+        }
+        .process-timeline::before {
+            content: '';
+            position: absolute;
+            top: 24px;
+            left: 24px;
+            right: 24px;
+            height: 2px;
+            background: #EAEAEA;
+            z-index: 0;
+        }
+        .timeline-step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            padding: 0 0.75rem;
+            opacity: 1 !important;
+        }
+        .timeline-circle {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 1rem;
+            color: #fff;
+            margin: 0 auto 1rem;
+            position: relative;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .timeline-circle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        }
+        .timeline-step h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--gris-oscuro);
+        }
+        .timeline-step p {
+            font-size: 0.8125rem;
+            line-height: 1.6;
+            color: rgba(28,28,28,0.55);
+        }
+        .timeline-step .timeline-tag {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 8px;
+            margin-top: 0.75rem;
+        }
+        @media (max-width: 768px) {
+            .process-timeline {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 2rem;
+            }
+            .process-timeline::before {
+                top: 24px;
+                left: 23px;
+                right: auto;
+                width: 2px;
+                height: calc(100% - 48px);
+            }
+            .timeline-step {
+                display: flex;
+                align-items: flex-start;
+                gap: 1rem;
+                text-align: left;
+                padding: 0;
+            }
+            .timeline-circle {
+                margin: 0;
+                flex-shrink: 0;
+            }
+        }
+
+        /* Condition boxes */
+        .condition-box {
+            background: var(--gris-claro);
+            border-radius: 14px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        .condition-box:hover { transform: translateY(-2px); }
+
+        /* CTA button */
+        .btn-primary {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 14px 32px;
+            background: linear-gradient(135deg, var(--verde-ia), var(--verde-progresivo));
+            color: var(--gris-oscuro);
+            font-weight: 700;
+            border-radius: 999px;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: transform 0.25s, box-shadow 0.25s;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 12px 32px rgba(0,209,160,0.3);
+        }
+        .btn-outline {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 14px 32px;
+            background: transparent;
+            color: #fff;
+            font-weight: 700;
+            border-radius: 999px;
+            text-decoration: none;
+            font-size: 0.95rem;
+            border: 2px solid rgba(255,255,255,0.25);
+            transition: transform 0.25s, border-color 0.25s, background 0.25s;
+            cursor: pointer;
+        }
+        .btn-outline:hover {
+            transform: translateY(-2px);
+            border-color: var(--verde-ia);
+            background: rgba(0,209,160,0.08);
+        }
+
+        /* Section helpers */
+        .section-dark {
+            background: var(--gris-oscuro);
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+        }
+        .section-dark::before {
+            content: '';
+            position: absolute; inset: 0;
+            background:
+                radial-gradient(ellipse 50% 50% at 15% 50%, rgba(123,44,191,0.12) 0%, transparent 70%),
+                radial-gradient(ellipse 50% 50% at 85% 50%, rgba(0,209,160,0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        /* Mobile menu */
+        .mobile-menu {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(28,28,28,0.98);
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        .mobile-menu.open {
+            opacity: 1;
+            pointer-events: all;
+        }
+        .mobile-menu a {
+            color: #fff;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .mobile-menu a:hover { color: var(--verde-ia); }
+
+        /* Reveal fallback */
+        .reveal { opacity: 1 !important; }
+
+        /* Price tag pill */
+        .price-pill {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-h1 { font-size: 2.75rem !important; }
+            .pricing-grid { grid-template-columns: 1fr !important; }
+            .addon-grid { grid-template-columns: 1fr !important; }
+        }
+        @media (max-width: 480px) {
+            .hero-h1 { font-size: 2.25rem !important; }
+            .conditions-grid { grid-template-columns: 1fr !important; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ============================================ -->
+<!-- SECTION 1: Chrome Bar + Navbar               -->
+<!-- ============================================ -->
+<div class="chrome-bar" style="position:fixed;top:0;left:0;right:0;z-index:1001;"></div>
+
+<nav class="nav-main" id="navbar">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        <a href="/" class="flex items-center gap-3 no-underline">
+            <img src="assets/logosinfondo.png" alt="MY-GIA" class="logo-img">
+            <span class="logo-text">MY-GIA</span>
+        </a>
+        <div class="hidden md:flex items-center gap-8">
+            <a href="#pricing" class="nav-link">What's Included</a>
+            <a href="#volume" class="nav-link">Pricing</a>
+            <a href="#addons" class="nav-link">Add-ons</a>
+            <a href="#process" class="nav-link">Process</a>
+            <a href="#contact" class="nav-link">Contact</a>
+        </div>
+        <button id="menuBtn" class="md:hidden text-white" aria-label="Open menu">
+            <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
+    </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+    <button id="closeMenu" class="absolute top-6 right-6 text-white" aria-label="Close menu">
+        <i data-lucide="x" class="w-8 h-8"></i>
+    </button>
+    <a href="#pricing" onclick="closeMobileMenu()">What's Included</a>
+    <a href="#volume" onclick="closeMobileMenu()">Pricing</a>
+    <a href="#addons" onclick="closeMobileMenu()">Add-ons</a>
+    <a href="#process" onclick="closeMobileMenu()">Process</a>
+    <a href="#contact" onclick="closeMobileMenu()">Contact</a>
+</div>
+
+
+<!-- ============================================ -->
+<!-- SECTION 2: HERO                              -->
+<!-- ============================================ -->
+<section class="hero-section" id="hero">
+    <!-- Floating stars -->
+    <div class="star" style="top:12%;left:8%;animation-delay:0s;"></div>
+    <div class="star" style="top:22%;left:78%;animation-delay:0.5s;width:3px;height:3px;"></div>
+    <div class="star" style="top:55%;left:15%;animation-delay:1s;"></div>
+    <div class="star" style="top:18%;left:45%;animation-delay:1.5s;width:3px;height:3px;"></div>
+    <div class="star" style="top:75%;left:72%;animation-delay:0.3s;"></div>
+    <div class="star" style="top:35%;left:90%;animation-delay:2s;"></div>
+    <div class="star" style="top:65%;left:35%;animation-delay:0.8s;width:3px;height:3px;"></div>
+    <div class="star" style="top:80%;left:50%;animation-delay:1.2s;"></div>
+    <div class="star" style="top:10%;left:62%;animation-delay:2.5s;width:3px;height:3px;"></div>
+    <div class="star" style="top:42%;left:5%;animation-delay:0.7s;"></div>
+    <div class="star" style="top:30%;left:25%;animation-delay:1.8s;"></div>
+    <div class="star" style="top:88%;left:85%;animation-delay:0.4s;width:3px;height:3px;"></div>
+    <div class="star" style="top:50%;left:55%;animation-delay:2.2s;"></div>
+    <div class="star" style="top:15%;left:92%;animation-delay:1.3s;"></div>
+    <div class="star" style="top:68%;left:10%;animation-delay:0.6s;width:3px;height:3px;"></div>
+
+    <div class="relative z-10 text-center px-6 max-w-4xl mx-auto">
+        <!-- Badge -->
+        <div class="hero-badge mb-8 inline-flex items-center gap-2 px-5 py-2 rounded-full border border-white/15 bg-white/5 backdrop-blur-sm">
+            <i data-lucide="globe" class="w-4 h-4 text-verde-ia"></i>
+            <span class="text-sm font-medium text-white/80 tracking-wider uppercase">Web Design Service</span>
+        </div>
+
+        <!-- H1 -->
+        <h1 class="hero-h1 text-white font-black leading-[1.05] tracking-tight" style="font-size:4.25rem;">
+            We Build Websites<br>
+            <span class="grad-text">That Convert</span>
+        </h1>
+
+        <!-- Subtitle -->
+        <p class="hero-sub mt-6 text-lg text-white/60 max-w-2xl mx-auto leading-relaxed">
+            Custom, mobile-first websites for businesses. AI-powered development. Human-perfected design. Delivered in 5 business days.
+        </p>
+
+        <!-- CTA -->
+        <div class="hero-cta mt-10">
+            <a href="#pricing" class="btn-primary text-base">
+                See Our Plans
+                <i data-lucide="arrow-down" class="w-4 h-4"></i>
+            </a>
+        </div>
+
+        <!-- Stats -->
+        <div class="hero-stats mt-16 grid grid-cols-3 gap-4 max-w-lg mx-auto">
+            <div class="glass-card px-4 py-5 text-center">
+                <div class="text-2xl font-black text-white" data-counter="50" data-suffix="+">0</div>
+                <div class="text-xs text-white/50 mt-1 font-medium uppercase tracking-wider">Pages Built</div>
+            </div>
+            <div class="glass-card px-4 py-5 text-center">
+                <div class="text-2xl font-black text-white" data-counter="5">0</div>
+                <div class="text-xs text-white/50 mt-1 font-medium uppercase tracking-wider">Day Delivery</div>
+            </div>
+            <div class="glass-card px-4 py-5 text-center">
+                <div class="text-2xl font-black grad-text">TX & FL</div>
+                <div class="text-xs text-white/50 mt-1 font-medium uppercase tracking-wider">Service Areas</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ============================================ -->
+<!-- SECTION 3: PRICING + WHAT'S INCLUDED (WHITE) -->
+<!-- ============================================ -->
+<section class="py-24 bg-white" id="pricing">
+    <div class="max-w-6xl mx-auto px-6">
+
+        <!-- Price Banner -->
+        <div class="text-center mb-20 reveal">
+            <span class="inline-block px-4 py-1.5 rounded-full bg-verde-ia/10 text-verde-ia text-sm font-bold uppercase tracking-wider mb-6">Professional Websites</span>
+            <p class="text-gris-oscuro/50 text-lg font-medium">Starting at</p>
+            <div class="mt-2 flex items-baseline justify-center gap-2">
+                <span class="font-black tracking-tight" style="font-size:5rem;line-height:1;color:var(--gris-oscuro);">$399</span>
+                <span class="text-xl font-medium text-gris-oscuro/40">/page</span>
+            </div>
+            <p class="mt-4 text-gris-oscuro/60 text-lg max-w-xl mx-auto">
+                Perfect for professional projects. Everything your business needs in one page.
+            </p>
+            <p class="mt-3 text-sm text-gris-oscuro/40 font-medium">
+                <i data-lucide="clock" class="w-3.5 h-3.5 inline-block mr-1 relative" style="top:-1px;"></i>
+                Delivery: 5 business days from information receipt
+            </p>
+        </div>
+
+        <!-- What's Included -->
+        <div class="mb-16 reveal">
+            <h3 class="text-2xl font-bold text-center mb-12">Every Page Comes With</h3>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+                <!-- Card 1: Responsive Design -->
+                <div class="feature-card">
+                    <div class="p-5">
+                        <div class="w-11 h-11 rounded-xl flex items-center justify-center mb-4 bg-azul-tech text-white">
+                            <i data-lucide="monitor-smartphone" class="w-5 h-5"></i>
+                        </div>
+                        <h4 class="font-bold text-gris-oscuro">Responsive Design</h4>
+                        <p class="text-sm text-gris-oscuro/55 mt-1.5 leading-relaxed">Mobile-first, perfect on every device.</p>
+                    </div>
+                </div>
+
+                <!-- Card 2: Brand-Aligned Design -->
+                <div class="feature-card">
+                    <div class="p-5">
+                        <div class="w-11 h-11 rounded-xl flex items-center justify-center mb-4 bg-morado text-white">
+                            <i data-lucide="palette" class="w-5 h-5"></i>
+                        </div>
+                        <h4 class="font-bold text-gris-oscuro">Brand-Aligned Design</h4>
+                        <p class="text-sm text-gris-oscuro/55 mt-1.5 leading-relaxed">Your colors, your identity, your story.</p>
+                    </div>
+                </div>
+
+                <!-- Card 3: Services Showcase -->
+                <div class="feature-card">
+                    <div class="p-5">
+                        <div class="w-11 h-11 rounded-xl flex items-center justify-center mb-4 text-white" style="background:var(--verde-ia);">
+                            <i data-lucide="layout-grid" class="w-5 h-5"></i>
+                        </div>
+                        <h4 class="font-bold text-gris-oscuro">Services Showcase</h4>
+                        <p class="text-sm text-gris-oscuro/55 mt-1.5 leading-relaxed">Present what you offer with clarity.</p>
+                    </div>
+                </div>
+
+                <!-- Card 4: About Us Section -->
+                <div class="feature-card">
+                    <div class="p-5">
+                        <div class="w-11 h-11 rounded-xl flex items-center justify-center mb-4 bg-lila text-white">
+                            <i data-lucide="users" class="w-5 h-5"></i>
+                        </div>
+                        <h4 class="font-bold text-gris-oscuro">About Us Section</h4>
+                        <p class="text-sm text-gris-oscuro/55 mt-1.5 leading-relaxed">Build trust and tell your story.</p>
+                    </div>
+                </div>
+
+                <!-- Card 5: Location & Directions -->
+                <div class="feature-card">
+                    <div class="p-5">
+                        <div class="w-11 h-11 rounded-xl flex items-center justify-center mb-4 bg-azul-tech text-white">
+                            <i data-lucide="map-pin" class="w-5 h-5"></i>
+                        </div>
+                        <h4 class="font-bold text-gris-oscuro">Location & Directions</h4>
+                        <p class="text-sm text-gris-oscuro/55 mt-1.5 leading-relaxed">Help customers find you with maps.</p>
+                    </div>
+                </div>
+
+                <!-- Card 6: Multi-Channel Contact -->
+                <div class="feature-card">
+                    <div class="p-5">
+                        <div class="w-11 h-11 rounded-xl flex items-center justify-center mb-4 text-white" style="background:var(--verde-progresivo);">
+                            <i data-lucide="phone" class="w-5 h-5"></i>
+                        </div>
+                        <h4 class="font-bold text-gris-oscuro">Multi-Channel Contact</h4>
+                        <p class="text-sm text-gris-oscuro/55 mt-1.5 leading-relaxed">Phone, WhatsApp, email — all connected.</p>
+                    </div>
+                </div>
+
+                <!-- Card 7: SEO Optimization -->
+                <div class="feature-card">
+                    <div class="p-5">
+                        <div class="w-11 h-11 rounded-xl flex items-center justify-center mb-4 bg-morado text-white">
+                            <i data-lucide="search" class="w-5 h-5"></i>
+                        </div>
+                        <h4 class="font-bold text-gris-oscuro">SEO Optimization</h4>
+                        <p class="text-sm text-gris-oscuro/55 mt-1.5 leading-relaxed">Get found on Google in your area.</p>
+                    </div>
+                </div>
+
+                <!-- Card 8: SSL + Revisions -->
+                <div class="feature-card">
+                    <div class="p-5">
+                        <div class="w-11 h-11 rounded-xl flex items-center justify-center mb-4 bg-gris-oscuro text-white">
+                            <i data-lucide="shield-check" class="w-5 h-5"></i>
+                        </div>
+                        <h4 class="font-bold text-gris-oscuro">SSL + Revisions</h4>
+                        <p class="text-sm text-gris-oscuro/55 mt-1.5 leading-relaxed">Secure site with 2 revision rounds.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Conditions -->
+        <div class="conditions-grid grid grid-cols-1 md:grid-cols-3 gap-5 reveal">
+            <div class="condition-box">
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center mx-auto mb-3" style="background:rgba(0,209,160,0.1);">
+                    <i data-lucide="calendar" class="w-5 h-5" style="color:var(--verde-ia);"></i>
+                </div>
+                <h4 class="font-bold text-sm" style="color:var(--gris-oscuro);">5 Business Days</h4>
+                <p class="text-xs mt-1" style="color:rgba(28,28,28,0.5);">Delivery starts when we have all your info</p>
+            </div>
+            <div class="condition-box">
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center mx-auto mb-3" style="background:rgba(10,116,218,0.1);">
+                    <i data-lucide="dollar-sign" class="w-5 h-5" style="color:var(--azul-tech);"></i>
+                </div>
+                <h4 class="font-bold text-sm" style="color:var(--gris-oscuro);">50/50 Payment</h4>
+                <p class="text-xs mt-1" style="color:rgba(28,28,28,0.5);">50% upfront to start, 50% on delivery</p>
+            </div>
+            <div class="condition-box">
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center mx-auto mb-3" style="background:rgba(123,44,191,0.1);">
+                    <i data-lucide="refresh-cw" class="w-5 h-5" style="color:var(--morado-creativo);"></i>
+                </div>
+                <h4 class="font-bold text-sm" style="color:var(--gris-oscuro);">2 Rounds + Final</h4>
+                <p class="text-xs mt-1" style="color:rgba(28,28,28,0.5);">Initial design, 2 revision rounds, final delivery</p>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- ============================================ -->
+<!-- SECTION 4: VOLUME DEAL (DARK)                -->
+<!-- ============================================ -->
+<section class="section-dark py-24" id="volume">
+    <div class="max-w-5xl mx-auto px-6 relative z-10">
+
+        <div class="text-center mb-16 reveal">
+            <h2 class="text-4xl md:text-5xl font-black text-white tracking-tight">Better Deal for Volume Partners</h2>
+            <p class="text-white/50 text-lg mt-4 max-w-xl mx-auto">Bring more projects, pay less per page. Simple weekly cycles.</p>
+        </div>
+
+        <div class="pricing-grid grid grid-cols-1 md:grid-cols-2 gap-8">
+
+            <!-- Standard Card -->
+            <div class="pricing-card reveal">
+                <p class="text-xs font-bold uppercase tracking-widest text-white/40 mb-4">Standard</p>
+                <div class="flex items-baseline gap-2">
+                    <span class="text-5xl font-black text-white">$399</span>
+                    <span class="text-white/40 font-medium">/page</span>
+                </div>
+                <p class="text-white/45 text-sm mt-2 mb-8">1-2 pages per week</p>
+
+                <ul class="space-y-3 mb-10">
+                    <li class="flex items-start gap-3 text-white/70 text-sm">
+                        <i data-lucide="check" class="w-4 h-4 flex-shrink-0 mt-0.5" style="color:var(--verde-ia);"></i>
+                        Responsive, mobile-first design
+                    </li>
+                    <li class="flex items-start gap-3 text-white/70 text-sm">
+                        <i data-lucide="check" class="w-4 h-4 flex-shrink-0 mt-0.5" style="color:var(--verde-ia);"></i>
+                        Brand-aligned with your identity
+                    </li>
+                    <li class="flex items-start gap-3 text-white/70 text-sm">
+                        <i data-lucide="check" class="w-4 h-4 flex-shrink-0 mt-0.5" style="color:var(--verde-ia);"></i>
+                        SEO optimization included
+                    </li>
+                    <li class="flex items-start gap-3 text-white/70 text-sm">
+                        <i data-lucide="check" class="w-4 h-4 flex-shrink-0 mt-0.5" style="color:var(--verde-ia);"></i>
+                        SSL certificate setup
+                    </li>
+                    <li class="flex items-start gap-3 text-white/70 text-sm">
+                        <i data-lucide="check" class="w-4 h-4 flex-shrink-0 mt-0.5" style="color:var(--verde-ia);"></i>
+                        5-day delivery guarantee
+                    </li>
+                    <li class="flex items-start gap-3 text-white/70 text-sm">
+                        <i data-lucide="check" class="w-4 h-4 flex-shrink-0 mt-0.5" style="color:var(--verde-ia);"></i>
+                        50/50 payment structure
+                    </li>
+                    <li class="flex items-start gap-3 text-white/70 text-sm">
+                        <i data-lucide="check" class="w-4 h-4 flex-shrink-0 mt-0.5" style="color:var(--verde-ia);"></i>
+                        2 revision rounds
+                    </li>
+                    <li class="flex items-start gap-3 text-white/70 text-sm">
+                        <i data-lucide="check" class="w-4 h-4 flex-shrink-0 mt-0.5" style="color:var(--verde-ia);"></i>
+                        All 8 features included
+                    </li>
+                </ul>
+
+                <a href="cotizacion-web-pages.html" class="btn-outline w-full justify-center">
+                    Download Quote
+                    <i data-lucide="download" class="w-4 h-4"></i>
+                </a>
+            </div>
+
+            <!-- Volume Partner Card (Highlighted) -->
+            <div class="pricing-card highlighted reveal">
+                <div class="flex items-center justify-between mb-4">
+                    <p class="text-xs font-bold uppercase tracking-widest" style="color:var(--verde-ia);">Volume Partner</p>
+                    <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider" style="background:rgba(0,209,160,0.15);color:var(--verde-ia);">Best Value</span>
+                </div>
+                <div class="flex items-baseline gap-2">
+                    <span class="text-5xl font-black text-white">$349</span>
+                    <span class="text-white/40 font-medium">/page</span>
+                </div>
+                <p class="text-white/45 text-sm mt-2 mb-8">5+ pages per week</p>
+
+                <ul class="space-y-3 mb-10">
+                    <li class="flex items-start gap-3 text-white/80 text-sm">
+                        <i data-lucide="check" class="w-4 h-4 flex-shrink-0 mt-0.5" style="color:var(--verde-ia);"></i>
+                        <span><strong class="text-white">Save $50+</strong> per page on every project</span>
+                    </li>
+                    <li class="flex items-start gap-3 text-white/80 text-sm">
+                        <i data-lucide="check" class="w-4 h-4 flex-shrink-0 mt-0.5" style="color:var(--verde-ia);"></i>
+                        <span><strong class="text-white">Priority queue</strong> — your projects come first</span>
+                    </li>
+                    <li class="flex items-start gap-3 text-white/80 text-sm">
+                        <i data-lucide="check" class="w-4 h-4 flex-shrink-0 mt-0.5" style="color:var(--verde-ia);"></i>
+                        <span><strong class="text-white">Weekly billing</strong> — predictable cash flow</span>
+                    </li>
+                    <li class="flex items-start gap-3 text-white/80 text-sm">
+                        <i data-lucide="check" class="w-4 h-4 flex-shrink-0 mt-0.5" style="color:var(--verde-ia);"></i>
+                        <span><strong class="text-white">Dedicated channel</strong> for direct communication</span>
+                    </li>
+                    <li class="flex items-start gap-3 text-white/80 text-sm">
+                        <i data-lucide="check" class="w-4 h-4 flex-shrink-0 mt-0.5" style="color:var(--verde-ia);"></i>
+                        <span><strong class="text-white">Scale your agency</strong> without hiring designers</span>
+                    </li>
+                </ul>
+
+                <a href="cotizacion-web-pages.html" class="btn-primary w-full justify-center">
+                    Download Quote
+                    <i data-lucide="download" class="w-4 h-4"></i>
+                </a>
+            </div>
+
+        </div>
+
+        <p class="text-center text-white/30 text-sm mt-10">All prices USD. Each page tracked individually. Weekly cycles: Mon-Fri.</p>
+
+    </div>
+</section>
+
+
+<!-- ============================================ -->
+<!-- SECTION 5: ADD-ONS (WHITE)                   -->
+<!-- ============================================ -->
+<section class="py-24 bg-white" id="addons">
+    <div class="max-w-6xl mx-auto px-6">
+
+        <div class="text-center mb-16 reveal">
+            <h2 class="text-4xl md:text-5xl font-black tracking-tight" style="color:var(--gris-oscuro);">Power Up Any Project</h2>
+            <p class="text-lg mt-4 max-w-xl mx-auto" style="color:rgba(28,28,28,0.5);">Premium add-ons to elevate your client's website beyond the basics.</p>
+        </div>
+
+        <div class="addon-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+            <!-- Add-on 1: Payment Gateway -->
+            <div class="addon-card reveal">
+                <div class="addon-img">
+                    <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&h=400&fit=crop&q=80" alt="Online payment gateway" loading="lazy">
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-9 h-9 rounded-lg flex items-center justify-center" style="background:rgba(10,116,218,0.1);">
+                            <i data-lucide="credit-card" class="w-5 h-5" style="color:var(--azul-tech);"></i>
+                        </div>
+                        <h4 class="font-bold text-lg" style="color:var(--gris-oscuro);">Payment Gateway</h4>
+                    </div>
+                    <p class="text-sm leading-relaxed mb-4" style="color:rgba(28,28,28,0.55);">Accept credit cards, subscriptions, and payments directly through the website. Stripe, PayPal, or local processor integration.</p>
+                    <span class="price-pill" style="background:rgba(10,116,218,0.1);color:var(--azul-tech);">From $700</span>
+                </div>
+            </div>
+
+            <!-- Add-on 2: Product Catalog -->
+            <div class="addon-card reveal">
+                <div class="addon-img">
+                    <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&h=400&fit=crop&q=80" alt="Online shopping e-commerce" loading="lazy">
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-9 h-9 rounded-lg flex items-center justify-center" style="background:rgba(0,209,160,0.1);">
+                            <i data-lucide="shopping-bag" class="w-5 h-5" style="color:var(--verde-ia);"></i>
+                        </div>
+                        <h4 class="font-bold text-lg" style="color:var(--gris-oscuro);">Product Catalog</h4>
+                    </div>
+                    <p class="text-sm leading-relaxed mb-4" style="color:rgba(28,28,28,0.55);">Full product or service catalog with categories, descriptions, images, and SEO-optimized listings. E-commerce ready.</p>
+                    <span class="price-pill" style="background:rgba(0,209,160,0.1);color:var(--verde-ia);">From $700</span>
+                </div>
+            </div>
+
+            <!-- Add-on 3: Advanced SEO + AI Search -->
+            <div class="addon-card reveal">
+                <div class="addon-img">
+                    <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=600&h=400&fit=crop&q=80" alt="SEO and AI technology" loading="lazy">
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-9 h-9 rounded-lg flex items-center justify-center" style="background:rgba(123,44,191,0.1);">
+                            <i data-lucide="trending-up" class="w-5 h-5" style="color:var(--morado-creativo);"></i>
+                        </div>
+                        <h4 class="font-bold text-lg" style="color:var(--gris-oscuro);">Advanced SEO + AI Search</h4>
+                    </div>
+                    <p class="text-sm leading-relaxed mb-4" style="color:rgba(28,28,28,0.55);">Comprehensive local SEO, schema markup, and optimization for AI search engines (Google AI, ChatGPT, Perplexity). Rank higher everywhere.</p>
+                    <span class="price-pill" style="background:rgba(123,44,191,0.1);color:var(--morado-creativo);">From $250</span>
+                </div>
+            </div>
+
+            <!-- Add-on 4: AI Chatbot Agent -->
+            <div class="addon-card reveal">
+                <div class="addon-img">
+                    <img src="https://images.unsplash.com/photo-1531746790095-e5e1e3e15b17?w=600&h=400&fit=crop&q=80" alt="AI chatbot messaging" loading="lazy">
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-9 h-9 rounded-lg flex items-center justify-center" style="background:rgba(133,135,198,0.1);">
+                            <i data-lucide="message-circle" class="w-5 h-5" style="color:var(--lila-cool);"></i>
+                        </div>
+                        <h4 class="font-bold text-lg" style="color:var(--gris-oscuro);">AI Chatbot Agent</h4>
+                    </div>
+                    <p class="text-sm leading-relaxed mb-4" style="color:rgba(28,28,28,0.55);">Intelligent 24/7 customer support that answers questions, qualifies leads, and books appointments. Embedded directly in the website.</p>
+                    <span class="price-pill" style="background:rgba(133,135,198,0.1);color:var(--lila-cool);">From $2,400</span>
+                </div>
+            </div>
+
+            <!-- Add-on 5: AI Voice & Messaging -->
+            <div class="addon-card reveal">
+                <div class="addon-img">
+                    <img src="https://images.unsplash.com/photo-1589254065878-42c014d66f47?w=600&h=400&fit=crop&q=80" alt="AI voice assistant" loading="lazy">
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-9 h-9 rounded-lg flex items-center justify-center" style="background:rgba(0,209,160,0.1);">
+                            <i data-lucide="phone-call" class="w-5 h-5" style="color:var(--verde-ia);"></i>
+                        </div>
+                        <h4 class="font-bold text-lg" style="color:var(--gris-oscuro);">AI Voice & Messaging</h4>
+                    </div>
+                    <p class="text-sm leading-relaxed mb-4" style="color:rgba(28,28,28,0.55);">Phone call agents, WhatsApp bots, SMS automation, and email/CRM integrations. Full communication stack powered by AI.</p>
+                    <span class="price-pill" style="background:rgba(0,209,160,0.1);color:var(--verde-ia);">Custom Quote</span>
+                </div>
+            </div>
+
+            <!-- Add-on 6: Custom Integrations -->
+            <div class="addon-card reveal">
+                <div class="addon-img" style="background:#F4F5F7;display:flex;align-items:center;justify-content:center;padding:1.25rem;">
+                    <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center;max-width:280px;">
+                        <span style="display:inline-flex;align-items:center;gap:4px;padding:6px 12px;border-radius:999px;background:#fff;border:1px solid #E2E2E2;font-size:0.7rem;font-weight:600;color:#333;box-shadow:0 1px 3px rgba(0,0,0,0.06);">Shopify</span>
+                        <span style="display:inline-flex;align-items:center;gap:4px;padding:6px 12px;border-radius:999px;background:#fff;border:1px solid #E2E2E2;font-size:0.7rem;font-weight:600;color:#333;box-shadow:0 1px 3px rgba(0,0,0,0.06);">ChatGPT</span>
+                        <span style="display:inline-flex;align-items:center;gap:4px;padding:6px 12px;border-radius:999px;background:#fff;border:1px solid #E2E2E2;font-size:0.7rem;font-weight:600;color:#333;box-shadow:0 1px 3px rgba(0,0,0,0.06);">Claude</span>
+                        <span style="display:inline-flex;align-items:center;gap:4px;padding:6px 12px;border-radius:999px;background:#fff;border:1px solid #E2E2E2;font-size:0.7rem;font-weight:600;color:#333;box-shadow:0 1px 3px rgba(0,0,0,0.06);">Stripe</span>
+                        <span style="display:inline-flex;align-items:center;gap:4px;padding:6px 12px;border-radius:999px;background:#fff;border:1px solid #E2E2E2;font-size:0.7rem;font-weight:600;color:#333;box-shadow:0 1px 3px rgba(0,0,0,0.06);">Google</span>
+                        <span style="display:inline-flex;align-items:center;gap:4px;padding:6px 12px;border-radius:999px;background:#fff;border:1px solid #E2E2E2;font-size:0.7rem;font-weight:600;color:#333;box-shadow:0 1px 3px rgba(0,0,0,0.06);">Slack</span>
+                        <span style="display:inline-flex;align-items:center;gap:4px;padding:6px 12px;border-radius:999px;background:#fff;border:1px solid #E2E2E2;font-size:0.7rem;font-weight:600;color:#333;box-shadow:0 1px 3px rgba(0,0,0,0.06);">HubSpot</span>
+                        <span style="display:inline-flex;align-items:center;gap:4px;padding:6px 12px;border-radius:999px;background:#fff;border:1px solid #E2E2E2;font-size:0.7rem;font-weight:600;color:#333;box-shadow:0 1px 3px rgba(0,0,0,0.06);">Zapier</span>
+                        <span style="display:inline-flex;align-items:center;gap:4px;padding:6px 12px;border-radius:999px;background:#fff;border:1px solid #E2E2E2;font-size:0.7rem;font-weight:600;color:#333;box-shadow:0 1px 3px rgba(0,0,0,0.06);">n8n</span>
+                        <span style="display:inline-flex;align-items:center;gap:4px;padding:6px 12px;border-radius:999px;background:#fff;border:1px solid #E2E2E2;font-size:0.7rem;font-weight:600;color:#333;box-shadow:0 1px 3px rgba(0,0,0,0.06);">Make</span>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-9 h-9 rounded-lg flex items-center justify-center" style="background:rgba(28,28,28,0.08);">
+                            <i data-lucide="plug" class="w-5 h-5" style="color:var(--gris-oscuro);"></i>
+                        </div>
+                        <h4 class="font-bold text-lg" style="color:var(--gris-oscuro);">Custom Integrations</h4>
+                    </div>
+                    <p class="text-sm leading-relaxed mb-4" style="color:rgba(28,28,28,0.55);">CRM systems, booking platforms, n8n workflows, email marketing, analytics dashboards — we connect everything your business needs.</p>
+                    <span class="price-pill" style="background:rgba(28,28,28,0.08);color:var(--gris-oscuro);">Custom Quote</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<!-- ============================================ -->
+<!-- SECTION 6: PROCESS (LIGHT GRAY)              -->
+<!-- ============================================ -->
+<section class="py-24" style="background:#F7F7F7;" id="process">
+    <div class="max-w-5xl mx-auto px-6">
+
+        <div class="text-center mb-16 reveal">
+            <h2 class="text-4xl md:text-5xl font-black tracking-tight" style="color:var(--gris-oscuro);">From Brief to Live in 5 Days</h2>
+            <p class="text-lg mt-4 max-w-xl mx-auto" style="color:rgba(28,28,28,0.5);">Our streamlined process keeps everything on track.</p>
+        </div>
+
+        <div class="process-timeline">
+
+            <!-- Step 1 -->
+            <div class="timeline-step">
+                <div class="timeline-circle" style="background:linear-gradient(135deg, var(--verde-ia), var(--verde-progresivo));">01</div>
+                <div>
+                    <h4>Share Your Brief</h4>
+                    <p>Send us brand guidelines, services, photos, and 1-2 reference websites.</p>
+                    <span class="timeline-tag" style="background:rgba(0,209,160,0.08);color:var(--verde-ia);">5-day clock starts here</span>
+                </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="timeline-step">
+                <div class="timeline-circle" style="background:linear-gradient(135deg, var(--azul-tech), #3B8FE6);">02</div>
+                <div>
+                    <h4>We Design & Build</h4>
+                    <p>AI-first engineering with human-perfected design. Fast build, refined detail.</p>
+                </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="timeline-step">
+                <div class="timeline-circle" style="background:linear-gradient(135deg, var(--morado-creativo), #9B4FD8);">03</div>
+                <div>
+                    <h4>Review & Refine</h4>
+                    <p>2 revision rounds. Adjust colors, images, layout, copy until it's right.</p>
+                    <span class="timeline-tag" style="background:rgba(123,44,191,0.08);color:var(--morado-creativo);">Adjustments, not rebuilds</span>
+                </div>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="timeline-step">
+                <div class="timeline-circle" style="background:linear-gradient(135deg, var(--lila-cool), #A0A2D8);">04</div>
+                <div>
+                    <h4>Go Live</h4>
+                    <p>Deploy to domain, configure SSL, hand over everything. Ready for customers.</p>
+                    <span class="timeline-tag" style="background:rgba(133,135,198,0.08);color:var(--lila-cool);">Domain + SSL included</span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Important Note -->
+        <div class="mt-12 p-6 rounded-2xl text-center reveal" style="border:2px solid rgba(0,209,160,0.2);background:rgba(0,209,160,0.04);">
+            <div class="flex items-center justify-center gap-2 mb-2">
+                <i data-lucide="info" class="w-5 h-5" style="color:var(--verde-ia);"></i>
+                <span class="font-bold" style="color:var(--gris-oscuro);">Important</span>
+            </div>
+            <p class="text-sm max-w-2xl mx-auto leading-relaxed" style="color:rgba(28,28,28,0.6);">5 business days start counting from the moment we receive <strong style="color:var(--gris-oscuro);">ALL</strong> client information — not from payment date. Each page is tracked individually.</p>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- ============================================ -->
+<!-- SECTION 7: CTA / CONTACT (DARK)              -->
+<!-- ============================================ -->
+<section class="section-dark py-24" id="contact">
+    <div class="max-w-4xl mx-auto px-6 relative z-10 text-center">
+
+        <div class="reveal">
+            <h2 class="text-4xl md:text-5xl font-black text-white tracking-tight">Ready to Get Started?</h2>
+            <p class="text-white/50 text-lg mt-4 mb-12">Let's build something amazing together.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 reveal">
+            <!-- WhatsApp -->
+            <a href="https://wa.me/19542283490?text=Hi%2C%20I'm%20interested%20in%20the%20web%20pages%20service" target="_blank" rel="noopener" class="glass-card p-6 text-center transition-all duration-300 group no-underline" style="border-color:transparent;">
+                <div class="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform" style="background:rgba(0,209,160,0.1);">
+                    <i data-lucide="message-circle" class="w-6 h-6" style="color:var(--verde-ia);"></i>
+                </div>
+                <p class="text-white font-bold text-sm">WhatsApp</p>
+                <p class="text-white/40 text-xs mt-1">Fastest response</p>
+            </a>
+
+            <!-- Email -->
+            <a href="mailto:contacto@mygia.online" class="glass-card p-6 text-center transition-all duration-300 group no-underline" style="border-color:transparent;">
+                <div class="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform" style="background:rgba(10,116,218,0.1);">
+                    <i data-lucide="mail" class="w-6 h-6" style="color:var(--azul-tech);"></i>
+                </div>
+                <p class="text-white font-bold text-sm">Email</p>
+                <p class="text-white/40 text-xs mt-1">contacto@mygia.online</p>
+            </a>
+
+            <!-- Phone -->
+            <a href="tel:+19542283490" class="glass-card p-6 text-center transition-all duration-300 group no-underline" style="border-color:transparent;">
+                <div class="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform" style="background:rgba(123,44,191,0.1);">
+                    <i data-lucide="phone" class="w-6 h-6" style="color:var(--morado-creativo);"></i>
+                </div>
+                <p class="text-white font-bold text-sm">Phone</p>
+                <p class="text-white/40 text-xs mt-1">+1 954 228-3490</p>
+            </a>
+        </div>
+
+        <a href="https://wa.me/19542283490?text=Hi%2C%20I'm%20interested%20in%20the%20web%20pages%20service" target="_blank" rel="noopener" class="btn-primary text-base reveal">
+            Start a Conversation
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </a>
+
+    </div>
+</section>
+
+
+<!-- ============================================ -->
+<!-- SECTION 8: FOOTER                            -->
+<!-- ============================================ -->
+<footer style="background:var(--gris-oscuro);padding-top:3rem;padding-bottom:1.5rem;">
+    <div class="chrome-bar mb-10"></div>
+    <div class="max-w-6xl mx-auto px-6 text-center">
+        <div class="flex items-center justify-center gap-3 mb-4">
+            <img src="assets/logosinfondo.png" alt="MY-GIA" style="height:24px;filter:brightness(0) invert(1);">
+            <span class="text-white font-black text-lg tracking-tight">MY-GIA</span>
+        </div>
+        <p class="text-sm" style="color:rgba(255,255,255,0.3);">AI Agency & Business Automation</p>
+        <a href="https://mygia.online" class="text-sm font-medium mt-2 inline-block hover:underline" style="color:var(--verde-ia);">mygia.online</a>
+        <div class="mt-8 pt-6" style="border-top:1px solid rgba(255,255,255,0.06);">
+            <p class="text-xs" style="color:rgba(255,255,255,0.2);" id="copyright"></p>
+        </div>
+    </div>
+</footer>
+
+
+<!-- ============================================ -->
+<!-- SCRIPTS                                      -->
+<!-- ============================================ -->
+<script>
+    // =============================================
+    // Init Lucide FIRST
+    // =============================================
+    try { lucide.createIcons(); } catch(e) { console.warn('Lucide init error:', e); }
+
+    // =============================================
+    // Dynamic copyright
+    // =============================================
+    document.getElementById('copyright').textContent = '\u00A9 ' + new Date().getFullYear() + ' MY-GIA. All rights reserved.';
+
+    // =============================================
+    // Mobile menu
+    // =============================================
+    const mobileMenu = document.getElementById('mobileMenu');
+    document.getElementById('menuBtn').addEventListener('click', () => mobileMenu.classList.add('open'));
+    document.getElementById('closeMenu').addEventListener('click', () => mobileMenu.classList.remove('open'));
+    function closeMobileMenu() { mobileMenu.classList.remove('open'); }
+
+    // =============================================
+    // Navbar scroll behavior
+    // =============================================
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 60) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+    }, { passive: true });
+
+    // =============================================
+    // Smooth scroll for anchor links
+    // =============================================
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                e.preventDefault();
+                const offset = 80;
+                const y = target.getBoundingClientRect().top + window.pageYOffset - offset;
+                window.scrollTo({ top: y, behavior: 'smooth' });
+            }
+        });
+    });
+
+    // =============================================
+    // GSAP Animations
+    // =============================================
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Respect reduced motion
+    const mm = gsap.matchMedia();
+
+    mm.add("(prefers-reduced-motion: no-preference)", () => {
+
+        // ----- HERO TIMELINE -----
+        const heroTl = gsap.timeline({ delay: 0.3 });
+        heroTl
+            .from('.hero-badge', { y: 20, opacity: 0, duration: 0.6, ease: 'power2.out' })
+            .from('.hero-h1', { y: 30, opacity: 0, duration: 0.7, ease: 'power2.out' }, '-=0.3')
+            .from('.hero-sub', { y: 20, opacity: 0, duration: 0.6, ease: 'power2.out' }, '-=0.3')
+            .from('.hero-cta', { y: 20, opacity: 0, duration: 0.5, ease: 'power2.out' }, '-=0.2')
+            .from('.hero-stats .glass-card', { y: 25, opacity: 0, duration: 0.5, stagger: 0.12, ease: 'power2.out' }, '-=0.2');
+
+        // ----- COUNTERS -----
+        document.querySelectorAll('[data-counter]').forEach(el => {
+            const target = parseInt(el.dataset.counter);
+            const suffix = el.dataset.suffix || '';
+            gsap.to({ val: 0 }, {
+                val: target,
+                duration: 2,
+                ease: 'power2.out',
+                scrollTrigger: { trigger: el, start: 'top 85%' },
+                onUpdate() {
+                    el.textContent = Math.round(this.targets()[0].val) + suffix;
+                }
+            });
+        });
+
+        // ----- REVEAL ELEMENTS -----
+        gsap.utils.toArray('.reveal').forEach(el => {
+            gsap.from(el, {
+                y: 30,
+                opacity: 0,
+                duration: 0.8,
+                ease: 'power2.out',
+                scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none none' }
+            });
+        });
+
+        // ----- FEATURE CARDS STAGGER -----
+        gsap.from('.feature-card', {
+            y: 40,
+            opacity: 0,
+            duration: 0.6,
+            stagger: 0.08,
+            ease: 'power2.out',
+            scrollTrigger: { trigger: '.feature-card', start: 'top 85%' }
+        });
+
+        // ----- PRICING CARDS -----
+        gsap.from('.pricing-card', {
+            scale: 0.95,
+            opacity: 0,
+            duration: 0.7,
+            stagger: 0.15,
+            ease: 'power2.out',
+            scrollTrigger: { trigger: '.pricing-card', start: 'top 85%' }
+        });
+
+        // ----- ADDON CARDS STAGGER -----
+        gsap.from('.addon-card', {
+            y: 45,
+            opacity: 0,
+            duration: 0.6,
+            stagger: 0.1,
+            ease: 'power2.out',
+            scrollTrigger: { trigger: '.addon-card', start: 'top 85%' }
+        });
+
+        // ----- PROCESS TIMELINE STEPS -----
+        gsap.from('.timeline-step', {
+            x: -40,
+            opacity: 0,
+            duration: 0.7,
+            stagger: 0.2,
+            ease: 'power2.out',
+            scrollTrigger: { trigger: '.process-timeline', start: 'top 85%' }
+        });
+
+        // ----- CONDITIONS -----
+        gsap.from('.condition-box', {
+            y: 20,
+            opacity: 0,
+            duration: 0.5,
+            stagger: 0.1,
+            ease: 'power2.out',
+            scrollTrigger: { trigger: '.condition-box', start: 'top 85%' }
+        });
+
+        // ----- PARALLAX ON GALAXY SECTIONS -----
+        gsap.utils.toArray('.section-dark').forEach(section => {
+            gsap.to(section, {
+                backgroundPositionY: '30%',
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: section,
+                    start: 'top bottom',
+                    end: 'bottom top',
+                    scrub: 1.5
+                }
+            });
+        });
+
+        // ----- MAGNETIC BUTTONS -----
+        document.querySelectorAll('.btn-primary, .btn-outline').forEach(btn => {
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                gsap.to(btn, { x: x * 0.15, y: y * 0.15, duration: 0.3, ease: 'power2.out' });
+            });
+            btn.addEventListener('mouseleave', () => {
+                gsap.to(btn, { x: 0, y: 0, duration: 0.4, ease: 'elastic.out(1, 0.4)' });
+            });
+        });
+
+    });
+
+    // Reduced motion fallback
+    mm.add("(prefers-reduced-motion: reduce)", () => {
+        gsap.set('.reveal, .feature-card, .pricing-card, .addon-card, .process-step, .condition-box, .hero-badge, .hero-h1, .hero-sub, .hero-cta, .hero-stats .glass-card', {
+            opacity: 1, y: 0, scale: 1
+        });
+    });
+
+</script>
+
+</body>
+</html>
