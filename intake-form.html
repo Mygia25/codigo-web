@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Website Intake Form — MY-GIA Web Pages</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --teal: #00D1A0;
+      --blue: #0A74DA;
+      --purple: #7B2CBF;
+      --dark: #1C1C1C;
+      --gray-50: #FAFAFA;
+      --gray-100: #F5F5F5;
+      --gray-200: #E5E5E5;
+      --gray-300: #D4D4D4;
+      --gray-500: #737373;
+      --gray-700: #404040;
+      --gray-900: #171717;
+      --white: #FFFFFF;
+      --gradient-chrome: linear-gradient(90deg, #00D1A0 0%, #0A74DA 40%, #7B2CBF 100%);
+    }
+
+    @page {
+      margin: 0;
+      size: A4;
+    }
+
+    @media print {
+      body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .no-print { display: none !important; }
+      .section { break-inside: avoid; page-break-inside: avoid; }
+      .header { position: relative !important; }
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--gray-50);
+      color: var(--gray-900);
+      line-height: 1.6;
+      font-size: 15px;
+    }
+
+    /* ── HEADER ── */
+    .header {
+      background: var(--dark);
+      padding: 40px 0 0 0;
+      position: relative;
+    }
+
+    .header-inner {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 32px 32px;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: var(--white);
+    }
+
+    .logo span {
+      background: var(--gradient-chrome);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .header-subtitle {
+      font-size: 14px;
+      color: var(--gray-500);
+      margin-top: 4px;
+      font-weight: 400;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .header-title {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--white);
+      margin-top: 24px;
+      line-height: 1.2;
+    }
+
+    .header-desc {
+      font-size: 15px;
+      color: var(--gray-300);
+      margin-top: 12px;
+      max-width: 600px;
+      line-height: 1.7;
+    }
+
+    .chrome-bar {
+      height: 4px;
+      background: var(--gradient-chrome);
+      width: 100%;
+    }
+
+    /* ── MAIN ── */
+    .main {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 40px 32px 60px;
+    }
+
+    .intro-box {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin-bottom: 40px;
+    }
+
+    .intro-box h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--dark);
+      margin-bottom: 8px;
+    }
+
+    .intro-box p {
+      font-size: 14px;
+      color: var(--gray-700);
+      line-height: 1.7;
+    }
+
+    .intro-box ul {
+      margin-top: 12px;
+      padding-left: 20px;
+    }
+
+    .intro-box li {
+      font-size: 14px;
+      color: var(--gray-700);
+      margin-bottom: 4px;
+    }
+
+    /* ── SECTIONS ── */
+    .section {
+      margin-bottom: 40px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .section-number {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--white);
+      flex-shrink: 0;
+    }
+
+    .section:nth-child(1) .section-number { background: var(--teal); }
+    .section:nth-child(2) .section-number { background: var(--blue); }
+    .section:nth-child(3) .section-number { background: var(--purple); }
+    .section:nth-child(4) .section-number { background: var(--teal); }
+    .section:nth-child(5) .section-number { background: var(--blue); }
+    .section:nth-child(6) .section-number { background: var(--purple); }
+    .section:nth-child(7) .section-number { background: var(--teal); }
+
+    .section-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--dark);
+    }
+
+    .section-card {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: 12px;
+      padding: 28px;
+    }
+
+    /* ── FIELDS ── */
+    .field {
+      margin-bottom: 24px;
+    }
+
+    .field:last-child {
+      margin-bottom: 0;
+    }
+
+    .field-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--gray-900);
+      margin-bottom: 4px;
+    }
+
+    .field-hint {
+      font-size: 12.5px;
+      color: var(--gray-500);
+      margin-bottom: 8px;
+      line-height: 1.5;
+      font-style: italic;
+    }
+
+    .field-input {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid var(--gray-200);
+      border-radius: 8px;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      color: var(--gray-900);
+      background: var(--gray-50);
+      transition: border-color 0.2s;
+    }
+
+    .field-input:focus {
+      outline: none;
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(10, 116, 218, 0.1);
+    }
+
+    textarea.field-input {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    @media (max-width: 600px) {
+      .field-row { grid-template-columns: 1fr; }
+    }
+
+    /* ── RADIO / CHECKBOX ── */
+    .option-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .option-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      color: var(--gray-700);
+      cursor: pointer;
+    }
+
+    .option-item input[type="radio"],
+    .option-item input[type="checkbox"] {
+      accent-color: var(--blue);
+      width: 16px;
+      height: 16px;
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      height: 1px;
+      background: var(--gray-200);
+      margin: 24px 0;
+    }
+
+    /* ── FILE HINT ── */
+    .file-hint {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      background: var(--gray-100);
+      border: 1px dashed var(--gray-300);
+      border-radius: 8px;
+      font-size: 13px;
+      color: var(--gray-500);
+      margin-top: 4px;
+    }
+
+    .file-hint svg {
+      width: 16px;
+      height: 16px;
+      stroke: var(--gray-500);
+    }
+
+    /* ── FOOTER ── */
+    .footer {
+      background: var(--dark);
+      padding: 32px 0;
+      text-align: center;
+    }
+
+    .footer p {
+      color: var(--gray-500);
+      font-size: 13px;
+    }
+
+    .footer a {
+      color: var(--teal);
+      text-decoration: none;
+    }
+
+    .footer .logo-small {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+
+    .footer .logo-small span {
+      background: var(--gradient-chrome);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ── BADGE ── */
+    .required-badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--purple);
+      background: rgba(123, 44, 191, 0.08);
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════ HEADER ═══════════ -->
+<header class="header">
+  <div class="header-inner">
+    <div class="logo"><span>MY-GIA</span></div>
+    <div class="header-subtitle">Web Pages Service</div>
+    <h1 class="header-title">Website Intake Form</h1>
+    <p class="header-desc">
+      Please complete this form so we can build a website that truly represents your business.
+      Every question has a short explanation of why we need it.
+      If you don't have something — just write "N/A".
+    </p>
+  </div>
+  <div class="chrome-bar"></div>
+</header>
+
+<!-- ═══════════ MAIN ═══════════ -->
+<main class="main">
+
+  <!-- INTRO BOX -->
+  <div class="intro-box">
+    <h3>Before You Start</h3>
+    <p>This form should take about 15-20 minutes. Please have the following ready:</p>
+    <ul>
+      <li>Your company logo in high resolution (PNG, SVG, or AI format)</li>
+      <li>Photos of your team, office, or products (if available)</li>
+      <li>Login details for your domain registrar (GoDaddy, Namecheap, etc.), if you have one</li>
+      <li>A list of services or products you want on the site</li>
+    </ul>
+  </div>
+
+  <!-- ═══════════ SECTION 1: BUSINESS INFO ═══════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">1</div>
+      <h2 class="section-title">Business Information</h2>
+    </div>
+    <div class="section-card">
+
+      <div class="field">
+        <div class="field-label">Company / Business Name <span class="required-badge">Required</span></div>
+        <div class="field-hint">The official name that will appear on the website header, footer, and legal pages.</div>
+        <input type="text" class="field-input" placeholder="e.g. Apex Plumbing LLC">
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <div class="field-label">Owner / Contact Name <span class="required-badge">Required</span></div>
+          <div class="field-hint">Who we'll communicate with during the project.</div>
+          <input type="text" class="field-input" placeholder="Full name">
+        </div>
+        <div class="field">
+          <div class="field-label">Email <span class="required-badge">Required</span></div>
+          <div class="field-hint">For project updates and delivering final files.</div>
+          <input type="email" class="field-input" placeholder="email@company.com">
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <div class="field-label">Phone Number</div>
+          <div class="field-hint">In case we need to clarify something quickly.</div>
+          <input type="tel" class="field-input" placeholder="+1 (555) 000-0000">
+        </div>
+        <div class="field">
+          <div class="field-label">Business Type / Industry <span class="required-badge">Required</span></div>
+          <div class="field-hint">Helps us choose the right design style and layout for your niche.</div>
+          <input type="text" class="field-input" placeholder="e.g. Plumbing, Restaurant, Law Firm">
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="field-label">Business Address</div>
+        <div class="field-hint">If you serve a local area, this is important for SEO and Google Maps integration.</div>
+        <input type="text" class="field-input" placeholder="Full address (or 'Online only')">
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <div class="field-label">Years in Business</div>
+          <div class="field-hint">Builds trust — we can highlight your experience on the site.</div>
+          <input type="text" class="field-input" placeholder="e.g. 5 years, New business">
+        </div>
+        <div class="field">
+          <div class="field-label">Service Area</div>
+          <div class="field-hint">Helps us write location-specific content for better local search rankings.</div>
+          <input type="text" class="field-input" placeholder="e.g. Miami-Dade County, Nationwide, Online">
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════ SECTION 2: DOMAIN & HOSTING ═══════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">2</div>
+      <h2 class="section-title">Domain & Hosting</h2>
+    </div>
+    <div class="section-card">
+
+      <div class="field">
+        <div class="field-label">Do you already have a domain name? <span class="required-badge">Required</span></div>
+        <div class="field-hint">We need to know if we should register a new domain or connect to an existing one.</div>
+        <div class="option-group">
+          <label class="option-item"><input type="radio" name="has_domain" value="yes"> Yes</label>
+          <label class="option-item"><input type="radio" name="has_domain" value="no"> No — I need one</label>
+          <label class="option-item"><input type="radio" name="has_domain" value="unsure"> Not sure</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="field-label">If yes, what is your domain?</div>
+        <div class="field-hint">The exact URL — we'll verify DNS settings and availability.</div>
+        <input type="text" class="field-input" placeholder="e.g. www.mybusiness.com">
+      </div>
+
+      <div class="field">
+        <div class="field-label">Domain registrar</div>
+        <div class="field-hint">Where was it purchased? We may need login access to point the domain to the new site.</div>
+        <input type="text" class="field-input" placeholder="e.g. GoDaddy, Namecheap, Google Domains, Hostinger">
+      </div>
+
+      <div class="field">
+        <div class="field-label">Do you have hosting?</div>
+        <div class="field-hint">If you already pay for hosting, we can use it. If not, we'll set it up for you.</div>
+        <div class="option-group">
+          <label class="option-item"><input type="radio" name="has_hosting" value="yes"> Yes</label>
+          <label class="option-item"><input type="radio" name="has_hosting" value="no"> No</label>
+          <label class="option-item"><input type="radio" name="has_hosting" value="unsure"> Not sure</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="field-label">Do you have an existing website?</div>
+        <div class="field-hint">If yes, share the URL. We'll review what works and what needs to change.</div>
+        <input type="text" class="field-input" placeholder="e.g. www.myoldsite.com or 'No existing site'">
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════ SECTION 3: BRAND IDENTITY ═══════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">3</div>
+      <h2 class="section-title">Brand Identity</h2>
+    </div>
+    <div class="section-card">
+
+      <div class="field">
+        <div class="field-label">Logo File <span class="required-badge">Required</span></div>
+        <div class="field-hint">We need your logo in the highest quality available. PNG with transparent background or SVG is ideal.</div>
+        <div class="file-hint">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/></svg>
+          Please send via email or shared drive link (PNG, SVG, AI, or EPS)
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="field-label">Brand Colors</div>
+        <div class="field-hint">If you have specific colors, list them here (hex codes like #FF5500 are perfect). If not, we'll propose a palette based on your industry.</div>
+        <input type="text" class="field-input" placeholder="e.g. Primary: #1B3A5C, Secondary: #F7A800 — or 'No preference'">
+      </div>
+
+      <div class="field">
+        <div class="field-label">Preferred Fonts</div>
+        <div class="field-hint">If your brand uses specific fonts, let us know. Otherwise, we'll select professional fonts that match your style.</div>
+        <input type="text" class="field-input" placeholder="e.g. Montserrat for headings, Open Sans for body — or 'No preference'">
+      </div>
+
+      <div class="field">
+        <div class="field-label">Brand Book or Style Guide</div>
+        <div class="field-hint">If you have a PDF with brand rules (colors, fonts, logo usage), share it. This ensures 100% brand consistency.</div>
+        <div class="file-hint">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/></svg>
+          Send PDF if available — or write "None"
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="field-label">Tone & Style Preference <span class="required-badge">Required</span></div>
+        <div class="field-hint">How should visitors feel when they land on your site? This shapes the design direction and copywriting voice.</div>
+        <div class="option-group">
+          <label class="option-item"><input type="checkbox" name="tone" value="professional"> Professional & Corporate</label>
+          <label class="option-item"><input type="checkbox" name="tone" value="modern"> Modern & Minimalist</label>
+          <label class="option-item"><input type="checkbox" name="tone" value="friendly"> Friendly & Approachable</label>
+          <label class="option-item"><input type="checkbox" name="tone" value="bold"> Bold & Energetic</label>
+          <label class="option-item"><input type="checkbox" name="tone" value="luxury"> Luxury & Elegant</label>
+          <label class="option-item"><input type="checkbox" name="tone" value="playful"> Playful & Creative</label>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════ SECTION 4: CONTENT ═══════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">4</div>
+      <h2 class="section-title">Content & Services</h2>
+    </div>
+    <div class="section-card">
+
+      <div class="field">
+        <div class="field-label">Services / Products List <span class="required-badge">Required</span></div>
+        <div class="field-hint">List every service or product you want featured on the site. Each one may get its own section or page. Be specific — this directly impacts the site structure.</div>
+        <textarea class="field-input" rows="4" placeholder="e.g.&#10;1. Emergency Plumbing&#10;2. Water Heater Installation&#10;3. Drain Cleaning&#10;4. Bathroom Remodeling"></textarea>
+      </div>
+
+      <div class="field">
+        <div class="field-label">About Us / Company Story</div>
+        <div class="field-hint">A short paragraph about your company. If you don't have one, just give us the key points and we'll write it for you.</div>
+        <textarea class="field-input" rows="3" placeholder="Who you are, what you do, what makes you different..."></textarea>
+      </div>
+
+      <div class="field">
+        <div class="field-label">What makes you different from competitors?</div>
+        <div class="field-hint">Your unique selling proposition (USP). This becomes the headline and core message of your site — the reason a visitor chooses you.</div>
+        <textarea class="field-input" rows="2" placeholder="e.g. 24/7 emergency service, 15 years experience, same-day appointments, bilingual team"></textarea>
+      </div>
+
+      <div class="field">
+        <div class="field-label">Target Audience</div>
+        <div class="field-hint">Who are your ideal customers? This affects the language, imagery, and calls-to-action we use on the site.</div>
+        <input type="text" class="field-input" placeholder="e.g. Homeowners 30-55 in South Florida, Small business owners">
+      </div>
+
+      <div class="field">
+        <div class="field-label">Business Hours</div>
+        <div class="field-hint">Displayed on the website and used for Google Business Profile integration.</div>
+        <input type="text" class="field-input" placeholder="e.g. Mon-Fri 8am-6pm, Sat 9am-2pm, Sun Closed">
+      </div>
+
+      <div class="field">
+        <div class="field-label">Photos (Team, Office, Products, Projects)</div>
+        <div class="field-hint">Real photos of your business perform much better than stock images. Send whatever you have — we'll select and optimize the best ones.</div>
+        <div class="file-hint">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/></svg>
+          Send via email, Google Drive, or Dropbox link — minimum 5 photos recommended
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════ SECTION 5: DESIGN PREFERENCES ═══════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">5</div>
+      <h2 class="section-title">Design Preferences</h2>
+    </div>
+    <div class="section-card">
+
+      <div class="field">
+        <div class="field-label">Reference Websites (1-3 examples)</div>
+        <div class="field-hint">Share 1-3 websites you admire — from any industry. Tell us what you like about each one (layout, colors, feel). This is the single most useful input for our design team.</div>
+        <textarea class="field-input" rows="3" placeholder="e.g.&#10;1. www.example.com — I like the clean layout&#10;2. www.competitor.com — I like their color scheme&#10;3. www.other.com — I like how they show testimonials"></textarea>
+      </div>
+
+      <div class="field">
+        <div class="field-label">Pages You Want on the Site</div>
+        <div class="field-hint">Check all that apply. This defines the site architecture and navigation.</div>
+        <div class="option-group">
+          <label class="option-item"><input type="checkbox" name="pages" value="home" checked> Home</label>
+          <label class="option-item"><input type="checkbox" name="pages" value="about"> About Us</label>
+          <label class="option-item"><input type="checkbox" name="pages" value="services"> Services</label>
+          <label class="option-item"><input type="checkbox" name="pages" value="gallery"> Gallery / Portfolio</label>
+          <label class="option-item"><input type="checkbox" name="pages" value="testimonials"> Testimonials</label>
+          <label class="option-item"><input type="checkbox" name="pages" value="contact"> Contact</label>
+          <label class="option-item"><input type="checkbox" name="pages" value="blog"> Blog</label>
+          <label class="option-item"><input type="checkbox" name="pages" value="faq"> FAQ</label>
+          <label class="option-item"><input type="checkbox" name="pages" value="pricing"> Pricing</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="field-label">Specific Design Requests or Things to Avoid</div>
+        <div class="field-hint">Any must-haves or dealbreakers? This prevents rework and ensures the first draft is close to what you want.</div>
+        <textarea class="field-input" rows="2" placeholder="e.g. 'I want a video hero section', 'No dark backgrounds', 'Must show reviews prominently'"></textarea>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════ SECTION 6: SOCIAL & CONTACT ═══════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">6</div>
+      <h2 class="section-title">Social Media & Contact Info for the Website</h2>
+    </div>
+    <div class="section-card">
+
+      <div class="field">
+        <div class="field-label">Social Media Links</div>
+        <div class="field-hint">We'll add icons linking to your profiles. These also help with SEO and credibility. Leave blank any you don't have.</div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <div class="field-label" style="font-weight:500; font-size:13px;">Facebook</div>
+          <input type="text" class="field-input" placeholder="https://facebook.com/...">
+        </div>
+        <div class="field">
+          <div class="field-label" style="font-weight:500; font-size:13px;">Instagram</div>
+          <input type="text" class="field-input" placeholder="https://instagram.com/...">
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <div class="field-label" style="font-weight:500; font-size:13px;">LinkedIn</div>
+          <input type="text" class="field-input" placeholder="https://linkedin.com/company/...">
+        </div>
+        <div class="field">
+          <div class="field-label" style="font-weight:500; font-size:13px;">Google Business Profile</div>
+          <input type="text" class="field-input" placeholder="Link or 'Not set up'">
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <div class="field-label" style="font-weight:500; font-size:13px;">TikTok</div>
+          <input type="text" class="field-input" placeholder="https://tiktok.com/@...">
+        </div>
+        <div class="field">
+          <div class="field-label" style="font-weight:500; font-size:13px;">YouTube</div>
+          <input type="text" class="field-input" placeholder="https://youtube.com/@...">
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="field">
+        <div class="field-label">Phone Number for the Website <span class="required-badge">Required</span></div>
+        <div class="field-hint">The number visitors will call. This goes in the header, footer, and contact page. Must be a business line.</div>
+        <input type="tel" class="field-input" placeholder="+1 (555) 000-0000">
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <div class="field-label">Email for the Website</div>
+          <div class="field-hint">Displayed on the contact page for inquiries.</div>
+          <input type="email" class="field-input" placeholder="info@mybusiness.com">
+        </div>
+        <div class="field">
+          <div class="field-label">WhatsApp Number</div>
+          <div class="field-hint">If you want a WhatsApp chat button on the site (very effective for conversions).</div>
+          <input type="tel" class="field-input" placeholder="+1 (555) 000-0000 or 'Same as phone'">
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="field-label">Primary Call-to-Action (CTA)</div>
+        <div class="field-hint">What is the ONE thing you want visitors to do on your site? This determines button text, layout hierarchy, and conversion strategy.</div>
+        <div class="option-group">
+          <label class="option-item"><input type="radio" name="cta" value="call"> Call Us</label>
+          <label class="option-item"><input type="radio" name="cta" value="form"> Fill Out a Form</label>
+          <label class="option-item"><input type="radio" name="cta" value="whatsapp"> Message on WhatsApp</label>
+          <label class="option-item"><input type="radio" name="cta" value="book"> Book an Appointment</label>
+          <label class="option-item"><input type="radio" name="cta" value="quote"> Request a Quote</label>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════ SECTION 7: ADDITIONAL NOTES ═══════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">7</div>
+      <h2 class="section-title">Additional Notes & Timeline</h2>
+    </div>
+    <div class="section-card">
+
+      <div class="field">
+        <div class="field-label">Do you have Google Analytics or any tracking set up?</div>
+        <div class="field-hint">If yes, we'll integrate your existing tracking. If not, we'll set it up for you so you can measure visits and conversions from day one.</div>
+        <div class="option-group">
+          <label class="option-item"><input type="radio" name="analytics" value="yes"> Yes</label>
+          <label class="option-item"><input type="radio" name="analytics" value="no"> No</label>
+          <label class="option-item"><input type="radio" name="analytics" value="unsure"> Not sure</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="field-label">When do you need the site ready?</div>
+        <div class="field-hint">Helps us prioritize and set realistic milestones. Rush projects may have a different timeline.</div>
+        <div class="option-group">
+          <label class="option-item"><input type="radio" name="timeline" value="asap"> ASAP</label>
+          <label class="option-item"><input type="radio" name="timeline" value="2weeks"> Within 2 weeks</label>
+          <label class="option-item"><input type="radio" name="timeline" value="month"> Within a month</label>
+          <label class="option-item"><input type="radio" name="timeline" value="flexible"> Flexible / No rush</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="field-label">Anything else you'd like us to know?</div>
+        <div class="field-hint">Special features, integrations (booking systems, payment, etc.), past experiences with web designers, or anything that would help us deliver the best result.</div>
+        <textarea class="field-input" rows="4" placeholder="e.g. 'I had a bad experience with my last designer — communication was poor.' or 'I need an online booking system integrated.'"></textarea>
+      </div>
+
+    </div>
+  </div>
+
+</main>
+
+<!-- ═══════════ FOOTER ═══════════ -->
+<footer class="footer">
+  <div class="logo-small"><span>MY-GIA</span></div>
+  <p>Thank you for completing this form. We'll review your answers and get back to you within 24-48 hours.</p>
+  <p style="margin-top: 8px;">Questions? Contact us at <a href="mailto:contacto@mygia.online">contacto@mygia.online</a></p>
+</footer>
+
+</body>
+</html>
